@@ -24,12 +24,6 @@ export function TestimonialsSection() {
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-14 sm:mb-18 gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FFFFFF] border border-[#E6E6E8] rounded-full mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#FF5200]" />
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#7C7D82] font-sans">
-                Leadership Feedback
-              </span>
-            </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#121316] leading-tight">
               What engineering leaders say about Neominds.
             </h2>

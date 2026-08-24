@@ -23,12 +23,6 @@ export function ServicesEditorial() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-3xl mb-16 sm:mb-20"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#FFFFFF] border border-[#E6E6E8] rounded-full mb-5 shadow-xs">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FF5200]" />
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#4A4B50] font-sans">
-              Core Capabilities
-            </span>
-          </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-[#121316] leading-[1.08] tracking-tight">
             Comprehensive technical services for modern enterprises.
           </h2>

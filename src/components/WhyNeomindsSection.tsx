@@ -22,12 +22,6 @@ export function WhyNeomindsSection() {
           {/* Left Column: Bold Narrative & Operational Benchmarks */}
           <div className="lg:col-span-5 space-y-8 lg:sticky lg:top-32">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FFFFFF] border border-[#E6E6E8] rounded-full mb-4">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#FF5200]" />
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#7C7D82] font-sans">
-                  The Neominds Standard
-                </span>
-              </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#121316] leading-tight">
                 Why companies choose Neominds over traditional agencies.
               </h2>

@@ -29,13 +29,6 @@ export function ConversionCTA({ onOpenContact }: ConversionCTAProps) {
           className="p-8 sm:p-14 lg:p-20 shadow-2xl border border-[#2D313F]"
         >
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#161822] border border-[#2D313F] rounded-full mb-6">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#FF5200] animate-ping" />
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#FF5200] font-sans">
-                Next Steps • Engineering Consultation
-              </span>
-            </div>
-
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-[#FFFFFF] leading-tight">
               Ready to eliminate operational bottlenecks with custom software?
             </h2>
