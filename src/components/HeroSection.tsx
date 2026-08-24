@@ -66,9 +66,9 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
     const renderWidth = imgWidth * ratio;
     const renderHeight = imgHeight * ratio;
 
-    // Center the robot horizontally
-    const shiftX = (canvasWidth - renderWidth) * 0.55;
-    const shiftY = (canvasHeight - renderHeight) * 0.35;
+    // Perfectly center the robot horizontally & elevate slightly for lower text area
+    const shiftX = (canvasWidth - renderWidth) * 0.5;
+    const shiftY = (canvasHeight - renderHeight) * 0.25;
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     ctx.drawImage(img, shiftX, shiftY, renderWidth, renderHeight);
@@ -148,35 +148,26 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
   }, [renderFrame]);
 
   return (
-    <section className="relative w-full min-h-screen bg-[#07080A] text-[#FFFFFF] overflow-hidden flex flex-col justify-end pb-12 sm:pb-20 px-5 sm:px-8 md:px-12 lg:px-16 z-1 select-none border-b border-[#222530]">
-      {/* 1. Giant Background Typographic Watermark */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none z-0">
-        <span className="text-[16vw] sm:text-[18vw] font-serif font-bold tracking-tighter text-white/[0.04] uppercase leading-none block select-none">
-          NEOMINDS
-        </span>
-      </div>
-
-      {/* 2. Ambient Orange Radial Glow behind Robot */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-radial from-[#FF5200]/25 via-[#FF5200]/5 to-transparent rounded-full blur-3xl pointer-events-none z-0" />
-
-      {/* 3. Full-Screen Interactive 60FPS Robot Frame Canvas */}
+    <section className="relative w-full min-h-screen bg-[#07080A] text-[#FFFFFF] overflow-hidden flex flex-col justify-end pb-12 sm:pb-16 px-5 sm:px-8 md:px-12 lg:px-16 z-1 select-none border-b border-[#222530]">
+      {/* LAYER 1: 60FPS Cursor-Tracked Robot Frame Canvas */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full pointer-events-none z-1 block"
+        className="absolute inset-0 w-full h-full pointer-events-none z-0 block"
       />
 
-      {/* Subtle vignette gradient overlays */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#07080A] via-transparent to-[#07080A]/60 pointer-events-none z-2" />
-      <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#07080A] via-[#07080A]/80 to-transparent pointer-events-none z-2" />
+      {/* LAYER 2: Subtle Black Gradient Overlay (Top is transparent, bottom is solid black) */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#07080A]/40 to-[#07080A] pointer-events-none z-1" />
+      <div className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-[#07080A] via-[#07080A]/95 to-transparent pointer-events-none z-1" />
 
-      {/* Main Content Area (Clean, Uncluttered Left-Aligned Editorial Headline & Actions) */}
+      {/* LAYER 3: Clean Foreground Text Structured across the Black Gradient Base */}
       <div className="relative z-10 max-w-7xl mx-auto w-full">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-xl sm:max-w-2xl space-y-6"
+          className="max-w-3xl space-y-4 sm:space-y-5"
         >
+          {/* Top category badge */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#14161F]/90 backdrop-blur-md border border-[#2D313F] rounded-full">
             <Sparkles className="w-3.5 h-3.5 text-[#FF5200]" />
             <span className="text-[11px] font-bold uppercase tracking-wider text-[#FFFFFF] font-sans">
@@ -184,17 +175,18 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
             </span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif text-[#FFFFFF] tracking-tight leading-[1.04]">
-            Helped Launch <br />
-            <span className="font-mono text-[#FF5200] font-bold">&gt;100+</span> Enterprise <br />
-            Systems.
+          {/* Line 1: Bold Main Display Headline */}
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif text-[#FFFFFF] tracking-tight leading-[1.06]">
+            Helped Launch <span className="font-mono text-[#FF5200] font-bold">&gt;100+</span> Enterprise Systems.
           </h1>
 
-          <p className="text-sm sm:text-base md:text-lg text-[#CBD0DE] font-sans leading-relaxed max-w-lg">
+          {/* Line 2: Middle Subtitle Description */}
+          <p className="text-sm sm:text-base md:text-lg text-[#CBD0DE] font-sans leading-relaxed max-w-2xl">
             We engineer deterministic AI workflows, scalable backend architectures, and enterprise software built to run with zero downtime.
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 pt-2">
+          {/* Line 3: Bottom Action Buttons */}
+          <div className="flex flex-wrap items-center gap-4 pt-1">
             <button
               type="button"
               onClick={onOpenContact}
@@ -206,7 +198,7 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
 
             <a
               href="#services"
-              className="px-6 py-3.5 rounded-full bg-[#14161F]/90 hover:bg-[#1C1F2B] border border-[#2D313F] text-xs font-bold uppercase tracking-wider text-white transition-colors flex items-center gap-2"
+              className="px-6 py-3.5 rounded-full bg-[#14161F]/90 hover:bg-[#1C1F2B] border border-[#2D313F] text-xs font-bold uppercase tracking-wider text-white transition-colors flex items-center gap-2 cursor-pointer"
             >
               <span>Explore Specs</span>
               <ArrowDown className="w-3.5 h-3.5 text-[#A0A4B8]" />
