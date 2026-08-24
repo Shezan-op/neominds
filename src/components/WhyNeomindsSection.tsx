@@ -2,6 +2,7 @@
 
 import React from "react";
 import { WHY_NEOMINDS_POINTS } from "@/lib/data";
+import { BorderGlow } from "@/components/ui/BorderGlow";
 
 export function WhyNeomindsSection() {
   return (
@@ -25,9 +26,16 @@ export function WhyNeomindsSection() {
         {/* 5 Focused Points Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {WHY_NEOMINDS_POINTS.map((point) => (
-            <div
+            <BorderGlow
               key={point.number}
-              className="bg-[#FFFFFF] border border-[#E6E6E8] rounded-sm p-6 sm:p-8 flex flex-col justify-between hover:border-[#D2D2D6] transition-colors"
+              backgroundColor="#FFFFFF"
+              borderRadius={4}
+              glowColor="20 100 50"
+              colors={["#FF5200", "#FF7A33", "#FFA07A"]}
+              edgeSensitivity={30}
+              glowRadius={28}
+              fillOpacity={0.2}
+              className="p-6 sm:p-8 flex flex-col justify-between"
             >
               <div>
                 <span className="text-xs font-mono font-bold text-[#FF5200] block mb-4">
@@ -40,7 +48,7 @@ export function WhyNeomindsSection() {
                   {point.description}
                 </p>
               </div>
-            </div>
+            </BorderGlow>
           ))}
         </div>
       </div>

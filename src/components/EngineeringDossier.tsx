@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileCode2, ShieldCheck, Cpu, Database, ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
+import { BorderGlow } from "@/components/ui/BorderGlow";
 
 interface DossierTab {
   id: string;
@@ -167,7 +168,15 @@ export function EngineeringDossier() {
           </div>
 
           {/* Folder Body / Dossier Card */}
-          <div className="bg-[#FFFFFF] border border-[#E6E6E8] rounded-b-sm rounded-tr-sm p-6 sm:p-10 lg:p-12 shadow-[0_8px_30px_rgba(0,0,0,0.03)] relative overflow-hidden">
+          <BorderGlow
+            backgroundColor="#FFFFFF"
+            borderRadius={4}
+            glowColor="20 100 50"
+            colors={["#FF5200", "#FF7A33", "#FFA07A"]}
+            edgeSensitivity={25}
+            glowRadius={32}
+            className="p-6 sm:p-10 lg:p-12 shadow-[0_8px_30px_rgba(0,0,0,0.03)] rounded-b-sm rounded-tr-sm"
+          >
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentDossier.id}
@@ -203,7 +212,14 @@ export function EngineeringDossier() {
                 {/* Two-Column Grid: Deliverable Specs & Technical Standards */}
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pt-4">
                   {/* Left: Deliverables Checklist */}
-                  <div className="md:col-span-7 space-y-3.5 bg-[#FAF9F6] border border-[#E6E6E8] rounded-sm p-6">
+                  <BorderGlow
+                    backgroundColor="#FAF9F6"
+                    borderRadius={3}
+                    glowColor="20 100 50"
+                    glowRadius={22}
+                    edgeSensitivity={30}
+                    className="md:col-span-7 space-y-3.5 p-6"
+                  >
                     <span className="text-xs font-bold uppercase tracking-wider text-[#121316] block mb-2">
                       Included Engineering Artifacts
                     </span>
@@ -213,15 +229,20 @@ export function EngineeringDossier() {
                         <span>{bullet}</span>
                       </div>
                     ))}
-                  </div>
+                  </BorderGlow>
 
                   {/* Right: Technical Specs Metrics */}
                   <div className="md:col-span-5 space-y-4 flex flex-col justify-between">
                     <div className="space-y-4">
                       {currentDossier.systemSpecs.map((spec, sIdx) => (
-                        <div
+                        <BorderGlow
                           key={sIdx}
-                          className="p-4 bg-[#FAF9F6] border border-[#E6E6E8] rounded-sm flex items-center justify-between"
+                          backgroundColor="#FAF9F6"
+                          borderRadius={3}
+                          glowColor="20 100 50"
+                          glowRadius={18}
+                          edgeSensitivity={35}
+                          className="p-4 flex items-center justify-between"
                         >
                           <span className="text-xs text-[#7C7D82] font-sans font-medium uppercase tracking-wider">
                             {spec.label}
@@ -229,7 +250,7 @@ export function EngineeringDossier() {
                           <span className="text-sm font-serif font-bold text-[#121316]">
                             {spec.value}
                           </span>
-                        </div>
+                        </BorderGlow>
                       ))}
                     </div>
 
@@ -242,7 +263,7 @@ export function EngineeringDossier() {
                 </div>
               </motion.div>
             </AnimatePresence>
-          </div>
+          </BorderGlow>
         </div>
       </div>
     </section>

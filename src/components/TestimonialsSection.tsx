@@ -2,6 +2,7 @@
 
 import React from "react";
 import { TESTIMONIALS } from "@/lib/data";
+import { BorderGlow } from "@/components/ui/BorderGlow";
 
 export function TestimonialsSection() {
   return (
@@ -25,9 +26,16 @@ export function TestimonialsSection() {
         {/* Testimonials Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {TESTIMONIALS.map((test) => (
-            <div
+            <BorderGlow
               key={test.id}
-              className="bg-[#FFFFFF] border border-[#E6E6E8] rounded-sm p-6 sm:p-8 flex flex-col justify-between"
+              backgroundColor="#FFFFFF"
+              borderRadius={4}
+              glowColor="20 100 50"
+              colors={["#FF5200", "#FF7A33", "#FFA07A"]}
+              edgeSensitivity={30}
+              glowRadius={28}
+              fillOpacity={0.2}
+              className="p-6 sm:p-8 flex flex-col justify-between"
             >
               {/* Quote */}
               <div className="space-y-4">
@@ -51,7 +59,7 @@ export function TestimonialsSection() {
                   {test.serviceUsed}
                 </span>
               </div>
-            </div>
+            </BorderGlow>
           ))}
         </div>
       </div>

@@ -3,6 +3,7 @@
 import React from "react";
 import { ArrowRight, CheckCircle2, AlertCircle, Sparkles, PhoneCall } from "lucide-react";
 import { SCROLL_STACK_CARDS } from "@/lib/data";
+import { BorderGlow } from "@/components/ui/BorderGlow";
 
 interface ScrollStackSectionProps {
   onOpenContact: () => void;
@@ -52,69 +53,86 @@ export function ScrollStackSection({ onOpenContact }: ScrollStackSectionProps) {
               <div
                 key={card.id}
                 style={{ top: `${stickyTop}px` }}
-                className="sticky bg-[#FFFFFF] border border-[#E6E6E8] rounded-sm p-6 sm:p-10 lg:p-12 shadow-[0_10px_30px_rgba(0,0,0,0.04)] transition-all"
+                className="sticky"
               >
-                {/* Card Top Meta */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#E6E6E8] pb-6 mb-8 gap-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-sm bg-[#FAF9F6] border border-[#E6E6E8] flex items-center justify-center flex-shrink-0">
-                      {getCardIcon(idx)}
-                    </div>
-                    <div>
-                      <span className="text-xs font-mono font-bold text-[#FF5200] uppercase tracking-wider">
-                        Phase {card.stepNumber}
-                      </span>
-                      <h3 className="text-xl sm:text-2xl font-serif text-[#121316] leading-tight">
-                        {card.title}
-                      </h3>
-                    </div>
-                  </div>
-
-                  <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#7C7D82] self-start sm:self-auto bg-[#FAF9F6] px-3 py-1 border border-[#E6E6E8] rounded-sm">
-                    {card.subtitle}
-                  </span>
-                </div>
-
-                {/* Card Description */}
-                <p className="text-base text-[#4A4B50] font-sans leading-relaxed mb-8 max-w-3xl">
-                  {card.description}
-                </p>
-
-                {/* Card Points Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-                  {card.points.map((point, pIdx) => (
-                    <div
-                      key={pIdx}
-                      className="p-5 rounded-sm bg-[#FAF9F6] border border-[#E6E6E8] flex flex-col justify-between"
-                    >
+                <BorderGlow
+                  backgroundColor="#FFFFFF"
+                  borderRadius={4}
+                  glowColor="20 100 50"
+                  colors={["#FF5200", "#FF7A33", "#FFA07A"]}
+                  edgeSensitivity={25}
+                  glowRadius={32}
+                  glowIntensity={1.0}
+                  className="p-6 sm:p-10 lg:p-12 shadow-[0_10px_30px_rgba(0,0,0,0.04)]"
+                >
+                  {/* Card Top Meta */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#E6E6E8] pb-6 mb-8 gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-sm bg-[#FAF9F6] border border-[#E6E6E8] flex items-center justify-center flex-shrink-0">
+                        {getCardIcon(idx)}
+                      </div>
                       <div>
-                        <h4 className="text-base font-sans font-bold text-[#121316] mb-2">
-                          {point.headline}
-                        </h4>
-                        <p className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed">
-                          {point.detail}
-                        </p>
+                        <span className="text-xs font-mono font-bold text-[#FF5200] uppercase tracking-wider">
+                          Phase {card.stepNumber}
+                        </span>
+                        <h3 className="text-xl sm:text-2xl font-serif text-[#121316] leading-tight">
+                          {card.title}
+                        </h3>
                       </div>
                     </div>
-                  ))}
-                </div>
 
-                {/* Card 4 CTA Action */}
-                {card.ctaText && (
-                  <div className="mt-8 pt-6 border-t border-[#E6E6E8] flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <span className="text-xs sm:text-sm text-[#7C7D82] font-sans">
-                      Direct consultation with a senior engineer. No obligation.
+                    <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#7C7D82] self-start sm:self-auto bg-[#FAF9F6] px-3 py-1 border border-[#E6E6E8] rounded-sm">
+                      {card.subtitle}
                     </span>
-                    <button
-                      type="button"
-                      onClick={onOpenContact}
-                      className="btn-primary text-xs uppercase tracking-wider font-bold px-7 py-3 w-full sm:w-auto"
-                    >
-                      <span>{card.ctaText}</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
                   </div>
-                )}
+
+                  {/* Card Description */}
+                  <p className="text-base text-[#4A4B50] font-sans leading-relaxed mb-8 max-w-3xl">
+                    {card.description}
+                  </p>
+
+                  {/* Card Points Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+                    {card.points.map((point, pIdx) => (
+                      <BorderGlow
+                        key={pIdx}
+                        backgroundColor="#FAF9F6"
+                        borderRadius={3}
+                        glowColor="20 100 50"
+                        glowRadius={20}
+                        edgeSensitivity={30}
+                        fillOpacity={0.15}
+                        className="p-5 flex flex-col justify-between"
+                      >
+                        <div>
+                          <h4 className="text-base font-sans font-bold text-[#121316] mb-2">
+                            {point.headline}
+                          </h4>
+                          <p className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed">
+                            {point.detail}
+                          </p>
+                        </div>
+                      </BorderGlow>
+                    ))}
+                  </div>
+
+                  {/* Card 4 CTA Action */}
+                  {card.ctaText && (
+                    <div className="mt-8 pt-6 border-t border-[#E6E6E8] flex flex-col sm:flex-row items-center justify-between gap-4">
+                      <span className="text-xs sm:text-sm text-[#7C7D82] font-sans">
+                        Direct consultation with a senior engineer. No obligation.
+                      </span>
+                      <button
+                        type="button"
+                        onClick={onOpenContact}
+                        className="btn-primary text-xs uppercase tracking-wider font-bold px-7 py-3 w-full sm:w-auto"
+                      >
+                        <span>{card.ctaText}</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  )}
+                </BorderGlow>
               </div>
             );
           })}

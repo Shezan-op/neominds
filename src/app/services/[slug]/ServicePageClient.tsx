@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, ArrowLeft, CheckCircle2, Building, Layers, Sparkles } from "lucide-react";
+import { ArrowRight, ArrowLeft, CheckCircle2, Layers } from "lucide-react";
 import { ServiceItem } from "@/lib/data";
 import { Navbar } from "@/components/Navbar";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
@@ -10,6 +10,7 @@ import { FAQSection } from "@/components/FAQSection";
 import { ConversionCTA } from "@/components/ConversionCTA";
 import { Footer } from "@/components/Footer";
 import { ContactModal } from "@/components/ContactModal";
+import { BorderGlow } from "@/components/ui/BorderGlow";
 
 interface ServicePageClientProps {
   service: ServiceItem;
@@ -85,7 +86,14 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
 
               {/* Right Column: 16:9 Visual Placeholder */}
               <div className="lg:col-span-6">
-                <div className="relative w-full aspect-video rounded-sm bg-[#FFFFFF] border border-[#E6E6E8] shadow-[0_8px_30px_rgba(0,0,0,0.03)] p-6 sm:p-8 flex flex-col justify-between">
+                <BorderGlow
+                  backgroundColor="#FFFFFF"
+                  borderRadius={4}
+                  glowColor="20 100 50"
+                  colors={["#FF5200", "#FF7A33", "#FFA07A"]}
+                  glowRadius={30}
+                  className="aspect-video p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_30px_rgba(0,0,0,0.03)]"
+                >
                   <div className="flex items-center justify-between border-b border-[#E6E6E8] pb-3">
                     <span className="text-[11px] font-mono text-[#7C7D82] uppercase tracking-wider">
                       {service.title} Architecture
@@ -113,7 +121,7 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
                     <span>Verified Production Pipeline</span>
                     <span>100% Owned Code</span>
                   </div>
-                </div>
+                </BorderGlow>
               </div>
             </div>
           </div>
@@ -123,7 +131,12 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
         {service.isMinimal ? (
           <section className="py-24 bg-[#FAF9F6] border-b border-[#E6E6E8]">
             <div className="max-w-4xl mx-auto px-4 text-center">
-              <div className="bg-[#FFFFFF] border border-[#E6E6E8] rounded-sm p-10 sm:p-14 space-y-4">
+              <BorderGlow
+                backgroundColor="#FFFFFF"
+                borderRadius={4}
+                glowColor="20 100 50"
+                className="p-10 sm:p-14 space-y-4"
+              >
                 <h2 className="text-2xl sm:text-3xl font-serif text-[#121316]">
                   Training Curriculum on Request
                 </h2>
@@ -140,7 +153,7 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
-              </div>
+              </BorderGlow>
             </div>
           </section>
         ) : (
@@ -162,9 +175,14 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {service.workShowcase.map((work, idx) => (
-                      <div
+                      <BorderGlow
                         key={idx}
-                        className="bg-[#FFFFFF] border border-[#E6E6E8] rounded-sm p-8 sm:p-10 flex flex-col justify-between"
+                        backgroundColor="#FFFFFF"
+                        borderRadius={4}
+                        glowColor="20 100 50"
+                        colors={["#FF5200", "#FF7A33", "#FFA07A"]}
+                        glowRadius={28}
+                        className="p-8 sm:p-10 flex flex-col justify-between"
                       >
                         <div>
                           <div className="flex items-center justify-between border-b border-[#E6E6E8] pb-4 mb-6">
@@ -193,7 +211,7 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
                             Verified Result
                           </span>
                         </div>
-                      </div>
+                      </BorderGlow>
                     ))}
                   </div>
                 </div>
@@ -217,9 +235,14 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {service.whyNeeded.map((item, idx) => (
-                      <div
+                      <BorderGlow
                         key={idx}
-                        className="bg-[#FFFFFF] border border-[#E6E6E8] rounded-sm p-8 space-y-6"
+                        backgroundColor="#FFFFFF"
+                        borderRadius={4}
+                        glowColor="20 100 50"
+                        colors={["#FF5200", "#FF7A33", "#FFA07A"]}
+                        glowRadius={28}
+                        className="p-8 space-y-6"
                       >
                         <div>
                           <span className="text-xs font-bold uppercase tracking-wider text-[#FF5200] block mb-2">
@@ -241,7 +264,7 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
                             {item.businessOutcome}
                           </p>
                         </div>
-                      </div>
+                      </BorderGlow>
                     ))}
                   </div>
                 </div>
@@ -265,9 +288,14 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
                     {service.whyNeominds.map((adv, idx) => (
-                      <div
+                      <BorderGlow
                         key={idx}
-                        className="bg-[#FFFFFF] border border-[#E6E6E8] rounded-sm p-8 space-y-3"
+                        backgroundColor="#FFFFFF"
+                        borderRadius={4}
+                        glowColor="20 100 50"
+                        colors={["#FF5200", "#FF7A33", "#FFA07A"]}
+                        glowRadius={24}
+                        className="p-8 space-y-3"
                       >
                         <span className="text-xs font-mono font-bold text-[#FF5200] block">
                           0{idx + 1}
@@ -278,7 +306,7 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
                         <p className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed">
                           {adv.description}
                         </p>
-                      </div>
+                      </BorderGlow>
                     ))}
                   </div>
                 </div>

@@ -2,6 +2,7 @@
 
 import React from "react";
 import { ArrowRight, ShieldCheck, Clock, FileCode } from "lucide-react";
+import { BorderGlow } from "@/components/ui/BorderGlow";
 
 interface ConversionCTAProps {
   onOpenContact: () => void;
@@ -11,7 +12,16 @@ export function ConversionCTA({ onOpenContact }: ConversionCTAProps) {
   return (
     <section className="py-24 sm:py-32 bg-[#FAF9F6] border-b border-[#E6E6E8]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#FFFFFF] border border-[#E6E6E8] rounded-sm p-8 sm:p-14 lg:p-20 relative overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.03)]">
+        <BorderGlow
+          backgroundColor="#FFFFFF"
+          borderRadius={4}
+          glowColor="20 100 50"
+          colors={["#FF5200", "#FF7A33", "#FFA07A"]}
+          edgeSensitivity={20}
+          glowRadius={36}
+          glowIntensity={1.0}
+          className="p-8 sm:p-14 lg:p-20 shadow-[0_8px_30px_rgba(0,0,0,0.03)]"
+        >
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FAF9F6] border border-[#E6E6E8] rounded-sm mb-6">
               <span className="text-[11px] font-bold uppercase tracking-wider text-[#FF5200] font-sans">
@@ -55,7 +65,7 @@ export function ConversionCTA({ onOpenContact }: ConversionCTAProps) {
               </div>
             </div>
           </div>
-        </div>
+        </BorderGlow>
       </div>
     </section>
   );
