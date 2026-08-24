@@ -1,0 +1,173 @@
+@import "tailwindcss";
+
+:root {
+  /* 🎨 COLOR SYSTEM */
+  --bg-main: #FAF9F6;
+  --bg-surface: #FFFFFF;
+  --bg-subtle: #F3F2EE;
+  --bg-muted: #EBEAE5;
+  
+  --text-primary: #121316;
+  --text-secondary: #4A4B50;
+  --text-muted: #7C7D82;
+  --text-light: #9B9CA0;
+
+  --accent-orange: #FF5200;
+  --accent-orange-hover: #E04800;
+  --accent-orange-subtle: #FFF3ED;
+  --accent-orange-border: rgba(255, 82, 0, 0.35);
+
+  --border-subtle: #E6E6E8;
+  --border-strong: #D2D2D6;
+  --border-dark: #121316;
+
+  /* 🔡 TYPOGRAPHY */
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--bg-main);
+  --color-foreground: var(--text-primary);
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: clip;
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--accent-orange);
+  color: #FFFFFF;
+}
+
+/* Typography Scale */
+h1, h2, h3, h4, h5, h6, .font-serif, .font-heading {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+h1 {
+  font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+  line-height: 1.05;
+}
+
+h2 {
+  font-size: clamp(2rem, 3.5vw + 0.5rem, 3.25rem);
+  line-height: 1.1;
+}
+
+h3 {
+  font-size: clamp(1.5rem, 2vw + 0.5rem, 2.25rem);
+  line-height: 1.2;
+}
+
+h4 {
+  font-size: clamp(1.25rem, 1.5vw + 0.25rem, 1.625rem);
+  line-height: 1.3;
+}
+
+p, .body-text {
+  font-family: var(--font-sans);
+  color: var(--text-secondary);
+  line-height: 1.65;
+  font-size: 1rem;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF9F6;
+}
+::-webkit-scrollbar-thumb {
+  background: #D2D2D6;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-orange);
+}
+
+/* Button & Interactive Utility Classes */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--accent-orange);
+  color: #FFFFFF;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+  cursor: pointer;
+  border: 1px solid var(--accent-orange);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-orange-hover);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  border-color: var(--text-primary);
+  background-color: var(--bg-subtle);
+}
+
+/* Clean Sharp Card Baseline */
+.card-clean {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 1.5rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-clean:hover {
+  border-color: var(--border-strong);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+/* Subtle line separator */
+.divider-clean {
+  height: 1px;
+  background-color: var(--border-subtle);
+  width: 100%;
+}
