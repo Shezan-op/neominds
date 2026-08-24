@@ -19,7 +19,7 @@ export function Footer({ onOpenContact }: FooterProps) {
           {/* Brand Column */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-8 h-8 rounded-sm bg-[#FF5200] text-white flex items-center justify-center font-serif text-lg font-bold">
+              <div className="w-8 h-8 bg-[#FF5200] text-white flex items-center justify-center font-serif text-lg font-bold rounded-none">
                 N
               </div>
               <div className="flex flex-col">
@@ -102,7 +102,7 @@ export function Footer({ onOpenContact }: FooterProps) {
               <button
                 type="button"
                 onClick={onOpenContact}
-                className="btn-primary text-xs uppercase tracking-wider font-bold px-4 py-2.5 rounded-full w-full text-center flex items-center justify-center gap-2 text-white"
+                className="btn-primary text-xs uppercase tracking-wider font-bold px-4 py-2.5 w-full text-center flex items-center justify-center gap-2 text-white rounded-none"
               >
                 <span>Contact Engineering</span>
                 <ArrowRight className="w-3 h-3" />

@@ -42,13 +42,6 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
               {/* Left Column: 1. Service Name & 2. Description + CTA */}
               <div className="lg:col-span-6 space-y-6">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FFFFFF] border border-[#E6E6E8] rounded-sm">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#FF5200]" />
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#4A4B50] font-sans">
-                    {service.title}
-                  </span>
-                </div>
-
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-[#121316] leading-[1.08] text-balance">
                   {service.heroHeadline}
                 </h1>
@@ -57,7 +50,7 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
                   {service.heroDescription}
                 </p>
 
-                {/* Deliverables List (if not minimal) */}
+                {/* Deliverables List */}
                 {service.deliverables.length > 0 && (
                   <div className="pt-4 border-t border-[#E6E6E8] space-y-2.5">
                     <span className="text-xs font-bold uppercase tracking-wider text-[#121316] block mb-2">
@@ -76,7 +69,7 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
                   <button
                     type="button"
                     onClick={() => setContactOpen(true)}
-                    className="btn-primary text-xs uppercase tracking-wider font-bold px-7 py-3.5"
+                    className="btn-primary text-xs uppercase tracking-wider font-bold px-7 py-3.5 rounded-none"
                   >
                     <span>Request Technical Scope</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -88,32 +81,32 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
               <div className="lg:col-span-6">
                 <BorderGlow
                   backgroundColor="#FFFFFF"
-                  borderRadius={4}
+                  borderRadius={0}
                   glowColor="20 100 50"
                   colors={["#FF5200", "#FF7A33", "#FFA07A"]}
                   glowRadius={30}
-                  className="aspect-video p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_30px_rgba(0,0,0,0.03)]"
+                  className="aspect-video p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_30px_rgba(0,0,0,0.03)] rounded-none"
                 >
                   <div className="flex items-center justify-between border-b border-[#E6E6E8] pb-3">
                     <span className="text-[11px] font-mono text-[#7C7D82] uppercase tracking-wider">
                       {service.title} Architecture
                     </span>
                     <div className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-[#E6E6E8]" />
-                      <span className="w-2 h-2 rounded-full bg-[#E6E6E8]" />
-                      <span className="w-2 h-2 rounded-full bg-[#E6E6E8]" />
+                      <span className="w-2 h-2 bg-[#E6E6E8] rounded-none" />
+                      <span className="w-2 h-2 bg-[#E6E6E8] rounded-none" />
+                      <span className="w-2 h-2 bg-[#E6E6E8] rounded-none" />
                     </div>
                   </div>
 
                   <div className="py-10 text-center flex flex-col items-center justify-center">
-                    <div className="w-10 h-10 rounded-sm bg-[#FAF9F6] border border-[#E6E6E8] flex items-center justify-center text-[#FF5200] mb-3">
+                    <div className="w-10 h-10 bg-[#FAF9F6] border border-[#E6E6E8] flex items-center justify-center text-[#FF5200] mb-3 rounded-none">
                       <Layers className="w-5 h-5" />
                     </div>
                     <span className="text-sm font-semibold text-[#121316]">
-                      Production Architecture Placeholder
+                      Production Architecture Blueprint
                     </span>
                     <span className="text-xs text-[#7C7D82] mt-1 max-w-xs">
-                      16:9 visual placeholder for {service.title.toLowerCase()} blueprints and systems.
+                      Deterministic blueprint & specifications for {service.title.toLowerCase()} systems.
                     </span>
                   </div>
 
@@ -133,9 +126,9 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
             <div className="max-w-4xl mx-auto px-4 text-center">
               <BorderGlow
                 backgroundColor="#FFFFFF"
-                borderRadius={4}
+                borderRadius={0}
                 glowColor="20 100 50"
-                className="p-10 sm:p-14 space-y-4"
+                className="p-10 sm:p-14 space-y-4 rounded-none"
               >
                 <h2 className="text-2xl sm:text-3xl font-serif text-[#121316]">
                   Training Curriculum on Request
@@ -147,7 +140,7 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
                   <button
                     type="button"
                     onClick={() => setContactOpen(true)}
-                    className="btn-primary text-xs uppercase tracking-wider font-bold px-6 py-3"
+                    className="btn-primary text-xs uppercase tracking-wider font-bold px-6 py-3 rounded-none"
                   >
                     <span>Inquire About Workshops</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -163,11 +156,6 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
               <section className="py-24 sm:py-32 bg-[#FAF9F6] border-b border-[#E6E6E8]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                   <div className="max-w-3xl mb-16">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FFFFFF] border border-[#E6E6E8] rounded-sm mb-4">
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-[#7C7D82] font-sans">
-                        Proven Delivery
-                      </span>
-                    </div>
                     <h2 className="text-3xl sm:text-4xl font-serif text-[#121316]">
                       Work we delivered in {service.title.toLowerCase()}.
                     </h2>
@@ -178,18 +166,18 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
                       <BorderGlow
                         key={idx}
                         backgroundColor="#FFFFFF"
-                        borderRadius={4}
+                        borderRadius={0}
                         glowColor="20 100 50"
                         colors={["#FF5200", "#FF7A33", "#FFA07A"]}
                         glowRadius={28}
-                        className="p-8 sm:p-10 flex flex-col justify-between"
+                        className="p-8 sm:p-10 flex flex-col justify-between rounded-none"
                       >
                         <div>
                           <div className="flex items-center justify-between border-b border-[#E6E6E8] pb-4 mb-6">
                             <span className="text-xs font-mono font-bold text-[#FF5200] uppercase tracking-wider">
                               Project 0{idx + 1}
                             </span>
-                            <span className="text-xs font-sans text-[#7C7D82] bg-[#FAF9F6] px-2.5 py-1 border border-[#E6E6E8] rounded-sm">
+                            <span className="text-xs font-sans text-[#7C7D82] bg-[#FAF9F6] px-2.5 py-1 border border-[#E6E6E8] rounded-none">
                               {work.tag}
                             </span>
                           </div>
@@ -223,11 +211,6 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
               <section className="py-24 sm:py-32 bg-[#FAF9F6] border-b border-[#E6E6E8]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                   <div className="max-w-3xl mb-16">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FFFFFF] border border-[#E6E6E8] rounded-sm mb-4">
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-[#7C7D82] font-sans">
-                        Business Impact
-                      </span>
-                    </div>
                     <h2 className="text-3xl sm:text-4xl font-serif text-[#121316]">
                       Why your business needs {service.title.toLowerCase()}.
                     </h2>
@@ -238,11 +221,11 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
                       <BorderGlow
                         key={idx}
                         backgroundColor="#FFFFFF"
-                        borderRadius={4}
+                        borderRadius={0}
                         glowColor="20 100 50"
                         colors={["#FF5200", "#FF7A33", "#FFA07A"]}
                         glowRadius={28}
-                        className="p-8 space-y-6"
+                        className="p-8 space-y-6 rounded-none"
                       >
                         <div>
                           <span className="text-xs font-bold uppercase tracking-wider text-[#FF5200] block mb-2">
@@ -276,11 +259,6 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
               <section className="py-24 sm:py-32 bg-[#FAF9F6] border-b border-[#E6E6E8]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                   <div className="max-w-3xl mb-16">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FFFFFF] border border-[#E6E6E8] rounded-sm mb-4">
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-[#7C7D82] font-sans">
-                        Our Advantage
-                      </span>
-                    </div>
                     <h2 className="text-3xl sm:text-4xl font-serif text-[#121316]">
                       Why partner with Neominds for this service.
                     </h2>
@@ -291,11 +269,11 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
                       <BorderGlow
                         key={idx}
                         backgroundColor="#FFFFFF"
-                        borderRadius={4}
+                        borderRadius={0}
                         glowColor="20 100 50"
                         colors={["#FF5200", "#FF7A33", "#FFA07A"]}
                         glowRadius={24}
-                        className="p-8 space-y-3"
+                        className="p-8 space-y-3 rounded-none"
                       >
                         <span className="text-xs font-mono font-bold text-[#FF5200] block">
                           0{idx + 1}

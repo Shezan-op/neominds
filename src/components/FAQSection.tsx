@@ -82,7 +82,7 @@ export function FAQSection({
                   <motion.div
                     animate={{ rotate: isOpen ? 45 : 0 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className={`flex-shrink-0 p-1.5 rounded-sm border transition-colors duration-200 ${
+                    className={`flex-shrink-0 p-1.5 border transition-colors duration-200 rounded-none ${
                       isOpen
                         ? "text-[#FF5200] border-[#FF5200]/40 bg-[#FFF0EB]"
                         : "text-[#7C7D82] border-[#E6E6E8] group-hover:text-[#121316] group-hover:border-[#D2D2D6]"
@@ -117,9 +117,9 @@ export function FAQSection({
           })}
         </div>
 
-        {/* Dedicated Support Row matching tecnomart */}
+        {/* Dedicated Support Row matching tecnomart with Sharp Corners */}
         <motion.div
-          className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left bg-[#FFFFFF] border border-[#E6E6E8] rounded-sm p-6 shadow-[0_4px_16px_rgba(0,0,0,0.02)]"
+          className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left bg-[#FFFFFF] border border-[#E6E6E8] p-6 shadow-[0_4px_16px_rgba(0,0,0,0.02)] rounded-none"
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -137,7 +137,7 @@ export function FAQSection({
           <button
             type="button"
             onClick={onOpenContact}
-            className="btn-primary text-xs uppercase tracking-wider font-bold px-5 py-2.5 flex-shrink-0 flex items-center gap-2"
+            className="btn-primary text-xs uppercase tracking-wider font-bold px-5 py-2.5 flex-shrink-0 flex items-center gap-2 rounded-none"
           >
             <MessageSquare className="w-3.5 h-3.5" />
             <span>Talk to Engineer</span>

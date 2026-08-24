@@ -92,12 +92,12 @@ export function ServicesEditorial() {
           <div className="lg:col-span-5 lg:sticky lg:top-32">
             <BorderGlow
               backgroundColor="#FFFFFF"
-              borderRadius={16}
+              borderRadius={0}
               glowColor="20 100 50"
               colors={["#FF5200", "#FF7A33", "#FFA07A"]}
               glowRadius={36}
               glowIntensity={1.0}
-              className="p-6 sm:p-8 border border-[#E6E6E8] shadow-[0_12px_40px_rgba(0,0,0,0.05)]"
+              className="p-6 sm:p-8 border border-[#E6E6E8] shadow-[0_12px_40px_rgba(0,0,0,0.05)] rounded-none"
             >
               <div className="flex items-center justify-between border-b border-[#E6E6E8] pb-4 mb-6">
                 <div className="flex items-center gap-2">
@@ -106,7 +106,7 @@ export function ServicesEditorial() {
                     Blueprint Inspector
                   </span>
                 </div>
-                <span className="text-[10px] font-mono font-bold text-[#FF5200] bg-[#FFF3ED] border border-[#FF5200]/30 px-2.5 py-0.5 rounded-full">
+                <span className="text-[10px] font-mono font-bold text-[#FF5200] bg-[#FFF3ED] border border-[#FF5200]/30 px-2.5 py-0.5 rounded-none">
                   LIVE TELEMETRY
                 </span>
               </div>
@@ -134,7 +134,7 @@ export function ServicesEditorial() {
 
                   {/* Deliverables Preview */}
                   {activeService.deliverables.length > 0 && (
-                    <div className="p-4 rounded-lg bg-[#FAF9F6] border border-[#E6E6E8] space-y-2">
+                    <div className="p-4 bg-[#FAF9F6] border border-[#E6E6E8] space-y-2 rounded-none">
                       <span className="text-[10px] font-mono uppercase tracking-wider text-[#121316] font-bold block">
                         Core Deliverables
                       </span>
@@ -143,7 +143,7 @@ export function ServicesEditorial() {
                           key={dIdx}
                           className="flex items-center gap-2 text-xs text-[#121316]"
                         >
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#FF5200]" />
+                          <span className="w-1.5 h-1.5 bg-[#FF5200] rounded-none" />
                           <span className="line-clamp-1">{item}</span>
                         </div>
                       ))}
@@ -153,7 +153,7 @@ export function ServicesEditorial() {
                   {/* Link CTA */}
                   <Link
                     href={`/services/${activeService.slug}`}
-                    className="w-full btn-primary text-xs uppercase tracking-wider font-bold py-3 rounded-lg flex items-center justify-center gap-2 text-white"
+                    className="w-full btn-primary text-xs uppercase tracking-wider font-bold py-3 flex items-center justify-center gap-2 text-white rounded-none"
                   >
                     <span>View {activeService.title} Spec</span>
                     <ArrowRight className="w-3.5 h-3.5" />

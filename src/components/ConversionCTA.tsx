@@ -20,13 +20,13 @@ export function ConversionCTA({ onOpenContact }: ConversionCTAProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <BorderGlow
           backgroundColor="#0D0F14"
-          borderRadius={20}
+          borderRadius={0}
           glowColor="20 100 50"
           colors={["#FF5200", "#FF7A33", "#FFA07A"]}
           edgeSensitivity={25}
           glowRadius={40}
           glowIntensity={1.2}
-          className="p-8 sm:p-14 lg:p-20 shadow-2xl border border-[#2D313F]"
+          className="p-8 sm:p-14 lg:p-20 shadow-2xl border border-[#2D313F] rounded-none"
         >
           <div className="max-w-3xl">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-[#FFFFFF] leading-tight">
@@ -37,12 +37,12 @@ export function ConversionCTA({ onOpenContact }: ConversionCTAProps) {
               Schedule a 15-minute technical discovery call with our engineering leads. We will review your bottlenecks, evaluate feasibility, and present an actionable implementation plan.
             </p>
 
-            {/* CTA Button */}
+            {/* CTA Button with Sharp Corners */}
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <button
                 type="button"
                 onClick={onOpenContact}
-                className="btn-primary text-sm uppercase tracking-wider font-bold px-8 py-4 rounded-full shadow-lg"
+                className="btn-primary text-sm uppercase tracking-wider font-bold px-8 py-4 shadow-lg rounded-none"
               >
                 <span>Discuss Your Project</span>
                 <ArrowRight className="w-4 h-4" />

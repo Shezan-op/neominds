@@ -167,7 +167,7 @@ export function EngineeringDossier() {
                   key={tab.id}
                   type="button"
                   onClick={() => setActiveTab(tab.id)}
-                  className={`relative px-4 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm font-sans font-bold transition-all rounded-t-lg border border-b-0 cursor-pointer whitespace-nowrap ${
+                  className={`relative px-4 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm font-sans font-bold transition-all border border-b-0 cursor-pointer whitespace-nowrap rounded-none ${
                     isActive
                       ? "bg-[#101217] text-[#FFFFFF] border-[#2D313F] shadow-[0_-4px_16px_rgba(0,0,0,0.3)] z-10"
                       : "bg-[#090A0D] text-[#A0A4B8] border-transparent hover:text-[#FFFFFF] hover:bg-[#14161F]"
@@ -177,7 +177,7 @@ export function EngineeringDossier() {
                   {isActive && (
                     <motion.div
                       layoutId="activeTabTopDark"
-                      className="absolute top-0 inset-x-0 h-0.5 bg-[#FF5200] rounded-t-lg"
+                      className="absolute top-0 inset-x-0 h-0.5 bg-[#FF5200] rounded-none"
                     />
                   )}
                   <span>{tab.tabLabel}</span>
@@ -186,16 +186,16 @@ export function EngineeringDossier() {
             })}
           </div>
 
-          {/* Folder Body / Dark Dossier Card */}
+          {/* Folder Body / Dark Dossier Card with Sharp Corners */}
           <BorderGlow
             backgroundColor="#101217"
-            borderRadius={12}
+            borderRadius={0}
             glowColor="20 100 50"
             colors={["#FF5200", "#FF7A33", "#FFA07A"]}
             edgeSensitivity={25}
             glowRadius={36}
             glowIntensity={1.2}
-            className="p-6 sm:p-10 lg:p-12 shadow-2xl rounded-b-xl rounded-tr-xl border border-[#2D313F]"
+            className="p-6 sm:p-10 lg:p-12 shadow-2xl border border-[#2D313F] rounded-none"
           >
             <AnimatePresence mode="wait">
               <motion.div
@@ -218,7 +218,7 @@ export function EngineeringDossier() {
                   </div>
 
                   <div className="flex items-center gap-2 self-start sm:self-auto">
-                    <span className="px-3 py-1 bg-[#161822] border border-[#2D313F] rounded-full text-xs font-mono text-[#FFFFFF] font-bold">
+                    <span className="px-3 py-1 bg-[#161822] border border-[#2D313F] text-xs font-mono text-[#FFFFFF] font-bold rounded-none">
                       {currentDossier.fileType}
                     </span>
                   </div>
@@ -232,7 +232,7 @@ export function EngineeringDossier() {
                 {/* Two-Column Grid: Deliverable Specs & Code Syntax Box */}
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pt-4">
                   {/* Left: Deliverables Checklist */}
-                  <div className="md:col-span-6 space-y-3.5 p-6 rounded-xl bg-[#14161F] border border-[#2D313F]">
+                  <div className="md:col-span-6 space-y-3.5 p-6 bg-[#14161F] border border-[#2D313F] rounded-none">
                     <span className="text-xs font-bold uppercase tracking-wider text-[#FFFFFF] block mb-3 font-sans">
                       Included Engineering Artifacts
                     </span>
@@ -246,7 +246,7 @@ export function EngineeringDossier() {
 
                   {/* Right: Code Syntax Preview Box */}
                   <div className="md:col-span-6 flex flex-col justify-between space-y-4">
-                    <div className="p-5 rounded-xl bg-[#0B0C10] border border-[#2D313F] font-mono text-xs text-[#FFFFFF] overflow-x-auto space-y-2">
+                    <div className="p-5 bg-[#0B0C10] border border-[#2D313F] font-mono text-xs text-[#FFFFFF] overflow-x-auto space-y-2 rounded-none">
                       <div className="flex items-center justify-between border-b border-[#222530] pb-2 text-[11px] text-[#A0A4B8]">
                         <span className="text-white font-bold">{currentDossier.fileType}</span>
                         <span className="text-[#FF5200] font-bold">SYNTAX VERIFIED</span>

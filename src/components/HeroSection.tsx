@@ -177,12 +177,12 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
             We engineer deterministic AI workflows, scalable backend architectures, and enterprise software built to run with zero downtime.
           </p>
 
-          {/* Centered Action Button */}
+          {/* Centered Action Button with Sharp Corners */}
           <div className="pt-2 flex justify-center w-full">
             <button
               type="button"
               onClick={onOpenContact}
-              className="btn-primary text-xs uppercase tracking-wider font-bold px-9 py-3.5 rounded-full shadow-lg flex items-center gap-2.5 group cursor-pointer"
+              className="btn-primary text-xs uppercase tracking-wider font-bold px-9 py-4 shadow-lg flex items-center gap-2.5 group cursor-pointer rounded-none"
             >
               <span>Discuss Your Project</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />

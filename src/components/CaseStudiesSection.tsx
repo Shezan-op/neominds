@@ -37,14 +37,14 @@ export function CaseStudiesSection({ onOpenContact }: CaseStudiesSectionProps) {
 
         {/* Case Studies Interactive Showcase (Tabs + Deep Breakdown) */}
         <div className="space-y-8">
-          {/* Project Selector Pills */}
+          {/* Project Selector Pills with Sharp Corners */}
           <div className="flex flex-wrap gap-2.5 border-b border-[#E6E6E8] pb-4">
             {CASE_STUDIES.map((study, idx) => (
               <button
                 key={study.id}
                 type="button"
                 onClick={() => setActiveCaseIdx(idx)}
-                className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-sans font-bold transition-all cursor-pointer ${
+                className={`px-4 sm:px-5 py-2 sm:py-2.5 text-xs font-sans font-bold transition-all cursor-pointer rounded-none ${
                   activeCaseIdx === idx
                     ? "bg-[#FF5200] text-white shadow-md"
                     : "bg-[#FFFFFF] text-[#4A4B50] hover:bg-[#F3F2EE] border border-[#E6E6E8]"
@@ -69,18 +69,18 @@ export function CaseStudiesSection({ onOpenContact }: CaseStudiesSectionProps) {
             >
               <BorderGlow
                 backgroundColor="#FFFFFF"
-                borderRadius={16}
+                borderRadius={0}
                 glowColor="20 100 50"
                 colors={["#FF5200", "#FF7A33", "#FFA07A"]}
                 edgeSensitivity={25}
                 glowRadius={36}
                 glowIntensity={1.0}
-                className="p-8 sm:p-12 border border-[#E6E6E8] shadow-[0_12px_40px_rgba(0,0,0,0.04)] space-y-8"
+                className="p-8 sm:p-12 border border-[#E6E6E8] shadow-[0_12px_40px_rgba(0,0,0,0.04)] space-y-8 rounded-none"
               >
                 {/* Meta Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#E6E6E8] pb-6 gap-4">
                   <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-lg bg-[#FAF9F6] border border-[#E6E6E8] flex items-center justify-center text-[#FF5200]">
+                    <div className="w-10 h-10 bg-[#FAF9F6] border border-[#E6E6E8] flex items-center justify-center text-[#FF5200] rounded-none">
                       <Building2 className="w-5 h-5" />
                     </div>
                     <div>
@@ -97,7 +97,7 @@ export function CaseStudiesSection({ onOpenContact }: CaseStudiesSectionProps) {
                     {activeCase.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="text-[11px] font-sans text-[#4A4B50] px-3 py-1 bg-[#FAF9F6] border border-[#E6E6E8] rounded-full"
+                        className="text-[11px] font-sans text-[#4A4B50] px-3 py-1 bg-[#FAF9F6] border border-[#E6E6E8] rounded-none"
                       >
                         {tag}
                       </span>
@@ -112,7 +112,7 @@ export function CaseStudiesSection({ onOpenContact }: CaseStudiesSectionProps) {
 
                 {/* 3-Column Problem / Built / Outcome Matrix */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2">
-                  <div className="p-5 rounded-xl bg-[#FAF9F6] border border-[#E6E6E8] space-y-2">
+                  <div className="p-5 bg-[#FAF9F6] border border-[#E6E6E8] space-y-2 rounded-none">
                     <span className="text-xs font-mono font-bold text-[#FF5200] uppercase tracking-wider block">
                       The Operational Problem
                     </span>
@@ -121,7 +121,7 @@ export function CaseStudiesSection({ onOpenContact }: CaseStudiesSectionProps) {
                     </p>
                   </div>
 
-                  <div className="p-5 rounded-xl bg-[#FAF9F6] border border-[#E6E6E8] space-y-2">
+                  <div className="p-5 bg-[#FAF9F6] border border-[#E6E6E8] space-y-2 rounded-none">
                     <span className="text-xs font-mono font-bold text-[#FF5200] uppercase tracking-wider block">
                       What Neominds Engineered
                     </span>
@@ -130,7 +130,7 @@ export function CaseStudiesSection({ onOpenContact }: CaseStudiesSectionProps) {
                     </p>
                   </div>
 
-                  <div className="p-5 rounded-xl bg-[#FAF9F6] border border-[#E6E6E8] space-y-2">
+                  <div className="p-5 bg-[#FAF9F6] border border-[#E6E6E8] space-y-2 rounded-none">
                     <span className="text-xs font-mono font-bold text-[#FF5200] uppercase tracking-wider block">
                       Commercial Return
                     </span>
@@ -158,7 +158,7 @@ export function CaseStudiesSection({ onOpenContact }: CaseStudiesSectionProps) {
                   <button
                     type="button"
                     onClick={() => setSelectedStudy(activeCase)}
-                    className="btn-primary text-xs uppercase tracking-wider font-bold px-6 py-3 rounded-full flex items-center justify-center gap-2 cursor-pointer"
+                    className="btn-primary text-xs uppercase tracking-wider font-bold px-6 py-3 flex items-center justify-center gap-2 cursor-pointer rounded-none"
                   >
                     <span>Inspect Full Solution</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -183,16 +183,16 @@ export function CaseStudiesSection({ onOpenContact }: CaseStudiesSectionProps) {
             >
               <BorderGlow
                 backgroundColor="#FFFFFF"
-                borderRadius={16}
+                borderRadius={0}
                 glowColor="20 100 50"
                 colors={["#FF5200", "#FF7A33", "#FFA07A"]}
                 glowRadius={36}
-                className="p-6 sm:p-10 shadow-2xl border border-[#E6E6E8] text-[#121316]"
+                className="p-6 sm:p-10 shadow-2xl border border-[#E6E6E8] text-[#121316] rounded-none"
               >
                 <button
                   type="button"
                   onClick={() => setSelectedStudy(null)}
-                  className="absolute top-6 right-6 p-2 text-[#7C7D82] hover:text-[#121316] rounded-full bg-[#FAF9F6] border border-[#E6E6E8] focus:outline-none z-10 cursor-pointer"
+                  className="absolute top-6 right-6 p-2 text-[#7C7D82] hover:text-[#121316] bg-[#FAF9F6] border border-[#E6E6E8] focus:outline-none z-10 cursor-pointer rounded-none"
                   aria-label="Close modal"
                 >
                   <X className="w-4 h-4" />
@@ -241,7 +241,7 @@ export function CaseStudiesSection({ onOpenContact }: CaseStudiesSectionProps) {
                   <button
                     type="button"
                     onClick={() => setSelectedStudy(null)}
-                    className="text-xs font-semibold text-[#7C7D82] hover:text-[#121316] cursor-pointer"
+                    className="text-xs font-semibold text-[#7C7D82] hover:text-[#121316] cursor-pointer rounded-none"
                   >
                     Close
                   </button>
@@ -252,7 +252,7 @@ export function CaseStudiesSection({ onOpenContact }: CaseStudiesSectionProps) {
                       setSelectedStudy(null);
                       onOpenContact();
                     }}
-                    className="btn-primary text-xs uppercase tracking-wider font-bold px-6 py-2.5 rounded-full cursor-pointer"
+                    className="btn-primary text-xs uppercase tracking-wider font-bold px-6 py-2.5 cursor-pointer rounded-none"
                   >
                     <span>Build a Similar System</span>
                     <ArrowRight className="w-3.5 h-3.5" />

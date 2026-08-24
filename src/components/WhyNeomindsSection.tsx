@@ -30,8 +30,8 @@ export function WhyNeomindsSection() {
               </p>
             </div>
 
-            {/* Operating Benchmarks Badge List */}
-            <div className="p-6 rounded-xl bg-[#FFFFFF] border border-[#E6E6E8] shadow-xs space-y-4 font-sans">
+            {/* Operating Benchmarks Badge List with Sharp Corners */}
+            <div className="p-6 bg-[#FFFFFF] border border-[#E6E6E8] shadow-xs space-y-4 font-sans rounded-none">
               <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#7C7D82] block border-b border-[#E6E6E8] pb-2">
                 Operational Benchmarks
               </span>
@@ -78,7 +78,7 @@ export function WhyNeomindsSection() {
                     </div>
 
                     <div
-                      className={`w-7 h-7 rounded-full border flex items-center justify-center transition-all duration-200 flex-shrink-0 ${
+                      className={`w-7 h-7 border flex items-center justify-center transition-all duration-200 flex-shrink-0 rounded-none ${
                         isOpen
                           ? "bg-[#121316] border-[#121316] text-white"
                           : "bg-[#FFFFFF] border-[#E6E6E8] text-[#7C7D82]"

@@ -52,18 +52,18 @@ export function ScrollStackSection({ onOpenContact }: ScrollStackSectionProps) {
               >
                 <BorderGlow
                   backgroundColor="#FFFFFF"
-                  borderRadius={16}
+                  borderRadius={0}
                   glowColor="20 100 50"
                   colors={["#FF5200", "#FF7A33", "#FFA07A"]}
                   edgeSensitivity={25}
                   glowRadius={36}
                   glowIntensity={1.0}
-                  className="p-6 sm:p-10 lg:p-12 shadow-[0_-4px_30px_rgba(0,0,0,0.03),0_12px_40px_rgba(0,0,0,0.06)] border border-[#E6E6E8] transition-shadow duration-300"
+                  className="p-6 sm:p-10 lg:p-12 shadow-[0_-4px_30px_rgba(0,0,0,0.03),0_12px_40px_rgba(0,0,0,0.06)] border border-[#E6E6E8] transition-shadow duration-300 rounded-none"
                 >
                   {/* Card Top Meta Bar */}
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#E6E6E8] pb-6 mb-8 gap-4">
                     <div className="flex items-center gap-3.5">
-                      <div className="w-10 h-10 rounded-lg bg-[#FAF9F6] border border-[#E6E6E8] flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 bg-[#FAF9F6] border border-[#E6E6E8] flex items-center justify-center flex-shrink-0 rounded-none">
                         {getCardIcon(idx)}
                       </div>
                       <div>
@@ -76,7 +76,7 @@ export function ScrollStackSection({ onOpenContact }: ScrollStackSectionProps) {
                       </div>
                     </div>
 
-                    <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#4A4B50] self-start sm:self-auto bg-[#FAF9F6] px-3.5 py-1.5 border border-[#E6E6E8] rounded-full">
+                    <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#4A4B50] self-start sm:self-auto bg-[#FAF9F6] px-3.5 py-1.5 border border-[#E6E6E8] rounded-none">
                       {card.subtitle}
                     </span>
                   </div>
@@ -91,7 +91,7 @@ export function ScrollStackSection({ onOpenContact }: ScrollStackSectionProps) {
                     {card.points.map((point, pIdx) => (
                       <div
                         key={pIdx}
-                        className="p-5 rounded-xl bg-[#FAF9F6] border border-[#E6E6E8] flex flex-col justify-between transition-colors hover:bg-[#F3F2EE]"
+                        className="p-5 bg-[#FAF9F6] border border-[#E6E6E8] flex flex-col justify-between transition-colors hover:bg-[#F3F2EE] rounded-none"
                       >
                         <h4 className="text-base font-sans font-bold text-[#121316] mb-2">
                           {point.headline}
@@ -112,7 +112,7 @@ export function ScrollStackSection({ onOpenContact }: ScrollStackSectionProps) {
                       <button
                         type="button"
                         onClick={onOpenContact}
-                        className="btn-primary text-xs uppercase tracking-wider font-bold px-7 py-3 rounded-full w-full sm:w-auto flex items-center justify-center gap-2"
+                        className="btn-primary text-xs uppercase tracking-wider font-bold px-7 py-3 rounded-none w-full sm:w-auto flex items-center justify-center gap-2"
                       >
                         <span>{card.ctaText}</span>
                         <ArrowRight className="w-3.5 h-3.5" />

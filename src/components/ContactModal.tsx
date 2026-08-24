@@ -33,12 +33,12 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-      <div className="relative w-full max-w-xl bg-[#FFFFFF] border border-[#E6E6E8] rounded-sm p-6 sm:p-10 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+      <div className="relative w-full max-w-xl bg-[#FFFFFF] border border-[#E6E6E8] p-6 sm:p-10 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 rounded-none">
         {/* Close Button */}
         <button
           type="button"
           onClick={handleClose}
-          className="absolute top-6 right-6 p-2 text-[#7C7D82] hover:text-[#121316] rounded-sm focus:outline-none cursor-pointer"
+          className="absolute top-6 right-6 p-2 text-[#7C7D82] hover:text-[#121316] focus:outline-none cursor-pointer rounded-none"
           aria-label="Close Modal"
         >
           <X className="w-5 h-5" />
@@ -69,7 +69,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   placeholder="e.g. Sarah Jenkins"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-[#FAF9F6] border border-[#E6E6E8] rounded-sm text-[#121316] text-xs sm:text-sm focus:outline-none focus:border-[#121316] transition-colors"
+                  className="w-full px-3.5 py-2.5 bg-[#FAF9F6] border border-[#E6E6E8] text-[#121316] text-xs sm:text-sm focus:outline-none focus:border-[#121316] transition-colors rounded-none"
                 />
               </div>
 
@@ -84,7 +84,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     placeholder="sarah@company.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-[#FAF9F6] border border-[#E6E6E8] rounded-sm text-[#121316] text-xs sm:text-sm focus:outline-none focus:border-[#121316] transition-colors"
+                    className="w-full px-3.5 py-2.5 bg-[#FAF9F6] border border-[#E6E6E8] text-[#121316] text-xs sm:text-sm focus:outline-none focus:border-[#121316] transition-colors rounded-none"
                   />
                 </div>
 
@@ -98,7 +98,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     placeholder="Acme Corp"
                     value={formData.company}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-[#FAF9F6] border border-[#E6E6E8] rounded-sm text-[#121316] text-xs sm:text-sm focus:outline-none focus:border-[#121316] transition-colors"
+                    className="w-full px-3.5 py-2.5 bg-[#FAF9F6] border border-[#E6E6E8] text-[#121316] text-xs sm:text-sm focus:outline-none focus:border-[#121316] transition-colors rounded-none"
                   />
                 </div>
               </div>
@@ -110,7 +110,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 <select
                   value={formData.service}
                   onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-[#FAF9F6] border border-[#E6E6E8] rounded-sm text-[#121316] text-xs sm:text-sm focus:outline-none focus:border-[#121316] transition-colors"
+                  className="w-full px-3.5 py-2.5 bg-[#FAF9F6] border border-[#E6E6E8] text-[#121316] text-xs sm:text-sm focus:outline-none focus:border-[#121316] transition-colors rounded-none"
                 >
                   {SERVICES_DATA.map((s) => (
                     <option key={s.slug} value={s.title}>
@@ -129,7 +129,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   placeholder="Briefly describe what you are building or the bottleneck you want to solve..."
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-[#FAF9F6] border border-[#E6E6E8] rounded-sm text-[#121316] text-xs sm:text-sm focus:outline-none focus:border-[#121316] transition-colors resize-none"
+                  className="w-full px-3.5 py-2.5 bg-[#FAF9F6] border border-[#E6E6E8] text-[#121316] text-xs sm:text-sm focus:outline-none focus:border-[#121316] transition-colors resize-none rounded-none"
                 />
               </div>
 
@@ -137,42 +137,42 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 <button
                   type="button"
                   onClick={handleClose}
-                  className="text-xs font-semibold text-[#7C7D82] hover:text-[#121316]"
+                  className="text-xs font-semibold text-[#7C7D82] hover:text-[#121316] cursor-pointer rounded-none"
                 >
                   Cancel
                 </button>
 
                 <button
                   type="submit"
-                  className="btn-primary text-xs uppercase tracking-wider font-bold px-7 py-3"
+                  className="btn-primary text-xs uppercase tracking-wider font-bold px-6 py-2.5 flex items-center gap-2 cursor-pointer rounded-none"
                 >
-                  <Send className="w-3.5 h-3.5" />
                   <span>Submit Inquiry</span>
+                  <Send className="w-3.5 h-3.5" />
                 </button>
               </div>
             </form>
           </div>
         ) : (
           <div className="py-8 text-center space-y-4 font-sans">
-            <div className="w-12 h-12 rounded-full bg-[#FFF0EB] border border-[#FF5200] text-[#FF5200] flex items-center justify-center mx-auto">
+            <div className="w-12 h-12 bg-[#FFF0EB] border border-[#FF5200]/30 text-[#FF5200] flex items-center justify-center mx-auto rounded-none">
               <CheckCircle2 className="w-6 h-6" />
             </div>
 
             <h3 className="text-2xl font-serif text-[#121316]">
-              Inquiry Received
+              Discovery Request Received
             </h3>
 
-            <p className="text-sm text-[#4A4B50] max-w-md mx-auto leading-relaxed">
-              Thank you, <strong>{formData.name}</strong>. A senior engineer will review your project requirements for <strong>{formData.company}</strong> and reply via <strong>{formData.email}</strong> within one business day.
+            <p className="text-xs sm:text-sm text-[#4A4B50] max-w-sm mx-auto leading-relaxed">
+              Thank you, {formData.name}. A senior technical architect will review your project requirements and email {formData.email} within 24 hours.
             </p>
 
             <div className="pt-4">
               <button
                 type="button"
                 onClick={handleClose}
-                className="btn-secondary text-xs uppercase tracking-wider font-bold px-6 py-2.5"
+                className="btn-primary text-xs uppercase tracking-wider font-bold px-6 py-2.5 rounded-none"
               >
-                Return to Site
+                Done
               </button>
             </div>
           </div>
