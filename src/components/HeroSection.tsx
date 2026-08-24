@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, ArrowDown, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface HeroSectionProps {
   onOpenContact: () => void;
@@ -66,9 +66,9 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
     const renderWidth = imgWidth * ratio;
     const renderHeight = imgHeight * ratio;
 
-    // Perfectly center the robot horizontally & elevate slightly for lower text area
+    // Perfectly centered horizontally & elevated slightly for centered bottom text area
     const shiftX = (canvasWidth - renderWidth) * 0.5;
-    const shiftY = (canvasHeight - renderHeight) * 0.25;
+    const shiftY = (canvasHeight - renderHeight) * 0.2;
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     ctx.drawImage(img, shiftX, shiftY, renderWidth, renderHeight);
@@ -157,52 +157,36 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
 
       {/* LAYER 2: Subtle Black Gradient Overlay (Top is transparent, bottom is solid black) */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#07080A]/40 to-[#07080A] pointer-events-none z-1" />
-      <div className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-[#07080A] via-[#07080A]/95 to-transparent pointer-events-none z-1" />
+      <div className="absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-[#07080A] via-[#07080A]/95 to-transparent pointer-events-none z-1" />
 
-      {/* LAYER 3: Clean Foreground Text Structured across the Black Gradient Base */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full">
+      {/* LAYER 3: Clean Centered Foreground Text Structured across the Black Gradient Base */}
+      <div className="relative z-10 max-w-5xl mx-auto w-full text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl space-y-4 sm:space-y-5"
+          className="space-y-4 sm:space-y-5 flex flex-col items-center"
         >
-          {/* Top category badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#14161F]/90 backdrop-blur-md border border-[#2D313F] rounded-full">
-            <Sparkles className="w-3.5 h-3.5 text-[#FF5200]" />
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#FFFFFF] font-sans">
-              Production AI & Custom Engineering
-            </span>
-          </div>
-
-          {/* Line 1: Bold Main Display Headline */}
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif text-[#FFFFFF] tracking-tight leading-[1.06]">
+          {/* Centered Main Display Headline */}
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-serif text-[#FFFFFF] tracking-tight leading-[1.06] text-balance max-w-4xl">
             Helped Launch <span className="font-mono text-[#FF5200] font-bold">&gt;100+</span> Enterprise Systems.
           </h1>
 
-          {/* Line 2: Middle Subtitle Description */}
-          <p className="text-sm sm:text-base md:text-lg text-[#CBD0DE] font-sans leading-relaxed max-w-2xl">
+          {/* Centered Subtitle Description */}
+          <p className="text-sm sm:text-base md:text-lg text-[#CBD0DE] font-sans leading-relaxed max-w-2xl text-balance">
             We engineer deterministic AI workflows, scalable backend architectures, and enterprise software built to run with zero downtime.
           </p>
 
-          {/* Line 3: Bottom Action Buttons */}
-          <div className="flex flex-wrap items-center gap-4 pt-1">
+          {/* Centered Action Button */}
+          <div className="pt-2 flex justify-center w-full">
             <button
               type="button"
               onClick={onOpenContact}
-              className="btn-primary text-xs uppercase tracking-wider font-bold px-8 py-3.5 rounded-full shadow-lg flex items-center gap-2 group cursor-pointer"
+              className="btn-primary text-xs uppercase tracking-wider font-bold px-9 py-4 rounded-full shadow-lg flex items-center gap-2.5 group cursor-pointer"
             >
               <span>Discuss Your Project</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </button>
-
-            <a
-              href="#services"
-              className="px-6 py-3.5 rounded-full bg-[#14161F]/90 hover:bg-[#1C1F2B] border border-[#2D313F] text-xs font-bold uppercase tracking-wider text-white transition-colors flex items-center gap-2 cursor-pointer"
-            >
-              <span>Explore Specs</span>
-              <ArrowDown className="w-3.5 h-3.5 text-[#A0A4B8]" />
-            </a>
           </div>
         </motion.div>
       </div>
