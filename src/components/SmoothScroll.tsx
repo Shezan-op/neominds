@@ -3,11 +3,6 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
-gsap.defaults({ ease: "power3.out", duration: 0.85 });
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -16,22 +11,27 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     if (reduceMotion) return;
 
     const lenis = new Lenis({
-      lerp: 0.08,
+      duration: 1.1,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: "vertical",
+      gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 0.9,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.5,
     });
 
-    lenis.on("scroll", ScrollTrigger.update);
+    let animationFrameId: number;
 
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
+    function raf(time: number) {
+      lenis.raf(time);
+      animationFrameId = requestAnimationFrame(raf);
+    }
 
-    gsap.ticker.lagSmoothing(0);
+    animationFrameId = requestAnimationFrame(raf);
 
     return () => {
+      cancelAnimationFrame(animationFrameId);
       lenis.destroy();
-      gsap.ticker.remove((time) => lenis.raf(time * 1000));
     };
   }, []);
 

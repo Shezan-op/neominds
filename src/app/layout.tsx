@@ -57,7 +57,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${instrumentSerif.variable} ${manrope.variable} scroll-smooth`}
+      className={`${instrumentSerif.variable} ${manrope.variable}`}
     >
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />

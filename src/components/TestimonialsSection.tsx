@@ -1,66 +1,94 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { TESTIMONIALS } from "@/lib/data";
-import { BorderGlow } from "@/components/ui/BorderGlow";
 
 export function TestimonialsSection() {
+  const [currentIdx, setCurrentIdx] = useState(0);
+
+  const prevQuote = () => {
+    setCurrentIdx((prev) => (prev === 0 ? TESTIMONIALS.length - 1 : prev - 1));
+  };
+
+  const nextQuote = () => {
+    setCurrentIdx((prev) => (prev === TESTIMONIALS.length - 1 ? 0 : prev + 1));
+  };
+
+  const activeTestimonial = TESTIMONIALS[currentIdx];
+
   return (
-    <section className="py-24 sm:py-32 bg-[#FAF9F6] border-b border-[#E6E6E8]">
+    <section className="py-24 sm:py-32 bg-[#FAF9F6] border-b border-[#E6E6E8] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="max-w-3xl mb-16 sm:mb-20">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FFFFFF] border border-[#E6E6E8] rounded-sm mb-4">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#7C7D82] font-sans">
-              Client Feedback
-            </span>
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-14 sm:mb-18 gap-6">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FFFFFF] border border-[#E6E6E8] rounded-full mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#FF5200]" />
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#7C7D82] font-sans">
+                Leadership Feedback
+              </span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#121316] leading-tight">
+              What engineering leaders say about Neominds.
+            </h2>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#121316] leading-tight">
-            Direct feedback from engineering and operational leaders.
-          </h2>
-          <p className="mt-4 text-base sm:text-lg text-[#4A4B50] font-sans">
-            Verified experiences from teams running Neominds systems in daily production.
-          </p>
+
+          {/* Carousel Arrows */}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={prevQuote}
+              className="w-10 h-10 rounded-full bg-[#FFFFFF] border border-[#E6E6E8] text-[#121316] hover:bg-[#121316] hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-xs"
+              aria-label="Previous testimonial"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={nextQuote}
+              className="w-10 h-10 rounded-full bg-[#FFFFFF] border border-[#E6E6E8] text-[#121316] hover:bg-[#121316] hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-xs"
+              aria-label="Next testimonial"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
-        {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {TESTIMONIALS.map((test) => (
-            <BorderGlow
-              key={test.id}
-              backgroundColor="#FFFFFF"
-              borderRadius={4}
-              glowColor="20 100 50"
-              colors={["#FF5200", "#FF7A33", "#FFA07A"]}
-              edgeSensitivity={30}
-              glowRadius={28}
-              fillOpacity={0.2}
-              className="p-6 sm:p-8 flex flex-col justify-between"
-            >
-              {/* Quote */}
-              <div className="space-y-4">
-                <span className="text-3xl font-serif text-[#FF5200] leading-none block">
-                  “
-                </span>
-                <p className="text-base text-[#121316] font-serif leading-relaxed italic">
-                  {test.quote}
-                </p>
-              </div>
+        {/* Big Editorial Quote Showcase */}
+        <div className="p-8 sm:p-14 lg:p-16 rounded-2xl bg-[#FFFFFF] border border-[#E6E6E8] shadow-[0_8px_30px_rgba(0,0,0,0.03)] relative">
+          <Quote className="w-12 h-12 sm:w-16 sm:h-16 text-[#FF5200]/20 absolute top-8 right-8 sm:top-12 sm:right-12 pointer-events-none" />
 
-              {/* Author Info */}
-              <div className="pt-6 mt-6 border-t border-[#E6E6E8]">
-                <span className="text-sm font-sans font-bold text-[#121316] block">
-                  {test.author}
-                </span>
-                <span className="text-xs text-[#7C7D82] font-sans block mt-0.5">
-                  {test.role}, {test.company}
-                </span>
-                <span className="text-[11px] font-mono text-[#FF5200] uppercase tracking-wider block mt-2">
-                  {test.serviceUsed}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTestimonial.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="space-y-8"
+            >
+              <p className="text-xl sm:text-2xl lg:text-3xl font-serif text-[#121316] leading-relaxed max-w-4xl italic">
+                “{activeTestimonial.quote}”
+              </p>
+
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between border-t border-[#E6E6E8] pt-6 gap-4 font-sans">
+                <div>
+                  <span className="text-base font-bold text-[#121316] block">
+                    {activeTestimonial.author}
+                  </span>
+                  <span className="text-xs text-[#7C7D82] block mt-0.5">
+                    {activeTestimonial.role} • {activeTestimonial.company}
+                  </span>
+                </div>
+
+                <span className="text-[11px] font-mono font-bold text-[#FF5200] uppercase tracking-wider bg-[#FFF5F0] border border-[#FF5200]/20 px-3 py-1 rounded-full self-start sm:self-auto">
+                  {activeTestimonial.serviceUsed}
                 </span>
               </div>
-            </BorderGlow>
-          ))}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </section>

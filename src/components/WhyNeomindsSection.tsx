@@ -1,55 +1,122 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Plus, Minus, CheckCircle2, Shield, Zap, Terminal } from "lucide-react";
 import { WHY_NEOMINDS_POINTS } from "@/lib/data";
-import { BorderGlow } from "@/components/ui/BorderGlow";
 
 export function WhyNeomindsSection() {
-  return (
-    <section id="why-us" className="py-24 sm:py-32 bg-[#FAF9F6] border-b border-[#E6E6E8]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="max-w-3xl mb-16 sm:mb-20">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FFFFFF] border border-[#E6E6E8] rounded-sm mb-4">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#7C7D82] font-sans">
-              Our Differentiators
-            </span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#121316] leading-tight">
-            Why companies choose Neominds for serious technical execution.
-          </h2>
-          <p className="mt-4 text-base sm:text-lg text-[#4A4B50] font-sans">
-            We focus on reliability, clear business logic, and high-performance software delivery.
-          </p>
-        </div>
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-        {/* 5 Focused Points Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {WHY_NEOMINDS_POINTS.map((point) => (
-            <BorderGlow
-              key={point.number}
-              backgroundColor="#FFFFFF"
-              borderRadius={4}
-              glowColor="20 100 50"
-              colors={["#FF5200", "#FF7A33", "#FFA07A"]}
-              edgeSensitivity={30}
-              glowRadius={28}
-              fillOpacity={0.2}
-              className="p-6 sm:p-8 flex flex-col justify-between"
-            >
-              <div>
-                <span className="text-xs font-mono font-bold text-[#FF5200] block mb-4">
-                  {point.number}
+  const toggleItem = (idx: number) => {
+    setOpenIndex(openIndex === idx ? null : idx);
+  };
+
+  return (
+    <section id="why-us" className="py-24 sm:py-32 bg-[#FAF9F6] text-[#121316] border-b border-[#E6E6E8] relative overflow-hidden">
+      {/* Top Crossover Gradient from Dark `#090A0D` back into Soft-White `#FAF9F6` */}
+      <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-[#090A0D]/5 to-transparent pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* Left Column: Bold Narrative & Operational Benchmarks */}
+          <div className="lg:col-span-5 space-y-8 lg:sticky lg:top-32">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FFFFFF] border border-[#E6E6E8] rounded-full mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF5200]" />
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#7C7D82] font-sans">
+                  The Neominds Standard
                 </span>
-                <h3 className="text-xl font-serif text-[#121316] mb-3 leading-snug">
-                  {point.title}
-                </h3>
-                <p className="text-sm text-[#4A4B50] font-sans leading-relaxed">
-                  {point.description}
-                </p>
               </div>
-            </BorderGlow>
-          ))}
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#121316] leading-tight">
+                Why companies choose Neominds over traditional agencies.
+              </h2>
+              <p className="mt-4 text-base text-[#4A4B50] font-sans leading-relaxed">
+                We remove non-technical account managers, speculative tech trends, and bloated overhead. You work directly with engineers building production systems.
+              </p>
+            </div>
+
+            {/* Operating Benchmarks Badge List */}
+            <div className="p-6 rounded-xl bg-[#FFFFFF] border border-[#E6E6E8] shadow-xs space-y-4 font-sans">
+              <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#7C7D82] block border-b border-[#E6E6E8] pb-2">
+                Operational Benchmarks
+              </span>
+              <div className="flex items-center gap-3 text-xs sm:text-sm text-[#121316]">
+                <Zap className="w-4 h-4 text-[#FF5200] flex-shrink-0" />
+                <span>14-day average sprint delivery cadence</span>
+              </div>
+              <div className="flex items-center gap-3 text-xs sm:text-sm text-[#121316]">
+                <Shield className="w-4 h-4 text-[#FF5200] flex-shrink-0" />
+                <span>100% intellectual property & code ownership</span>
+              </div>
+              <div className="flex items-center gap-3 text-xs sm:text-sm text-[#121316]">
+                <Terminal className="w-4 h-4 text-[#FF5200] flex-shrink-0" />
+                <span>Direct Slack / GitHub channel with senior architects</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Sleek Numbered Accordion Rows */}
+          <div className="lg:col-span-7 divide-y divide-[#E6E6E8] border-t border-b border-[#E6E6E8]">
+            {WHY_NEOMINDS_POINTS.map((point, idx) => {
+              const isOpen = openIndex === idx;
+
+              return (
+                <div
+                  key={point.number}
+                  className={`transition-all duration-200 ${
+                    isOpen ? "bg-[#FFFFFF]" : "hover:bg-[#FFFFFF]/50"
+                  }`}
+                >
+                  <button
+                    type="button"
+                    onClick={() => toggleItem(idx)}
+                    className="w-full flex items-center justify-between py-6 sm:py-8 px-4 sm:px-6 text-left cursor-pointer focus:outline-none"
+                    aria-expanded={isOpen}
+                  >
+                    <div className="flex items-center gap-4 sm:gap-6 pr-4">
+                      <span className="text-xs font-mono font-bold text-[#FF5200]">
+                        {point.number}
+                      </span>
+                      <h3 className="text-xl sm:text-2xl font-serif text-[#121316]">
+                        {point.title}
+                      </h3>
+                    </div>
+
+                    <div
+                      className={`w-7 h-7 rounded-full border flex items-center justify-center transition-all duration-200 flex-shrink-0 ${
+                        isOpen
+                          ? "bg-[#121316] border-[#121316] text-white"
+                          : "bg-[#FFFFFF] border-[#E6E6E8] text-[#7C7D82]"
+                      }`}
+                    >
+                      {isOpen ? (
+                        <Minus className="w-3.5 h-3.5" />
+                      ) : (
+                        <Plus className="w-3.5 h-3.5" />
+                      )}
+                    </div>
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-4 sm:px-6 pb-6 pt-1 text-sm text-[#4A4B50] font-sans leading-relaxed pl-12 sm:pl-16 max-w-xl">
+                          {point.description}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Terminal, Code2, Database, ShieldCheck, ArrowRight } from "lucide-react";
 import { BorderGlow } from "@/components/ui/BorderGlow";
 
 interface DossierTab {
@@ -18,6 +18,7 @@ interface DossierTab {
     value: string;
   }[];
   fileType: string;
+  codeSnippet: string;
 }
 
 const DOSSIER_DATA: DossierTab[] = [
@@ -25,7 +26,7 @@ const DOSSIER_DATA: DossierTab[] = [
     id: "dossier-arch",
     tabLabel: "01 Architecture",
     category: "System Blueprint",
-    title: "Distributed System & Database Schema",
+    title: "Distributed Schema & Event Pipeline",
     subtitle: "Enterprise Technical Foundation",
     description:
       "Every project begins with a deterministic technical blueprint: relational database models, API contracts, caching layers, and decoupled service boundaries designed for high throughput and zero data loss.",
@@ -41,6 +42,13 @@ const DOSSIER_DATA: DossierTab[] = [
       { label: "Cloud Deploy", value: "AWS / Vercel" },
     ],
     fileType: "ARCHITECTURE.SPEC",
+    codeSnippet: `export interface DatabaseClusterConfig {
+  primaryPool: "postgres-r6g.2xlarge",
+  readReplicas: 3,
+  connectionPooling: "pgbouncer-strict",
+  walReplicationLag: "< 5ms",
+  sslMode: "require"
+};`,
   },
   {
     id: "dossier-ai",
@@ -62,6 +70,12 @@ const DOSSIER_DATA: DossierTab[] = [
       { label: "Privacy Protocol", value: "Zero Data Sharing" },
     ],
     fileType: "AGENT_RUNTIME.TS",
+    codeSnippet: `const AgentExecutor = z.object({
+  taskQueue: z.enum(["INGEST", "AUDIT", "DISPATCH"]),
+  schemaValidator: (res) => strictToolSchema.parse(res),
+  maxToolHops: 5,
+  telemetryStream: true
+});`,
   },
   {
     id: "dossier-qa",
@@ -83,6 +97,11 @@ const DOSSIER_DATA: DossierTab[] = [
       { label: "Regression Risk", value: "Near Zero" },
     ],
     fileType: "QA_HARNESS.SPEC",
+    codeSnippet: `test("concurrent checkout with stock lock", async ({ page }) => {
+  await page.simulateConcurrentPurchases(50);
+  expect(inventoryCount).toBe(0);
+  expect(overdraftRisk).toBe(false);
+});`,
   },
   {
     id: "dossier-handover",
@@ -104,6 +123,11 @@ const DOSSIER_DATA: DossierTab[] = [
       { label: "Handover Speed", value: "Instant Git Transfer" },
     ],
     fileType: "OWNERSHIP_DEED.MD",
+    codeSnippet: `### NEOMINDS CLIENT IP HANDOVER
+- REPOSITORY: https://github.com/client-org/production
+- OWNERSHIP: 100% EXCLUSIVE
+- PERPETUAL COMMERCIAL RIGHTS: GRANTED
+- THIRD-PARTY ROYALTIES: $0.00`,
   },
 ];
 
@@ -113,8 +137,8 @@ export function EngineeringDossier() {
   const currentDossier = DOSSIER_DATA.find((d) => d.id === activeTab) || DOSSIER_DATA[0];
 
   return (
-    <section className="py-24 sm:py-32 bg-[#FAF9F6] border-b border-[#E6E6E8]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="dossier" className="py-24 sm:py-32 bg-[#090A0D] text-[#FFFFFF] border-b border-[#222530] relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -123,15 +147,16 @@ export function EngineeringDossier() {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-3xl mb-14 sm:mb-18"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FFFFFF] border border-[#E6E6E8] rounded-sm mb-4">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#7C7D82] font-sans">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#14161D] border border-[#2D313F] rounded-full mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#FF5200]" />
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#FFFFFF] font-sans">
               Engineering Vault
             </span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#121316] leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#FFFFFF] leading-tight">
             How we structure and deliver your technical assets.
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-[#4A4B50] font-sans">
+          <p className="mt-4 text-base sm:text-lg text-[#E2E5EE] font-sans">
             Explore the exact artifacts, blueprints, and code standards delivered across our engineering sprints.
           </p>
         </motion.div>
@@ -139,7 +164,7 @@ export function EngineeringDossier() {
         {/* Interactive Physical Folder Container */}
         <div className="relative max-w-5xl mx-auto">
           {/* Folder Tabs Row */}
-          <div className="flex items-end gap-1.5 sm:gap-2 overflow-x-auto pb-px border-b border-[#E6E6E8] no-scrollbar">
+          <div className="flex items-end gap-1.5 sm:gap-2 overflow-x-auto pb-px border-b border-[#2D313F] no-scrollbar">
             {DOSSIER_DATA.map((tab) => {
               const isActive = tab.id === activeTab;
 
@@ -148,17 +173,17 @@ export function EngineeringDossier() {
                   key={tab.id}
                   type="button"
                   onClick={() => setActiveTab(tab.id)}
-                  className={`relative px-4 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm font-sans font-bold transition-all rounded-t-sm border border-b-0 cursor-pointer whitespace-nowrap ${
+                  className={`relative px-4 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm font-sans font-bold transition-all rounded-t-lg border border-b-0 cursor-pointer whitespace-nowrap ${
                     isActive
-                      ? "bg-[#FFFFFF] text-[#121316] border-[#E6E6E8] shadow-[0_-4px_12px_rgba(0,0,0,0.03)] z-10"
-                      : "bg-[#FAF9F6] text-[#7C7D82] border-transparent hover:text-[#121316] hover:bg-[#F3F2EE]"
+                      ? "bg-[#101217] text-[#FFFFFF] border-[#2D313F] shadow-[0_-4px_16px_rgba(0,0,0,0.3)] z-10"
+                      : "bg-[#090A0D] text-[#A0A4B8] border-transparent hover:text-[#FFFFFF] hover:bg-[#14161F]"
                   }`}
                 >
                   {/* Top orange active accent line */}
                   {isActive && (
                     <motion.div
-                      layoutId="activeTabTop"
-                      className="absolute top-0 inset-x-0 h-0.5 bg-[#FF5200] rounded-t-sm"
+                      layoutId="activeTabTopDark"
+                      className="absolute top-0 inset-x-0 h-0.5 bg-[#FF5200] rounded-t-lg"
                     />
                   )}
                   <span>{tab.tabLabel}</span>
@@ -167,15 +192,16 @@ export function EngineeringDossier() {
             })}
           </div>
 
-          {/* Folder Body / Dossier Card */}
+          {/* Folder Body / Dark Dossier Card */}
           <BorderGlow
-            backgroundColor="#FFFFFF"
-            borderRadius={4}
+            backgroundColor="#101217"
+            borderRadius={12}
             glowColor="20 100 50"
             colors={["#FF5200", "#FF7A33", "#FFA07A"]}
             edgeSensitivity={25}
-            glowRadius={32}
-            className="p-6 sm:p-10 lg:p-12 shadow-[0_8px_30px_rgba(0,0,0,0.03)] rounded-b-sm rounded-tr-sm"
+            glowRadius={36}
+            glowIntensity={1.2}
+            className="p-6 sm:p-10 lg:p-12 shadow-2xl rounded-b-xl rounded-tr-xl border border-[#2D313F]"
           >
             <AnimatePresence mode="wait">
               <motion.div
@@ -187,77 +213,69 @@ export function EngineeringDossier() {
                 className="space-y-8"
               >
                 {/* Dossier Header Bar */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#E6E6E8] pb-6 gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#2D313F] pb-6 gap-4">
                   <div className="space-y-1">
                     <span className="text-xs font-mono font-bold text-[#FF5200] uppercase tracking-wider block">
                       {currentDossier.category}
                     </span>
-                    <h3 className="text-2xl sm:text-3xl font-serif text-[#121316] leading-tight">
+                    <h3 className="text-2xl sm:text-3xl font-serif text-[#FFFFFF] leading-tight">
                       {currentDossier.title}
                     </h3>
                   </div>
 
                   <div className="flex items-center gap-2 self-start sm:self-auto">
-                    <span className="px-3 py-1 bg-[#FAF9F6] border border-[#E6E6E8] rounded-sm text-xs font-mono text-[#7C7D82]">
+                    <span className="px-3 py-1 bg-[#161822] border border-[#2D313F] rounded-full text-xs font-mono text-[#FFFFFF] font-bold">
                       {currentDossier.fileType}
                     </span>
                   </div>
                 </div>
 
                 {/* Description */}
-                <p className="text-base text-[#4A4B50] font-sans leading-relaxed max-w-3xl">
+                <p className="text-base text-[#E2E5EE] font-sans leading-relaxed max-w-3xl">
                   {currentDossier.description}
                 </p>
 
-                {/* Two-Column Grid: Deliverable Specs & Technical Standards */}
+                {/* Two-Column Grid: Deliverable Specs & Code Syntax Box */}
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pt-4">
                   {/* Left: Deliverables Checklist */}
-                  <BorderGlow
-                    backgroundColor="#FAF9F6"
-                    borderRadius={3}
-                    glowColor="20 100 50"
-                    glowRadius={22}
-                    edgeSensitivity={30}
-                    className="md:col-span-7 space-y-3.5 p-6"
-                  >
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#121316] block mb-2">
+                  <div className="md:col-span-6 space-y-3.5 p-6 rounded-xl bg-[#14161F] border border-[#2D313F]">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#FFFFFF] block mb-3 font-sans">
                       Included Engineering Artifacts
                     </span>
                     {currentDossier.deliverableBullets.map((bullet, bIdx) => (
-                      <div key={bIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-[#4A4B50]">
+                      <div key={bIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-[#FFFFFF]">
                         <CheckCircle2 className="w-4 h-4 text-[#FF5200] flex-shrink-0 mt-0.5" />
                         <span>{bullet}</span>
                       </div>
                     ))}
-                  </BorderGlow>
+                  </div>
 
-                  {/* Right: Technical Specs Metrics */}
-                  <div className="md:col-span-5 space-y-4 flex flex-col justify-between">
-                    <div className="space-y-4">
-                      {currentDossier.systemSpecs.map((spec, sIdx) => (
-                        <BorderGlow
-                          key={sIdx}
-                          backgroundColor="#FAF9F6"
-                          borderRadius={3}
-                          glowColor="20 100 50"
-                          glowRadius={18}
-                          edgeSensitivity={35}
-                          className="p-4 flex items-center justify-between"
-                        >
-                          <span className="text-xs text-[#7C7D82] font-sans font-medium uppercase tracking-wider">
-                            {spec.label}
-                          </span>
-                          <span className="text-sm font-serif font-bold text-[#121316]">
-                            {spec.value}
-                          </span>
-                        </BorderGlow>
-                      ))}
+                  {/* Right: Code Syntax Preview Box */}
+                  <div className="md:col-span-6 flex flex-col justify-between space-y-4">
+                    <div className="p-5 rounded-xl bg-[#0B0C10] border border-[#2D313F] font-mono text-xs text-[#FFFFFF] overflow-x-auto space-y-2">
+                      <div className="flex items-center justify-between border-b border-[#222530] pb-2 text-[11px] text-[#A0A4B8]">
+                        <span className="text-white font-bold">{currentDossier.fileType}</span>
+                        <span className="text-[#FF5200] font-bold">SYNTAX VERIFIED</span>
+                      </div>
+                      <pre className="text-[#FFFFFF] leading-relaxed pt-1 font-mono">
+                        <code>{currentDossier.codeSnippet}</code>
+                      </pre>
                     </div>
 
-                    <div className="pt-2 text-right">
-                      <span className="text-[11px] text-[#7C7D82] font-mono">
-                        Audited for ISO / SOC2 readiness
-                      </span>
+                    <div className="grid grid-cols-3 gap-2 text-center">
+                      {currentDossier.systemSpecs.map((spec, sIdx) => (
+                        <div
+                          key={sIdx}
+                          className="p-3 bg-[#14161F] border border-[#2D313F] rounded-lg"
+                        >
+                          <span className="text-[10px] text-[#A0A4B8] font-mono block uppercase">
+                            {spec.label}
+                          </span>
+                          <span className="text-xs font-bold text-[#FF5200] block mt-0.5 font-mono">
+                            {spec.value}
+                          </span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
