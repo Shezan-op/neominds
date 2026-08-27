@@ -5,7 +5,7 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export function OpeningSequence() {
+export function ClosingSequence() {
   const containerRef = useRef<HTMLDivElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
   const buildingsRef = useRef<HTMLDivElement>(null);
@@ -13,7 +13,6 @@ export function OpeningSequence() {
   const fogLayer1Ref = useRef<HTMLDivElement>(null);
   const fogLayer2Ref = useRef<HTMLDivElement>(null);
   const fogLayer3Ref = useRef<HTMLDivElement>(null);
-  const atmosphericFlashRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -26,89 +25,54 @@ export function OpeningSequence() {
       const fog1 = fogLayer1Ref.current;
       const fog2 = fogLayer2Ref.current;
       const fog3 = fogLayer3Ref.current;
-      const atmosphericOverlay = atmosphericFlashRef.current;
 
       if (!container || !pin || !buildings || !text) return;
 
-      // Master Scroll-Driven Cinematic Camera Timeline (Deliberate, luxurious, smooth pacing)
+      // Master Scroll-Driven Closing Camera Timeline (Zoom Out from Deep Sky back to Full Canyon)
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
           start: "top top",
-          end: "+=3800", // Expanded scroll distance for balanced, cinematic pacing
+          end: "+=3800", // Smooth, deliberate scroll distance matching the opening
           pin: pin,
-          scrub: 1.5, // Heavier, luxurious momentum
+          scrub: 1.5, // Luxurious, cinematic momentum
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
       });
 
-      // Initial States
+      // Initial State: Starting inside the deep sky canyon / cloud layer (Zoomed In)
       gsap.set(buildings, {
-        scale: 1,
-        yPercent: 0,
+        scale: 2.75,
+        yPercent: -6,
         transformOrigin: "50% 46%",
         force3D: true,
       });
 
       gsap.set(text, {
-        scale: 1,
-        opacity: 1,
-        yPercent: 0,
-        filter: "blur(0px)",
+        scale: 3.6,
+        opacity: 0,
+        yPercent: -8,
+        filter: "blur(8px)",
         transformOrigin: "50% 50%",
         force3D: true,
       });
 
-      if (fog1) gsap.set(fog1, { opacity: 0, scale: 0.8, yPercent: 20 });
-      if (fog2) gsap.set(fog2, { opacity: 0, scale: 0.9, yPercent: -15 });
-      if (fog3) gsap.set(fog3, { opacity: 0, scale: 0.7 });
-      if (atmosphericOverlay) gsap.set(atmosphericOverlay, { opacity: 0 });
+      if (fog1) gsap.set(fog1, { opacity: 0.85, scale: 1.4, yPercent: -10 });
+      if (fog2) gsap.set(fog2, { opacity: 0.9, scale: 1.5, yPercent: 10 });
+      if (fog3) gsap.set(fog3, { opacity: 0.95, scale: 1.6 });
 
-      // PHASE 1: 0% -> 70% (Cinematic Camera Travelling Upward into Sky Canyon)
-      tl.to(
-        buildings,
-        {
-          scale: 2.75, // Deep upward magnification into canyon
-          yPercent: -6, // Camera tilting/moving upward
-          ease: "power2.inOut",
-          duration: 7,
-        },
-        0
-      )
-        .to(
-          text,
-          {
-            scale: 3.6, // Text scales naturally with the 3D space
-            yPercent: -8,
-            ease: "power2.inOut",
-            duration: 7,
-          },
-          0
-        )
-        .to(
-          text,
+      // PHASE 1: 0% -> 30% (Cloud Fog Layer Disperses)
+      if (fog3) {
+        tl.to(
+          fog3,
           {
             opacity: 0,
-            filter: "blur(8px)",
-            ease: "power2.in",
-            duration: 2.8,
+            scale: 1.2,
+            ease: "power2.out",
+            duration: 2.5,
           },
-          4.2 // Text naturally passes behind camera
-        );
-
-      // PHASE 2: 70% -> 85% (Atmospheric Depth & Soft Fog Ingress)
-      if (fog1) {
-        tl.to(
-          fog1,
-          {
-            opacity: 0.75,
-            scale: 1.4,
-            yPercent: -10,
-            ease: "power1.out",
-            duration: 2.8,
-          },
-          6.5
+          0
         );
       }
 
@@ -116,51 +80,59 @@ export function OpeningSequence() {
         tl.to(
           fog2,
           {
-            opacity: 0.85,
-            scale: 1.5,
-            yPercent: 10,
-            ease: "power1.out",
-            duration: 2.8,
+            opacity: 0,
+            scale: 1.1,
+            ease: "power2.out",
+            duration: 3.0,
           },
-          7.0
+          0.8
         );
       }
 
-      // PHASE 3: 85% -> 100% (Cloud Veil & Seamless Dissolve to Homepage Hero)
-      if (fog3) {
+      if (fog1) {
         tl.to(
-          fog3,
+          fog1,
           {
-            opacity: 0.98,
-            scale: 1.6,
-            ease: "power2.inOut",
-            duration: 2.2,
+            opacity: 0,
+            scale: 1.0,
+            ease: "power2.out",
+            duration: 3.2,
           },
-          8.0
+          1.2
         );
       }
 
-      if (atmosphericOverlay) {
-        tl.to(
-          atmosphericOverlay,
+      // PHASE 2: 20% -> 100% (Camera Descends / Zooms OUT back to ground vantage)
+      tl.to(
+        buildings,
+        {
+          scale: 1, // Full canyon restored
+          yPercent: 0,
+          ease: "power2.inOut",
+          duration: 7,
+        },
+        1.5
+      )
+        .to(
+          text,
+          {
+            scale: 1, // Text returns to natural size
+            yPercent: 0,
+            ease: "power2.inOut",
+            duration: 7,
+          },
+          1.5
+        )
+        .to(
+          text,
           {
             opacity: 1,
-            ease: "power2.inOut",
-            duration: 1.8,
+            filter: "blur(0px)",
+            ease: "power2.out",
+            duration: 3.5,
           },
-          8.4
+          3.0 // Text emerges crisply in the central sky gap
         );
-      }
-
-      tl.to(
-        pin,
-        {
-          opacity: 0,
-          ease: "power2.inOut",
-          duration: 1.4,
-        },
-        8.8
-      );
     }, containerRef);
 
     return () => ctx.revert();
@@ -204,7 +176,7 @@ export function OpeningSequence() {
           <div className="relative w-full h-full max-w-[100vw] max-h-[100vh]">
             <Image
               src="/opening.png"
-              alt="Architectural Skyscraper Canyon"
+              alt="Architectural Skyscraper Canyon Closing"
               fill
               priority
               unoptimized
@@ -226,7 +198,7 @@ export function OpeningSequence() {
           <span
             className="font-serif font-bold tracking-tight text-center select-none"
             style={{
-              color: "#FFFFFF", // 100% Guaranteed Pure Crisp White
+              color: "#FFFFFF", // Pure Crisp White
               fontSize: "clamp(3.5rem, 8.5vw, 9.5rem)",
               textShadow: "0 4px 30px rgba(10, 30, 80, 0.4)",
               letterSpacing: "-0.03em",
@@ -238,13 +210,13 @@ export function OpeningSequence() {
 
         {/* 
           ======================================================================
-          LAYER 4: PROGRAMMATIC ATMOSPHERIC CLOUD / FOG LAYERS (85% TRANSITION)
+          LAYER 4: PROGRAMMATIC ATMOSPHERIC CLOUD / FOG LAYERS (DISSOLVING OUT)
           ======================================================================
         */}
         {/* Fog Mist Volume 1 */}
         <div
           ref={fogLayer1Ref}
-          className="absolute -top-[20%] -left-[20%] w-[140%] h-[140%] pointer-events-none z-30 opacity-0"
+          className="absolute -top-[20%] -left-[20%] w-[140%] h-[140%] pointer-events-none z-30 opacity-85"
           style={{
             background:
               "radial-gradient(ellipse 65% 55% at 50% 45%, rgba(250, 249, 246, 0.9) 0%, rgba(220, 235, 255, 0.65) 40%, rgba(147, 197, 253, 0.3) 65%, transparent 85%)",
@@ -256,7 +228,7 @@ export function OpeningSequence() {
         {/* Fog Mist Volume 2 */}
         <div
           ref={fogLayer2Ref}
-          className="absolute -bottom-[20%] -right-[20%] w-[140%] h-[140%] pointer-events-none z-30 opacity-0"
+          className="absolute -bottom-[20%] -right-[20%] w-[140%] h-[140%] pointer-events-none z-30 opacity-90"
           style={{
             background:
               "radial-gradient(ellipse 70% 60% at 50% 55%, rgba(250, 249, 246, 0.95) 0%, rgba(199, 223, 254, 0.7) 45%, rgba(96, 165, 250, 0.35) 70%, transparent 90%)",
@@ -265,10 +237,10 @@ export function OpeningSequence() {
           }}
         />
 
-        {/* Fog Mist Volume 3 (Center Camera Envelopment) */}
+        {/* Fog Mist Volume 3 */}
         <div
           ref={fogLayer3Ref}
-          className="absolute inset-0 w-full h-full pointer-events-none z-30 opacity-0"
+          className="absolute inset-0 w-full h-full pointer-events-none z-30 opacity-95"
           style={{
             background:
               "radial-gradient(circle at 50% 50%, rgba(250, 249, 246, 0.98) 0%, rgba(235, 244, 255, 0.85) 50%, rgba(199, 223, 254, 0.4) 80%, transparent 100%)",
@@ -276,13 +248,6 @@ export function OpeningSequence() {
             filter: "blur(30px)",
             willChange: "transform, opacity",
           }}
-        />
-
-        {/* Atmospheric Fade for Seamless Hand-off to Hero */}
-        <div
-          ref={atmosphericFlashRef}
-          className="absolute inset-0 w-full h-full bg-[#050E24] pointer-events-none z-40 opacity-0"
-          style={{ willChange: "opacity" }}
         />
       </div>
     </div>
