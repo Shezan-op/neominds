@@ -31,7 +31,7 @@ function AnimatedStat({
   suffix?: string;
   prefix?: string;
 }) {
-  const [displayValue, setDisplayValue] = useState<string>("0");
+  const [displayValue, setDisplayValue] = useState<string>(value.toFixed(decimals));
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-40px" });
 
@@ -44,7 +44,7 @@ function AnimatedStat({
     const step = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const progress = Math.min((timestamp - startTime) / duration, 1);
-      // Ease-out cubic: 1 - pow(1 - progress, 3)
+      // Ease-out cubic
       const easeOut = 1 - Math.pow(1 - progress, 3);
       const current = easeOut * value;
 
@@ -61,7 +61,11 @@ function AnimatedStat({
   }, [isInView, value, decimals]);
 
   return (
-    <span ref={ref} className="font-serif font-bold text-4xl sm:text-5xl lg:text-6xl text-[#121316] tracking-tight">
+    <span
+      ref={ref}
+      style={{ color: "#121316" }}
+      className="font-serif font-bold text-4xl sm:text-5xl lg:text-6xl text-[#121316] tracking-tight block"
+    >
       {prefix}
       {displayValue}
       {suffix}
@@ -114,7 +118,7 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
             <div className="w-6 h-6 flex items-center justify-center text-white font-serif text-lg font-bold">
               ❄
             </div>
-            <span className="font-serif font-bold text-lg tracking-tight text-white uppercase">
+            <span className="font-sans font-bold text-base tracking-tight text-white uppercase">
               neominds
             </span>
           </a>
@@ -177,7 +181,6 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
         {/* 
           ========================================================================
           04. CENTERPIECE: TRANSPARENT ROBOT HOLDING TABLET
-          Seamless waistline fade with zero shadow lines or box artifacts
           ========================================================================
         */}
         <div className="relative mt-8 sm:mt-12 flex flex-col items-center justify-center">
@@ -191,7 +194,7 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
             >
               {/* Backgroundless Transparent Robot Image with clean alpha */}
               <Image
-                src="/hero-image.png?v=3"
+                src="/hero-image.png?v=4"
                 alt="Neominds Applied AI and Enterprise Architecture"
                 width={1024}
                 height={1536}
@@ -374,20 +377,24 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
 
         {/* 
           ========================================================================
-          06. 3-COLUMN STATS ROW WITH ANIMATED NUMBER COUNTERS (CENTERED & HIGH CONTRAST)
+          06. 3-COLUMN STATS ROW (100% VISIBLE, CRISP DARK #121316 TEXT AT FRONT)
           ========================================================================
         */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-6 sm:mt-10 pt-8 sm:pt-10 max-w-5xl mx-auto"
+          className="mt-6 sm:mt-10 pt-6 sm:pt-8 max-w-5xl mx-auto relative z-30"
+          style={{ color: "#121316" }}
         >
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10 text-center">
             {/* Stat 01: 99.9% */}
             <div className="flex flex-col items-center justify-center">
               <AnimatedStat value={99.9} decimals={1} suffix="%" />
-              <p className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed mt-2 max-w-[260px] text-center">
+              <p
+                style={{ color: "#4A4B50" }}
+                className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed mt-2 max-w-[260px] text-center font-medium"
+              >
                 increase in system visibility & uptime across enterprise deployments
               </p>
             </div>
@@ -395,7 +402,10 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
             {/* Stat 02: 10x */}
             <div className="flex flex-col items-center justify-center">
               <AnimatedStat value={10} decimals={0} suffix="x" />
-              <p className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed mt-2 max-w-[260px] text-center">
+              <p
+                style={{ color: "#4A4B50" }}
+                className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed mt-2 max-w-[260px] text-center font-medium"
+              >
                 faster setup time from technical onboarding to first production run
               </p>
             </div>
@@ -403,7 +413,10 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
             {/* Stat 03: 64% */}
             <div className="flex flex-col items-center justify-center">
               <AnimatedStat value={64} decimals={0} suffix="%" />
-              <p className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed mt-2 max-w-[260px] text-center">
+              <p
+                style={{ color: "#4A4B50" }}
+                className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed mt-2 max-w-[260px] text-center font-medium"
+              >
                 reduction in manual follow-ups across mission-critical workflows
               </p>
             </div>
