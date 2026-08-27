@@ -18,7 +18,7 @@ interface NavLinkItem {
 }
 
 const NAV_ITEMS: NavLinkItem[] = [
-  { id: "services", label: "Services", href: "/#services" },
+  { id: "capabilities", label: "Capabilities", href: "/#services" },
   { id: "case-studies", label: "Case studies", href: "/#case-studies" },
   { id: "brand", label: "Neominds", href: "/", isCenterBrand: true },
   { id: "about-us", label: "About us", href: "/#why-us" },
@@ -100,10 +100,10 @@ export function Navbar({ onOpenContact }: NavbarProps) {
               return (
                 <div
                   key={item.id}
-                  ref={item.id === "services" ? dropdownRef : undefined}
+                  ref={item.id === "capabilities" ? dropdownRef : undefined}
                   onMouseEnter={() => {
                     setHoveredIdx(idx);
-                    if (item.id === "services") {
+                    if (item.id === "capabilities") {
                       setServicesOpen(true);
                     } else {
                       setServicesOpen(false);
@@ -156,7 +156,7 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                     }`}
                   >
                     <span>{item.label}</span>
-                    {item.id === "services" && (
+                    {item.id === "capabilities" && (
                       <ChevronDown
                         className={`w-3.5 h-3.5 transition-transform duration-200 ${
                           servicesOpen && isHovered ? "rotate-180 text-white" : "text-[#7C7D82]"
@@ -165,8 +165,8 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                     )}
                   </Link>
 
-                  {/* Dropdown Menu for Services */}
-                  {item.id === "services" && servicesOpen && (
+                  {/* Dropdown Menu for Capabilities */}
+                  {item.id === "capabilities" && servicesOpen && (
                     <div
                       onMouseEnter={() => setServicesOpen(true)}
                       onMouseLeave={() => setServicesOpen(false)}
@@ -251,7 +251,7 @@ export function Navbar({ onOpenContact }: NavbarProps) {
         <div className="md:hidden fixed top-20 inset-x-4 bg-[#FFFFFF] border border-[#E6E6E8] p-5 shadow-2xl max-w-sm mx-auto text-[#121316] rounded-none pointer-events-auto font-serif">
           <div className="py-2 border-b border-[#E6E6E8]">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#7C7D82] block mb-2 font-sans">
-              Services
+              Capabilities
             </span>
             <div className="grid grid-cols-1 gap-1">
               {SERVICES_DATA.map((service) => (
@@ -274,7 +274,7 @@ export function Navbar({ onOpenContact }: NavbarProps) {
               onClick={() => setMobileMenuOpen(false)}
               className="py-1 px-2 text-xs font-bold hover:text-[#1E5FD8]"
             >
-              Services
+              Capabilities
             </Link>
             <Link
               href="/#case-studies"
