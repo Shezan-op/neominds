@@ -168,11 +168,12 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
             >
               {/* Backgroundless Transparent Robot Image */}
               <Image
-                src="/hero-image.png"
+                src="/hero-image.png?v=2"
                 alt="Neominds Applied AI and Enterprise Architecture"
                 width={1024}
                 height={1536}
                 priority
+                unoptimized
                 className="w-full h-auto object-contain pointer-events-none drop-shadow-[0_12px_40px_rgba(0,0,0,0.15)]"
               />
 
