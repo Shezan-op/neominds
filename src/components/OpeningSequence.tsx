@@ -22,6 +22,7 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
   // Virtual progress tracking for smooth scroll-driven camera
   const progressRef = useRef(0);
   const targetProgressRef = useRef(0);
+  const isTransitioningRef = useRef(false);
 
   // Render / update scene elements based on progress (0.0 to 1.0)
   const updateScene = (p: number) => {
@@ -33,8 +34,8 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
     const overlay = atmosphericFlashRef.current;
     const container = containerRef.current;
 
-    // 0.0 -> 0.72: Camera zoom upward into canyon
-    const zoomProgress = Math.min(p / 0.75, 1);
+    // 0.0 -> 0.70: Camera zoom upward into canyon
+    const zoomProgress = Math.min(p / 0.72, 1);
     const easeZoom = gsap.parseEase("power1.inOut")(zoomProgress);
 
     if (buildings) {
@@ -50,11 +51,11 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
         yPercent: -easeZoom * 8,
       });
 
-      // Text passes behind camera (p = 0.40 -> 0.65)
-      if (p < 0.40) {
+      // Text passes behind camera (p = 0.35 -> 0.60)
+      if (p < 0.35) {
         gsap.set(text, { opacity: 1, filter: "blur(0px)" });
-      } else if (p < 0.65) {
-        const fadeP = (p - 0.40) / 0.25;
+      } else if (p < 0.60) {
+        const fadeP = (p - 0.35) / 0.25;
         gsap.set(text, {
           opacity: 1 - fadeP,
           filter: `blur(${fadeP * 8}px)`,
@@ -64,9 +65,9 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
       }
     }
 
-    // 0.55 -> 0.82: Atmospheric fog ingress
+    // 0.50 -> 0.75: Atmospheric fog ingress
     if (fog1) {
-      const fog1P = Math.max(0, Math.min((p - 0.50) / 0.25, 1));
+      const fog1P = Math.max(0, Math.min((p - 0.45) / 0.25, 1));
       gsap.set(fog1, {
         opacity: fog1P * 0.75,
         scale: 0.8 + fog1P * 0.6,
@@ -75,7 +76,7 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
     }
 
     if (fog2) {
-      const fog2P = Math.max(0, Math.min((p - 0.55) / 0.25, 1));
+      const fog2P = Math.max(0, Math.min((p - 0.50) / 0.25, 1));
       gsap.set(fog2, {
         opacity: fog2P * 0.85,
         scale: 0.9 + fog2P * 0.6,
@@ -84,23 +85,23 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
     }
 
     if (fog3) {
-      const fog3P = Math.max(0, Math.min((p - 0.65) / 0.22, 1));
+      const fog3P = Math.max(0, Math.min((p - 0.58) / 0.22, 1));
       gsap.set(fog3, {
         opacity: fog3P * 0.95,
         scale: 0.7 + fog3P * 0.9,
       });
     }
 
-    // 0.80 -> 1.0: Seamless dissolve revealing top of Hero Section
+    // 0.75 -> 1.0: Seamless dissolve revealing top of Hero Section
     if (overlay && container) {
-      if (p < 0.80) {
+      if (p < 0.75) {
         gsap.set(container, { opacity: 1, pointerEvents: "auto" });
         gsap.set(overlay, { opacity: 0 });
       } else {
-        const dissolveP = (p - 0.80) / 0.20;
+        const dissolveP = (p - 0.75) / 0.25;
         const easeDissolve = gsap.parseEase("power2.inOut")(dissolveP);
         gsap.set(overlay, { opacity: easeDissolve });
-        gsap.set(container, { opacity: 1 - easeDissolve });
+        gsap.set(container, { opacity: Math.max(0, 1 - easeDissolve) });
       }
     }
   };
@@ -112,29 +113,30 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
     const renderLoop = () => {
       const diff = targetProgressRef.current - progressRef.current;
       if (Math.abs(diff) > 0.0005) {
-        progressRef.current += diff * 0.07;
+        progressRef.current += diff * 0.1; // Fast, responsive interpolation
         updateScene(progressRef.current);
       }
 
       // Check if opening sequence has fully dissolved into homepage
-      if (progressRef.current >= 0.99 && isActive) {
+      if (progressRef.current >= 0.95 && isActive && !isTransitioningRef.current) {
+        isTransitioningRef.current = true;
         setIsActive(false);
+
         if (containerRef.current) {
           gsap.set(containerRef.current, { opacity: 0, pointerEvents: "none" });
         }
 
-        // Unlock page and resume Lenis at exact y = 0
+        // Instant unlock: enable body and start Lenis immediately
         document.body.style.overflow = "";
         document.documentElement.style.overflow = "";
-        window.scrollTo(0, 0);
 
         if (window.__lenis) {
           window.__lenis.start();
-          window.__lenis.scrollTo(0, { immediate: true });
         }
 
         ScrollTrigger.refresh();
         if (onComplete) onComplete();
+        isTransitioningRef.current = false;
       }
 
       animId = requestAnimationFrame(renderLoop);
@@ -146,24 +148,23 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
     if (isActive) {
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
-      window.scrollTo(0, 0);
 
-      const pauseLenis = () => {
-        if (window.__lenis) {
-          window.__lenis.stop();
-          window.__lenis.scrollTo(0, { immediate: true });
-        }
-      };
-      pauseLenis();
-      const interval = setInterval(pauseLenis, 50);
+      if (window.__lenis) {
+        window.__lenis.stop();
+      }
 
       // Wheel handler while active
       const handleWheelActive = (e: WheelEvent) => {
+        // If we are at the end, let the wheel event pass through to scroll homepage!
+        if (targetProgressRef.current >= 0.95 && e.deltaY > 0) {
+          return;
+        }
+
         e.preventDefault();
         e.stopPropagation();
 
         const delta = e.deltaY;
-        const step = (delta / 1600) * 0.75;
+        const step = (delta / 800) * 1.0; // Responsive, punchy scroll pacing
         targetProgressRef.current = Math.max(
           0,
           Math.min(1, targetProgressRef.current + step)
@@ -177,13 +178,17 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
       };
 
       const handleTouchMoveActive = (e: TouchEvent) => {
+        if (targetProgressRef.current >= 0.95 && touchStartY - e.touches[0].clientY > 0) {
+          return;
+        }
+
         const currentY = e.touches[0].clientY;
         const deltaY = touchStartY - currentY;
         touchStartY = currentY;
 
         e.preventDefault();
         e.stopPropagation();
-        const step = (deltaY / 1000) * 0.75;
+        const step = (deltaY / 600) * 1.0;
         targetProgressRef.current = Math.max(
           0,
           Math.min(1, targetProgressRef.current + step)
@@ -195,37 +200,31 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
       window.addEventListener("touchmove", handleTouchMoveActive, { passive: false, capture: true });
 
       return () => {
-        clearInterval(interval);
         cancelAnimationFrame(animId);
         window.removeEventListener("wheel", handleWheelActive, { capture: true });
         window.removeEventListener("touchstart", handleTouchStartActive);
         window.removeEventListener("touchmove", handleTouchMoveActive, { capture: true });
       };
     } else {
-      // WHEN INACTIVE (User is browsing homepage):
-      // Listen for when the user is at the very top (scrollY <= 2) and scrolls UP!
+      // WHEN INACTIVE (Browsing homepage normally):
+      // Only reactivate if user scrolls UP past the very top (scrollY <= 0)
       const handleWindowWheel = (e: WheelEvent) => {
         const currentScroll = window.scrollY || window.pageYOffset;
-        if (currentScroll <= 2 && e.deltaY < -10) {
+        if (currentScroll <= 0 && e.deltaY < -30) {
           e.preventDefault();
-          e.stopPropagation();
 
-          // Reactivate opening sequence in reverse
           setIsActive(true);
           document.body.style.overflow = "hidden";
           document.documentElement.style.overflow = "hidden";
-          window.scrollTo(0, 0);
 
           if (window.__lenis) {
             window.__lenis.stop();
-            window.__lenis.scrollTo(0, { immediate: true });
           }
 
-          // Start from near-dissolved state and animate backwards
-          progressRef.current = 0.95;
+          progressRef.current = 0.92;
           targetProgressRef.current = Math.max(
             0,
-            0.95 + (e.deltaY / 1600) * 0.75
+            0.92 + (e.deltaY / 800) * 1.0
           );
 
           if (containerRef.current) {
@@ -245,22 +244,19 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
         const deltaY = touchStartY - currentY; // negative when pulling down (scrolling up)
         touchStartY = currentY;
 
-        if (currentScroll <= 2 && deltaY < -15) {
+        if (currentScroll <= 0 && deltaY < -30) {
           e.preventDefault();
-          e.stopPropagation();
 
           setIsActive(true);
           document.body.style.overflow = "hidden";
           document.documentElement.style.overflow = "hidden";
-          window.scrollTo(0, 0);
 
           if (window.__lenis) {
             window.__lenis.stop();
-            window.__lenis.scrollTo(0, { immediate: true });
           }
 
-          progressRef.current = 0.95;
-          targetProgressRef.current = Math.max(0, 0.95 + (deltaY / 1000) * 0.75);
+          progressRef.current = 0.92;
+          targetProgressRef.current = Math.max(0, 0.92 + (deltaY / 600) * 1.0);
 
           if (containerRef.current) {
             gsap.set(containerRef.current, { pointerEvents: "auto" });
@@ -268,15 +264,15 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
         }
       };
 
-      window.addEventListener("wheel", handleWindowWheel, { passive: false, capture: true });
+      window.addEventListener("wheel", handleWindowWheel, { passive: false });
       window.addEventListener("touchstart", handleWindowTouchStart, { passive: true });
-      window.addEventListener("touchmove", handleWindowTouchMove, { passive: false, capture: true });
+      window.addEventListener("touchmove", handleWindowTouchMove, { passive: false });
 
       return () => {
         cancelAnimationFrame(animId);
-        window.removeEventListener("wheel", handleWindowWheel, { capture: true });
+        window.removeEventListener("wheel", handleWindowWheel);
         window.removeEventListener("touchstart", handleWindowTouchStart);
-        window.removeEventListener("touchmove", handleWindowTouchMove, { capture: true });
+        window.removeEventListener("touchmove", handleWindowTouchMove);
       };
     }
   }, [isActive, onComplete]);
@@ -284,7 +280,7 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
   return (
     <div
       ref={containerRef}
-      className={`fixed inset-0 w-full h-screen z-50 overflow-hidden select-none bg-[#0F52BA] transition-opacity duration-300 ${
+      className={`fixed inset-0 w-full h-screen z-50 overflow-hidden select-none bg-[#0F52BA] transition-opacity duration-200 ${
         isActive ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
       }`}
       style={{ willChange: "opacity" }}
