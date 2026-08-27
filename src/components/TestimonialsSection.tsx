@@ -34,7 +34,7 @@ export function TestimonialsSection() {
             <button
               type="button"
               onClick={prevQuote}
-              className="w-10 h-10 bg-[#FFFFFF] border border-[#E6E6E8] text-[#121316] hover:bg-[#121316] hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-xs rounded-none"
+              className="w-10 h-10 bg-[#FFFFFF] border border-[#E6E6E8] text-[#121316] hover:bg-[#1E5FD8] hover:border-[#1E5FD8] hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-xs rounded-none"
               aria-label="Previous testimonial"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -42,7 +42,7 @@ export function TestimonialsSection() {
             <button
               type="button"
               onClick={nextQuote}
-              className="w-10 h-10 bg-[#FFFFFF] border border-[#E6E6E8] text-[#121316] hover:bg-[#121316] hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-xs rounded-none"
+              className="w-10 h-10 bg-[#FFFFFF] border border-[#E6E6E8] text-[#121316] hover:bg-[#1E5FD8] hover:border-[#1E5FD8] hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-xs rounded-none"
               aria-label="Next testimonial"
             >
               <ChevronRight className="w-4 h-4" />
@@ -52,7 +52,7 @@ export function TestimonialsSection() {
 
         {/* Big Editorial Quote Showcase with Sharp Corners */}
         <div className="p-8 sm:p-14 lg:p-16 bg-[#FFFFFF] border border-[#E6E6E8] shadow-[0_8px_30px_rgba(0,0,0,0.03)] relative rounded-none">
-          <Quote className="w-12 h-12 sm:w-16 sm:h-16 text-[#FF5200]/20 absolute top-8 right-8 sm:top-12 sm:right-12 pointer-events-none" />
+          <Quote className="w-12 h-12 sm:w-16 sm:h-16 text-[#1E5FD8]/15 absolute top-8 right-8 sm:top-12 sm:right-12 pointer-events-none" />
 
           <AnimatePresence mode="wait">
             <motion.div
@@ -77,7 +77,7 @@ export function TestimonialsSection() {
                   </span>
                 </div>
 
-                <span className="text-[11px] font-mono font-bold text-[#FF5200] uppercase tracking-wider bg-[#FFF5F0] border border-[#FF5200]/20 px-3 py-1 self-start sm:self-auto rounded-none">
+                <span className="text-[11px] font-mono font-bold text-[#1E5FD8] uppercase tracking-wider bg-[#EDF4FF] border border-[#1E5FD8]/25 px-3 py-1 self-start sm:self-auto rounded-none">
                   {activeTestimonial.serviceUsed}
                 </span>
               </div>

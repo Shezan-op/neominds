@@ -46,7 +46,7 @@ export function CaseStudiesSection({ onOpenContact }: CaseStudiesSectionProps) {
                 onClick={() => setActiveCaseIdx(idx)}
                 className={`px-4 sm:px-5 py-2 sm:py-2.5 text-xs font-sans font-bold transition-all cursor-pointer rounded-none ${
                   activeCaseIdx === idx
-                    ? "bg-[#FF5200] text-white shadow-md"
+                    ? "bg-[#1E5FD8] text-white shadow-md"
                     : "bg-[#FFFFFF] text-[#4A4B50] hover:bg-[#F3F2EE] border border-[#E6E6E8]"
                 }`}
               >
@@ -70,8 +70,8 @@ export function CaseStudiesSection({ onOpenContact }: CaseStudiesSectionProps) {
               <BorderGlow
                 backgroundColor="#FFFFFF"
                 borderRadius={0}
-                glowColor="20 100 50"
-                colors={["#FF5200", "#FF7A33", "#FFA07A"]}
+                glowColor="217 91 60"
+                colors={["#10316B", "#1E5FD8", "#60A5FA"]}
                 edgeSensitivity={25}
                 glowRadius={36}
                 glowIntensity={1.0}
@@ -80,11 +80,11 @@ export function CaseStudiesSection({ onOpenContact }: CaseStudiesSectionProps) {
                 {/* Meta Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#E6E6E8] pb-6 gap-4">
                   <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 bg-[#FAF9F6] border border-[#E6E6E8] flex items-center justify-center text-[#FF5200] rounded-none">
+                    <div className="w-10 h-10 bg-[#FAF9F6] border border-[#E6E6E8] flex items-center justify-center text-[#1E5FD8] rounded-none">
                       <Building2 className="w-5 h-5" />
                     </div>
                     <div>
-                      <span className="text-xs font-mono font-bold text-[#FF5200] uppercase tracking-wider block">
+                      <span className="text-xs font-mono font-bold text-[#1E5FD8] uppercase tracking-wider block">
                         {activeCase.industry}
                       </span>
                       <span className="text-xl font-serif text-[#121316]">
@@ -113,7 +113,7 @@ export function CaseStudiesSection({ onOpenContact }: CaseStudiesSectionProps) {
                 {/* 3-Column Problem / Built / Outcome Matrix */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2">
                   <div className="p-5 bg-[#FAF9F6] border border-[#E6E6E8] space-y-2 rounded-none">
-                    <span className="text-xs font-mono font-bold text-[#FF5200] uppercase tracking-wider block">
+                    <span className="text-xs font-mono font-bold text-[#1E5FD8] uppercase tracking-wider block">
                       The Operational Problem
                     </span>
                     <p className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed">
@@ -122,7 +122,7 @@ export function CaseStudiesSection({ onOpenContact }: CaseStudiesSectionProps) {
                   </div>
 
                   <div className="p-5 bg-[#FAF9F6] border border-[#E6E6E8] space-y-2 rounded-none">
-                    <span className="text-xs font-mono font-bold text-[#FF5200] uppercase tracking-wider block">
+                    <span className="text-xs font-mono font-bold text-[#1E5FD8] uppercase tracking-wider block">
                       What Neominds Engineered
                     </span>
                     <p className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed">
@@ -131,7 +131,7 @@ export function CaseStudiesSection({ onOpenContact }: CaseStudiesSectionProps) {
                   </div>
 
                   <div className="p-5 bg-[#FAF9F6] border border-[#E6E6E8] space-y-2 rounded-none">
-                    <span className="text-xs font-mono font-bold text-[#FF5200] uppercase tracking-wider block">
+                    <span className="text-xs font-mono font-bold text-[#1E5FD8] uppercase tracking-wider block">
                       Commercial Return
                     </span>
                     <p className="text-xs sm:text-sm text-[#121316] font-sans font-semibold leading-relaxed">
@@ -184,8 +184,8 @@ export function CaseStudiesSection({ onOpenContact }: CaseStudiesSectionProps) {
               <BorderGlow
                 backgroundColor="#FFFFFF"
                 borderRadius={0}
-                glowColor="20 100 50"
-                colors={["#FF5200", "#FF7A33", "#FFA07A"]}
+                glowColor="217 91 60"
+                colors={["#10316B", "#1E5FD8", "#60A5FA"]}
                 glowRadius={36}
                 className="p-6 sm:p-10 shadow-2xl border border-[#E6E6E8] text-[#121316] rounded-none"
               >
@@ -199,7 +199,7 @@ export function CaseStudiesSection({ onOpenContact }: CaseStudiesSectionProps) {
                 </button>
 
                 <div className="mb-6">
-                  <span className="text-xs font-mono font-bold text-[#FF5200] uppercase tracking-wider">
+                  <span className="text-xs font-mono font-bold text-[#1E5FD8] uppercase tracking-wider">
                     {selectedStudy.client} • {selectedStudy.industry}
                   </span>
                   <h3 className="text-2xl sm:text-3xl font-serif text-[#121316] mt-2 leading-tight">
@@ -230,7 +230,7 @@ export function CaseStudiesSection({ onOpenContact }: CaseStudiesSectionProps) {
                   </div>
 
                   <div>
-                    <h4 className="font-bold text-[#FF5200] text-xs uppercase tracking-wider mb-1 font-sans">
+                    <h4 className="font-bold text-[#1E5FD8] text-xs uppercase tracking-wider mb-1 font-sans">
                       Commercial Return
                     </h4>
                     <p className="text-[#121316] font-semibold">{selectedStudy.outcome}</p>

@@ -563,138 +563,273 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
 ];
 
-// 4 Cards for Homepage Scroll Stack Section
-export const SCROLL_STACK_CARDS: ScrollStackCard[] = [
+// 4 Case Studies Specifically for the Homepage Scroll Stack Section
+export interface ScrollStackCaseStudy {
+  id: string;
+  stepNumber: string;
+  title: string;
+  client: string;
+  industry: string;
+  shortDescription: string;
+  challenge: string;
+  solution: string;
+  whatWeBuilt: string;
+  outcome: string;
+  metrics: {
+    stat: string;
+    label: string;
+  }[];
+  tags: string[];
+}
+
+export const SCROLL_STACK_CASE_STUDIES: ScrollStackCaseStudy[] = [
   {
-    id: "stack-1",
+    id: "case-apex",
     stepNumber: "01",
-    title: "If you are facing these problems in business",
-    subtitle: "Common Operational Bottlenecks",
-    description:
-      "Growing companies frequently reach a point where manual tasks and disconnected software begin to stifle growth and drain resources.",
-    points: [
-      {
-        headline: "Skilled employees doing repetitive data entry",
-        detail:
-          "Valuable team members spend hours copying records between spreadsheets, CRMs, and internal systems instead of focusing on high-impact work.",
-      },
-      {
-        headline: "Slow response times causing lost sales",
-        detail:
-          "Qualified inbound buyers wait hours for basic pricing or booking replies, leading them to purchase from faster competitors.",
-      },
-      {
-        headline: "Siloed software that fails to communicate",
-        detail:
-          "Using multiple disconnected software tools forces manual double-entry, creating data discrepancies and delayed reporting.",
-      },
-      {
-        headline: "Off-the-shelf software with missing features",
-        detail:
-          "Paying expensive monthly subscriptions for generic tools that fail to match your exact business processes.",
-      },
+    title: "Automated Customer Verification Pipeline",
+    client: "Apex Wealth Tech",
+    industry: "Financial Services",
+    shortDescription:
+      "Engineered an automated document extraction and KYC verification pipeline that cut onboarding time from 48 hours to under 4 minutes with zero compliance backlog.",
+    challenge:
+      "Apex processed over 800 new customer applications weekly. Manual document verification and identity checks took 48 hours per customer, causing severe dropoff during onboarding.",
+    solution:
+      "We built an automated computer vision and verification system that inspects identity documentation, validates data against compliance databases, and securely approves accounts.",
+    whatWeBuilt:
+      "A private Next.js review portal, OCR document extraction pipeline, and webhook triggers syncing approved accounts directly with their core banking database.",
+    outcome:
+      "Reduced average application approval time from 48 hours to under 4 minutes while eliminating manual compliance backlog.",
+    metrics: [
+      { stat: "3.5 Min", label: "Average Verification Time" },
+      { stat: "85%", label: "Workflows Automated" },
+      { stat: "$195,000", label: "Annual Operational Savings" },
     ],
+    tags: ["Financial Technology", "Document Verification", "Data Pipeline"],
   },
   {
-    id: "stack-2",
+    id: "case-vanguard",
     stepNumber: "02",
-    title: "What Neominds does",
-    subtitle: "End-to-End Technical Solutions",
-    description:
-      "We design, build, and deploy custom software and AI systems that eliminate operational bottlenecks and drive business performance.",
-    points: [
-      {
-        headline: "Practical AI Solutions and Agents",
-        detail:
-          "Custom AI assistants and autonomous workflows built with strict guardrails to handle customer inquiries, document analysis, and triage.",
-      },
-      {
-        headline: "Full-Stack Web and Application Development",
-        detail:
-          "Bespoke web applications, internal company portals, and high-performance websites engineered with Next.js, React, and TypeScript.",
-      },
-      {
-        headline: "Automated Data Pipelines and System Integrations",
-        detail:
-          "Secure bridges connecting your CRMs, ERPs, payment processors, and databases for real-time synchronization.",
-      },
-      {
-        headline: "Rigorous Software Testing and Technical Audits",
-        detail:
-          "Automated test suites, infrastructure cost audits, and performance tuning that guarantee system stability and security.",
-      },
+    title: "Real-Time Freight Coordination Engine",
+    client: "Vanguard Global Freight",
+    industry: "Logistics & Transport",
+    shortDescription:
+      "Constructed a real-time messaging agent and dispatch engine automating 94% of daily driver check-ins, saving 120 hours monthly per dispatch coordinator.",
+    challenge:
+      "Dispatch teams spent over 6 hours each day manually coordinating driver status updates and route logs across phone calls, leading to delayed tracking for enterprise clients.",
+    solution:
+      "We developed an automated messaging agent integrated directly into Vanguard's centralized dispatch database to handle status collection and route confirmation automatically.",
+    whatWeBuilt:
+      "An automated messaging agent with state management, driver verification rules, and bi-directional API synchronization with their logistics software.",
+    outcome:
+      "Automated over 90% of daily driver check-ins, giving dispatchers live route visibility with zero manual record entry.",
+    metrics: [
+      { stat: "94%", label: "Fewer Dispatch Delays" },
+      { stat: "120 Hrs", label: "Saved per Dispatcher Monthly" },
+      { stat: "99.9%", label: "Live Route Accuracy" },
     ],
+    tags: ["Logistics Automation", "Messaging Agent", "API Integration"],
   },
   {
-    id: "stack-3",
+    id: "case-nexus",
     stepNumber: "03",
-    title: "Why choose Neominds",
-    subtitle: "Engineered for Reliability",
-    description:
-      "We are a serious technology partner focused on business outcomes, technical depth, and clean execution.",
-    points: [
-      {
-        headline: "Business-First Technical Thinking",
-        detail:
-          "We do not build technology for the sake of novelty. Every architectural decision is anchored to measurable business efficiency and ROI.",
-      },
-      {
-        headline: "100% Intellectual Property Ownership",
-        detail:
-          "You retain complete ownership of all custom code, configurations, and assets with zero ongoing vendor lock-in or licensing fees.",
-      },
-      {
-        headline: "Direct Engineer Collaboration",
-        detail:
-          "You communicate directly with senior software engineers who write the code, eliminating communication delays and account management layers.",
-      },
-      {
-        headline: "Fast and Predictable Delivery",
-        detail:
-          "Structured development sprints with clear milestones ensure working software is deployed quickly without corporate delays.",
-      },
+    title: "Instant Inbound Sales Qualification Assistant",
+    client: "Nexus Cloud Software",
+    industry: "B2B Software",
+    shortDescription:
+      "Built an intelligent qualification system that verifies company domains, analyzes lead requirements in under 45 seconds, and increased booked sales meetings by 3.8x.",
+    challenge:
+      "High-value enterprise sales leads waited an average of 4.5 hours for an initial email reply. Inbound lead qualification dropoff was exceeding 40%.",
+    solution:
+      "We implemented an intelligent inbound qualification assistant that verifies company domains, analyzes lead requirements, and immediately schedules qualified demos on account executive calendars.",
+    whatWeBuilt:
+      "A fast qualification service integrated with Stripe, Salesforce, and calendar booking APIs, responding to new inquiries in under 45 seconds.",
+    outcome:
+      "Increased scheduled sales meetings by 3.8x while ensuring 100% of CRM records were populated with enriched company data.",
+    metrics: [
+      { stat: "< 45 Sec", label: "Average Response Time" },
+      { stat: "3.8x", label: "Sales Meetings Booked" },
+      { stat: "100%", label: "CRM Data Accuracy" },
     ],
+    tags: ["Sales Automation", "CRM Synchronization", "Lead Triage"],
   },
   {
-    id: "stack-4",
+    id: "case-omni",
     stepNumber: "04",
-    title: "Contact Us",
-    subtitle: "Start Your Technical Project",
-    description:
-      "Discuss your technical challenges with a senior engineer. We evaluate your current systems and propose a clear, actionable solution plan.",
-    points: [
-      {
-        headline: "15-Minute Technical Discovery Call",
-        detail:
-          "A focused conversation with an engineer to review your workflow bottlenecks, architecture, and timeline requirements.",
-      },
-      {
-        headline: "Actionable System Architecture Blueprint",
-        detail:
-          "We provide a clear technical scope, fixed milestone estimates, and recommended tech stack tailored to your goals.",
-      },
-      {
-        headline: "Zero Obligation or High-Pressure Sales",
-        detail:
-          "Straightforward technical consultation focused entirely on whether our capabilities match your business needs.",
-      },
+    title: "Multi-Channel Inventory & Order Sync Engine",
+    client: "OmniRetail Systems",
+    industry: "E-Commerce & Supply Chain",
+    shortDescription:
+      "Engineered an event-driven synchronization engine across warehouses, ERPs, and storefronts, eliminating stock-out errors and reducing fulfillment cycles by 65%.",
+    challenge:
+      "OmniRetail suffered frequent stock-out discrepancies and inventory lag across multiple storefronts and 3 regional warehouses, causing hundreds of cancelled orders monthly.",
+    solution:
+      "We architected an event-driven synchronization service utilizing Redis and PostgreSQL to lock stock in real time and broadcast updates instantly across all channels.",
+    whatWeBuilt:
+      "A distributed microservice engine with automated order routing, webhooks, and real-time inventory ledger synchronization.",
+    outcome:
+      "Eliminated 100% of stock-out cancellation errors and reduced average order processing time by 65%.",
+    metrics: [
+      { stat: "0.0%", label: "Stock-Out Discrepancies" },
+      { stat: "65%", label: "Fulfillment Cycle Reduction" },
+      { stat: "100,000+", label: "Daily Transactions Processed" },
     ],
-    ctaText: "Discuss Your Project",
+    tags: ["Distributed Systems", "Inventory Sync", "PostgreSQL"],
   },
 ];
 
-// Credibility Logos
-export const LOGO_ITEMS = [
-  { name: "Amazon Web Services", category: "Cloud Infrastructure" },
-  { name: "Google Cloud", category: "Cloud Services" },
-  { name: "Microsoft Azure", category: "Enterprise Cloud" },
-  { name: "PostgreSQL", category: "Database" },
-  { name: "Next.js", category: "Frontend Framework" },
-  { name: "Stripe", category: "Payments Engine" },
-  { name: "Supabase", category: "Backend Infrastructure" },
-  { name: "Docker", category: "Containerization" },
-  { name: "Python", category: "AI & Backend" },
+// Industries We Serve Data (Horizontal Scroll Style)
+export interface IndustryItem {
+  id: string;
+  code: string;
+  name: string;
+  tagline: string;
+  description: string;
+  capabilities: string[];
+  metricStat: string;
+  metricLabel: string;
+}
+
+export const INDUSTRIES_DATA: IndustryItem[] = [
+  {
+    id: "it",
+    code: "01",
+    name: "Information Technology",
+    tagline: "Cloud Architecture & High-Throughput Backends",
+    description:
+      "We design distributed cloud systems, modern API gateways, database schemas, and microservice architectures built for sub-second latency and zero unplanned downtime.",
+    capabilities: [
+      "Distributed microservices & REST/GraphQL APIs",
+      "Zero-downtime database migrations & replicas",
+      "Cloud infrastructure provisioning (AWS/GCP/Vercel)",
+      "High-concurrency load balancing & caching",
+    ],
+    metricStat: "< 120ms",
+    metricLabel: "Average API Response Latency",
+  },
+  {
+    id: "ai",
+    code: "02",
+    name: "Artificial Intelligence",
+    tagline: "Deterministic AI Agents & LLM Pipelines",
+    description:
+      "We engineer production-grade AI agents, structured tool execution engines, and private RAG pipelines with strict output validation and deterministic guardrails.",
+    capabilities: [
+      "Autonomous triage & customer support agents",
+      "Private vector search & RAG knowledge retrieval",
+      "OCR document extraction & automated verification",
+      "Structured output schemas with error fallback queues",
+    ],
+    metricStat: "99.4%",
+    metricLabel: "Verification Accuracy Rate",
+  },
+  {
+    id: "education",
+    code: "03",
+    name: "Education & EdTech",
+    tagline: "High-Engagement Learning Platforms",
+    description:
+      "We build interactive educational portals, student progress trackers, real-time assessment engines, and automated administrative workflows.",
+    capabilities: [
+      "Custom LMS & course delivery platforms",
+      "Automated homework & quiz evaluation engines",
+      "Interactive coding & testing sandboxes",
+      "Role-based teacher, student, and admin portals",
+    ],
+    metricStat: "4.2x",
+    metricLabel: "Student Retention Rate Growth",
+  },
+  {
+    id: "real-estate",
+    code: "04",
+    name: "Real Estate & PropTech",
+    tagline: "Automated Property & Asset Management",
+    description:
+      "We build custom property listing sync engines, automated tenant screening pipelines, digital contract management, and maintenance dispatch systems.",
+    capabilities: [
+      "Multi-listing MLS & CRM synchronization",
+      "Automated lease generation & e-signature pipelines",
+      "Tenant intake, identity verification, & rent processing",
+      "Predictive property maintenance dispatch",
+    ],
+    metricStat: "80%",
+    metricLabel: "Leasing Admin Overhead Saved",
+  },
+  {
+    id: "smb",
+    code: "05",
+    name: "SMBs & High-Growth Operations",
+    tagline: "Custom Internal Software & Operational Automation",
+    description:
+      "We replace bloated SaaS stacks and manual spreadsheets with custom software tailored directly to your business processes with zero per-seat licensing fees.",
+    capabilities: [
+      "Custom internal operations portals & ERPs",
+      "Automated invoicing & payment reconciliation",
+      "Multi-channel inventory & supply chain sync",
+      "Real-time executive performance dashboards",
+    ],
+    metricStat: "25+ Hrs",
+    metricLabel: "Reclaimed per Employee Weekly",
+  },
 ];
+
+// Number Changer Dynamic Metrics
+export interface NumberChangerStat {
+  id: string;
+  value: number;
+  suffix: string;
+  label: string;
+  subtext: string;
+  detail: string;
+}
+
+export const NUMBER_CHANGER_STATS: NumberChangerStat[] = [
+  {
+    id: "projects",
+    value: 100,
+    suffix: "+",
+    label: "Projects Delivered",
+    subtext: "Enterprise systems, AI agents, & bespoke software deployed to production.",
+    detail: "Zero failed rollouts with 100% production stability.",
+  },
+  {
+    id: "team",
+    value: 25,
+    suffix: "+",
+    label: "Engineering Team",
+    subtext: "Senior software engineers, AI researchers, and cloud architects.",
+    detail: "Direct engineer-to-client collaboration without non-technical middlemen.",
+  },
+  {
+    id: "experience",
+    value: 6,
+    suffix: "+",
+    label: "Years of Experience",
+    subtext: "Deep production experience building enterprise-grade architectures.",
+    detail: "Continuous delivery cadence averaging 14-day sprint cycles.",
+  },
+];
+
+// Tech Logo Marquee Items
+export const TECH_LOGO_ITEMS = [
+  { name: "Next.js", category: "Full-Stack Framework" },
+  { name: "React", category: "UI Engine" },
+  { name: "TypeScript", category: "Type-Safe Architecture" },
+  { name: "Python", category: "AI & Data Engineering" },
+  { name: "PyTorch", category: "Machine Learning" },
+  { name: "OpenAI", category: "Model Integration" },
+  { name: "AWS", category: "Cloud Infrastructure" },
+  { name: "Google Cloud", category: "Cloud & Compute" },
+  { name: "PostgreSQL", category: "Relational Database" },
+  { name: "Supabase", category: "Realtime Backend" },
+  { name: "Docker", category: "Containerization" },
+  { name: "Kubernetes", category: "Orchestration" },
+  { name: "Redis", category: "In-Memory Cache" },
+  { name: "Stripe", category: "Payment Engine" },
+  { name: "LangChain", category: "Agent Framework" },
+  { name: "Tailwind CSS", category: "Styling Architecture" },
+];
+
+export const LOGO_ITEMS = TECH_LOGO_ITEMS;
 
 // Selected Homepage Case Studies
 export const CASE_STUDIES: CaseStudy[] = [
@@ -757,6 +892,26 @@ export const CASE_STUDIES: CaseStudy[] = [
       { stat: "100%", label: "CRM Data Accuracy" },
     ],
     tags: ["Sales Automation", "CRM Synchronization", "Lead Triage"],
+  },
+  {
+    id: "case-4",
+    title: "Multi-Channel Inventory & Order Sync Engine",
+    client: "OmniRetail Systems",
+    industry: "E-Commerce & Supply Chain",
+    challenge:
+      "OmniRetail suffered frequent stock-out discrepancies and inventory lag across multiple storefronts and 3 regional warehouses, causing hundreds of cancelled orders monthly.",
+    solution:
+      "We architected an event-driven synchronization service utilizing Redis and PostgreSQL to lock stock in real time and broadcast updates instantly across all channels.",
+    whatWeBuilt:
+      "A distributed microservice engine with automated order routing, webhooks, and real-time inventory ledger synchronization.",
+    outcome:
+      "Eliminated 100% of stock-out cancellation errors and reduced average order processing time by 65%.",
+    metrics: [
+      { stat: "0.0%", label: "Stock-Out Discrepancies" },
+      { stat: "65%", label: "Fulfillment Cycle Reduction" },
+      { stat: "100k+", label: "Daily Transactions Processed" },
+    ],
+    tags: ["Distributed Systems", "Inventory Sync", "PostgreSQL"],
   },
 ];
 

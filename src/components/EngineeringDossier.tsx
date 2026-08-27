@@ -2,182 +2,184 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, Terminal, Code2, Database, ShieldCheck, ArrowRight } from "lucide-react";
+import { CheckCircle2, Code2, Cpu, FileText, Layers, ShieldCheck, Terminal, Workflow } from "lucide-react";
 import { BorderGlow } from "@/components/ui/BorderGlow";
 
-interface DossierTab {
+interface DossierItem {
   id: string;
   tabLabel: string;
   category: string;
   title: string;
-  subtitle: string;
   description: string;
-  deliverableBullets: string[];
-  systemSpecs: {
-    label: string;
-    value: string;
-  }[];
   fileType: string;
+  deliverableBullets: string[];
   codeSnippet: string;
+  systemSpecs: { label: string; value: string }[];
 }
 
-const DOSSIER_DATA: DossierTab[] = [
+const DOSSIER_DATA: DossierItem[] = [
   {
-    id: "dossier-arch",
-    tabLabel: "01 Architecture",
-    category: "System Blueprint",
-    title: "Distributed Schema & Event Pipeline",
-    subtitle: "Enterprise Technical Foundation",
-    description:
-      "Every project begins with a deterministic technical blueprint: relational database models, API contracts, caching layers, and decoupled service boundaries designed for high throughput and zero data loss.",
-    deliverableBullets: [
-      "Entity relationship diagrams & PostgreSQL schemas",
-      "REST and GraphQL API specifications",
-      "Asynchronous message queue architecture",
-      "Automated database migration scripts",
-    ],
-    systemSpecs: [
-      { label: "Target Latency", value: "< 150ms" },
-      { label: "Data Integrity", value: "100% ACID" },
-      { label: "Cloud Deploy", value: "AWS / Vercel" },
-    ],
-    fileType: "ARCHITECTURE.SPEC",
-    codeSnippet: `export interface DatabaseClusterConfig {
-  primaryPool: "postgres-r6g.2xlarge",
-  readReplicas: 3,
-  connectionPooling: "pgbouncer-strict",
-  walReplicationLag: "< 5ms",
-  sslMode: "require"
-};`,
-  },
-  {
-    id: "dossier-ai",
-    tabLabel: "02 AI Engines",
+    id: "ai-agents",
+    tabLabel: "01. AI Agents & Workflows",
     category: "Autonomous Systems",
-    title: "Deterministic AI Agents & LLM Pipelines",
-    subtitle: "Structured Workflow Intelligence",
+    title: "Deterministic Multi-Agent Orchestration Engine",
     description:
-      "We build practical AI systems with strict output schemas, structured tool calling, input sanitization, and fallback queues. No hallucinations, no unpredictable conversational dead-ends.",
+      "Enterprise autonomous workflows built with strict schema validation, structured function calling, and deterministic state transitions. We eliminate hallucination risk in production pipelines.",
+    fileType: "agent_orchestrator.ts",
     deliverableBullets: [
-      "Structured JSON schema enforcement",
-      "Custom vector embeddings & private RAG sync",
-      "Deterministic tool execution pipelines",
-      "Continuous prompt evaluation test suites",
+      "Custom tool-calling router with automated fallback loops",
+      "LangGraph / OpenAI SDK / Claude 3.7 production harnesses",
+      "Vector embeddings & retrieval with Supabase pgvector",
+      "Human-in-the-loop verification checkpoints",
     ],
-    systemSpecs: [
-      { label: "Accuracy Rate", value: "99.4%" },
-      { label: "Fallback Queue", value: "Automated" },
-      { label: "Privacy Protocol", value: "Zero Data Sharing" },
-    ],
-    fileType: "AGENT_RUNTIME.TS",
-    codeSnippet: `const AgentExecutor = z.object({
-  taskQueue: z.enum(["INGEST", "AUDIT", "DISPATCH"]),
-  schemaValidator: (res) => strictToolSchema.parse(res),
-  maxToolHops: 5,
-  telemetryStream: true
+    codeSnippet: `export const agentWorkflow = new Workflow({
+  stateSchema: EnterpriseStateSchema,
+  maxAutonomousRetries: 3,
+  strictValidation: true,
+  nodes: [
+    { name: "ingest", handler: ingestPayload },
+    { name: "evaluate", handler: modelReasoningNode },
+    { name: "verify", handler: deterministicAuditor },
+  ],
 });`,
+    systemSpecs: [
+      { label: "P99 Latency", value: "< 240ms" },
+      { label: "Deterministic Accuracy", value: "99.94%" },
+      { label: "Fallback Recovery", value: "100%" },
+    ],
   },
   {
-    id: "dossier-qa",
-    tabLabel: "03 Testing Suite",
-    category: "Quality Assurance",
-    title: "Automated End-to-End Test Harness",
-    subtitle: "Zero-Downtime Deployment Verification",
+    id: "custom-software",
+    tabLabel: "02. Custom Software",
+    category: "Full-Stack Architecture",
+    title: "High-Throughput Distributed Microservices",
     description:
-      "Before a single line of code reaches production, automated E2E suites simulate concurrent traffic, race conditions, edge-case validation, and database load to guarantee stability.",
+      "Modern full-stack applications engineered for sub-millisecond response times, horizontal elasticity, and strict compliance isolation.",
+    fileType: "cluster_config.go",
     deliverableBullets: [
-      "Playwright end-to-end user flow tests",
-      "Integration tests with mock payment & webhook APIs",
-      "Stress testing up to 25,000 concurrent sessions",
-      "Automated regression checks in CI/CD pipeline",
+      "Next.js 16 + Go / Node.js distributed backends",
+      "PostgreSQL / Redis caching & partitioned event streams",
+      "Zero-trust API authentication with granular RBAC",
+      "Automated CI/CD pipelines deploying to AWS / GCP",
     ],
+    codeSnippet: `func InitializeCluster(ctx context.Context) (*Cluster, error) {
+    mesh := networking.NewMeshTopology(
+        networking.WithZeroDowntimeRollingDeploy(),
+        networking.WithStrictMTLS(),
+        networking.WithTelemetryExporter("otel.neominds.internal"),
+    )
+    return mesh.Bootstrap(ctx)
+}`,
     systemSpecs: [
-      { label: "Test Coverage", value: "95%+" },
-      { label: "CI Validation", value: "Automated PR Gates" },
-      { label: "Regression Risk", value: "Near Zero" },
+      { label: "Req / Second", value: "45,000+" },
+      { label: "Uptime SLA", value: "99.99%" },
+      { label: "Test Coverage", value: "94.8%" },
     ],
-    fileType: "QA_HARNESS.SPEC",
-    codeSnippet: `test("concurrent checkout with stock lock", async ({ page }) => {
-  await page.simulateConcurrentPurchases(50);
-  expect(inventoryCount).toBe(0);
-  expect(overdraftRisk).toBe(false);
-});`,
   },
   {
-    id: "dossier-handover",
-    tabLabel: "04 Code Ownership",
-    category: "Final Delivery",
-    title: "Complete Source Code & Infrastructure Keys",
-    subtitle: "100% Intellectual Property Handover",
+    id: "application-dev",
+    tabLabel: "03. Web & App Systems",
+    category: "Client Engineering",
+    title: "Performance-Critical Web & Mobile Applications",
     description:
-      "You receive the full repository, Git commit history, deployment scripts, environment keys, and comprehensive technical documentation. Zero vendor lock-in or recurring agency royalties.",
+      "Consumer and enterprise client applications designed with instant interaction feedback, buttery-smooth animations, and offline-first data sync.",
+    fileType: "client_engine.tsx",
     deliverableBullets: [
-      "Full GitHub repository transfer",
-      "Infrastructure-as-Code Terraform / Docker configurations",
-      "Executive and developer architecture documentation",
-      "30-day post-launch warranty and live support",
+      "Responsive React / Next.js / React Native architectures",
+      "Lenis 60fps smooth kinetic animation pipelines",
+      "Optimistic UI updates with offline IndexedDB caches",
+      "Sub-second First Contentful Paint (FCP) and zero layout shift",
     ],
+    codeSnippet: `export function KineticAppEngine({ children }: EngineProps) {
+  const { lenis } = useKineticSmoothScroll({ lerp: 0.1 });
+  useFrameUpdate((time) => lenis.raf(time));
+
+  return (
+    <ViewTransitionProvider>
+      <ClientHydrationGuard fallback={<SkeletonLayout />}>
+        {children}
+      </ClientHydrationGuard>
+    </ViewTransitionProvider>
+  );
+}`,
     systemSpecs: [
-      { label: "Ownership", value: "100% Client IP" },
-      { label: "License Fees", value: "Zero" },
-      { label: "Handover Speed", value: "Instant Git Transfer" },
+      { label: "FCP Benchmark", value: "0.42s" },
+      { label: "Core Web Vitals", value: "100 / 100" },
+      { label: "Frame Rate", value: "60 FPS Locked" },
     ],
-    fileType: "OWNERSHIP_DEED.MD",
-    codeSnippet: `### NEOMINDS CLIENT IP HANDOVER
-- REPOSITORY: https://github.com/client-org/production
-- OWNERSHIP: 100% EXCLUSIVE
-- PERPETUAL COMMERCIAL RIGHTS: GRANTED
-- THIRD-PARTY ROYALTIES: $0.00`,
+  },
+  {
+    id: "audits-consultation",
+    tabLabel: "04. Audits & Consulting",
+    category: "Technical Advisory",
+    title: "Deep-Code Architectural & Security Audits",
+    description:
+      "Comprehensive structural, security, and scalability reviews of existing codebases. We identify hidden concurrency bottlenecks, database leaks, and AI cost inefficiencies.",
+    fileType: "audit_matrix.json",
+    deliverableBullets: [
+      "OWASP top 10 & data leak vulnerability assessments",
+      "Database query plan optimization & indexing remediation",
+      "LLM token burn & model routing cost reductions (30-60%)",
+      "Executive architecture dossier with actionable code diffs",
+    ],
+    codeSnippet: `{
+  "auditResult": "COMPLETED",
+  "bottlenecksRemediated": 18,
+  "estimatedCostSavings": "44.2%",
+  "p99LatencyReduction": "3.8x",
+  "status": "PRODUCTION_HARDENED"
+}`,
+    systemSpecs: [
+      { label: "Cost Reduction", value: "35-60%" },
+      { label: "Audit Turnaround", value: "5 Days" },
+      { label: "Deliverable", value: "Actionable PRs" },
+    ],
   },
 ];
 
 export function EngineeringDossier() {
-  const [activeTab, setActiveTab] = useState(DOSSIER_DATA[0].id);
+  const [activeTabId, setActiveTabId] = useState<string>(DOSSIER_DATA[0].id);
 
-  const currentDossier = DOSSIER_DATA.find((d) => d.id === activeTab) || DOSSIER_DATA[0];
+  const currentDossier = DOSSIER_DATA.find((d) => d.id === activeTabId) || DOSSIER_DATA[0];
 
   return (
-    <section id="dossier" className="py-24 sm:py-32 bg-[#090A0D] text-[#FFFFFF] border-b border-[#222530] relative overflow-hidden">
+    <section className="py-24 sm:py-32 bg-[#08090C] text-[#FFFFFF] border-b border-[#222530] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl mb-14 sm:mb-18"
-        >
+        <div className="max-w-3xl mb-14 sm:mb-18">
+          <span className="text-xs font-mono font-bold text-[#1E5FD8] uppercase tracking-wider block mb-2">
+            Engineering Blueprint Dossier
+          </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#FFFFFF] leading-tight">
-            How we structure and deliver your technical assets.
+            How we engineer mission-critical systems.
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-[#E2E5EE] font-sans">
-            Explore the exact artifacts, blueprints, and code standards delivered across our engineering sprints.
+          <p className="mt-4 text-base text-[#E2E5EE] font-sans leading-relaxed">
+            Inspect our technical standards, code paradigms, and production benchmarks across our four core engineering capabilities.
           </p>
-        </motion.div>
+        </div>
 
-        {/* Interactive Physical Folder Container */}
-        <div className="relative max-w-5xl mx-auto">
-          {/* Folder Tabs Row */}
-          <div className="flex items-end gap-1.5 sm:gap-2 overflow-x-auto pb-px border-b border-[#2D313F] no-scrollbar">
+        {/* Tabbed Folder Dossier System */}
+        <div className="relative">
+          {/* Top Folder Tabs Bar with Sharp Corners */}
+          <div className="flex items-center gap-1 sm:gap-2 overflow-x-auto pb-px border-b border-[#2D313F] no-scrollbar">
             {DOSSIER_DATA.map((tab) => {
-              const isActive = tab.id === activeTab;
-
+              const isActive = activeTabId === tab.id;
               return (
                 <button
                   key={tab.id}
                   type="button"
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`relative px-4 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm font-sans font-bold transition-all border border-b-0 cursor-pointer whitespace-nowrap rounded-none ${
+                  onClick={() => setActiveTabId(tab.id)}
+                  className={`relative px-4 sm:px-6 py-3.5 text-xs font-mono font-bold uppercase tracking-wider transition-all duration-150 border-t border-x cursor-pointer flex-shrink-0 flex items-center gap-2 whitespace-nowrap rounded-none ${
                     isActive
                       ? "bg-[#101217] text-[#FFFFFF] border-[#2D313F] shadow-[0_-4px_16px_rgba(0,0,0,0.3)] z-10"
                       : "bg-[#090A0D] text-[#A0A4B8] border-transparent hover:text-[#FFFFFF] hover:bg-[#14161F]"
                   }`}
                 >
-                  {/* Top orange active accent line */}
+                  {/* Top blue active accent line */}
                   {isActive && (
                     <motion.div
                       layoutId="activeTabTopDark"
-                      className="absolute top-0 inset-x-0 h-0.5 bg-[#FF5200] rounded-none"
+                      className="absolute top-0 inset-x-0 h-0.5 bg-[#1E5FD8] rounded-none"
                     />
                   )}
                   <span>{tab.tabLabel}</span>
@@ -190,8 +192,8 @@ export function EngineeringDossier() {
           <BorderGlow
             backgroundColor="#101217"
             borderRadius={0}
-            glowColor="20 100 50"
-            colors={["#FF5200", "#FF7A33", "#FFA07A"]}
+            glowColor="217 91 60"
+            colors={["#10316B", "#1E5FD8", "#60A5FA"]}
             edgeSensitivity={25}
             glowRadius={36}
             glowIntensity={1.2}
@@ -209,7 +211,7 @@ export function EngineeringDossier() {
                 {/* Dossier Header Bar */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#2D313F] pb-6 gap-4">
                   <div className="space-y-1">
-                    <span className="text-xs font-mono font-bold text-[#FF5200] uppercase tracking-wider block">
+                    <span className="text-xs font-mono font-bold text-[#1E5FD8] uppercase tracking-wider block">
                       {currentDossier.category}
                     </span>
                     <h3 className="text-2xl sm:text-3xl font-serif text-[#FFFFFF] leading-tight">
@@ -238,7 +240,7 @@ export function EngineeringDossier() {
                     </span>
                     {currentDossier.deliverableBullets.map((bullet, bIdx) => (
                       <div key={bIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-[#FFFFFF]">
-                        <CheckCircle2 className="w-4 h-4 text-[#FF5200] flex-shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-4 h-4 text-[#1E5FD8] flex-shrink-0 mt-0.5" />
                         <span>{bullet}</span>
                       </div>
                     ))}
@@ -249,7 +251,7 @@ export function EngineeringDossier() {
                     <div className="p-5 bg-[#0B0C10] border border-[#2D313F] font-mono text-xs text-[#FFFFFF] overflow-x-auto space-y-2 rounded-none">
                       <div className="flex items-center justify-between border-b border-[#222530] pb-2 text-[11px] text-[#A0A4B8]">
                         <span className="text-white font-bold">{currentDossier.fileType}</span>
-                        <span className="text-[#FF5200] font-bold">SYNTAX VERIFIED</span>
+                        <span className="text-[#1E5FD8] font-bold">SYNTAX VERIFIED</span>
                       </div>
                       <pre className="text-[#FFFFFF] leading-relaxed pt-1 font-mono">
                         <code>{currentDossier.codeSnippet}</code>
@@ -260,12 +262,12 @@ export function EngineeringDossier() {
                       {currentDossier.systemSpecs.map((spec, sIdx) => (
                         <div
                           key={sIdx}
-                          className="p-3 bg-[#14161F] border border-[#2D313F] rounded-lg"
+                          className="p-3 bg-[#14161F] border border-[#2D313F] rounded-none"
                         >
                           <span className="text-[10px] text-[#A0A4B8] font-mono block uppercase">
                             {spec.label}
                           </span>
-                          <span className="text-xs font-bold text-[#FF5200] block mt-0.5 font-mono">
+                          <span className="text-xs font-bold text-[#1E5FD8] block mt-0.5 font-mono">
                             {spec.value}
                           </span>
                         </div>

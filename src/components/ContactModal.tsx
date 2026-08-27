@@ -47,7 +47,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
         {!isSubmitted ? (
           <div>
             <div className="mb-6">
-              <span className="text-xs font-mono font-bold text-[#FF5200] uppercase tracking-wider block mb-1">
+              <span className="text-xs font-mono font-bold text-[#1E5FD8] uppercase tracking-wider block mb-1">
                 Technical Discovery
               </span>
               <h3 className="text-2xl sm:text-3xl font-serif text-[#121316] leading-tight">
@@ -154,7 +154,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
           </div>
         ) : (
           <div className="py-8 text-center space-y-4 font-sans">
-            <div className="w-12 h-12 bg-[#FFF0EB] border border-[#FF5200]/30 text-[#FF5200] flex items-center justify-center mx-auto rounded-none">
+            <div className="w-12 h-12 bg-[#EDF4FF] border border-[#1E5FD8]/30 text-[#1E5FD8] flex items-center justify-center mx-auto rounded-none">
               <CheckCircle2 className="w-6 h-6" />
             </div>
 

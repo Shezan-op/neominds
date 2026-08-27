@@ -8,7 +8,7 @@ export interface BorderGlowProps {
   className?: string;
   style?: React.CSSProperties;
   edgeSensitivity?: number;
-  glowColor?: string; // HSL formatted string "H S L" e.g. "20 100 50"
+  glowColor?: string; // HSL formatted string "H S L" e.g. "217 91 60"
   backgroundColor?: string;
   borderRadius?: number;
   glowRadius?: number;
@@ -22,7 +22,7 @@ export interface BorderGlowProps {
 
 function parseHSL(hslStr: string) {
   const match = hslStr.match(/([\d.]+)\s*([\d.]+)%?\s*([\d.]+)%?/);
-  if (!match) return { h: 20, s: 100, l: 50 };
+  if (!match) return { h: 217, s: 91, l: 60 };
   return {
     h: parseFloat(match[1]),
     s: parseFloat(match[2]),
@@ -33,7 +33,7 @@ function parseHSL(hslStr: string) {
 function buildGlowVars(glowColor: string, intensity: number) {
   const { h, s, l } = parseHSL(glowColor);
   const base = `${h}deg ${s}% ${l}%`;
-  const opacities = [100, 60, 50, 40, 30, 20, 10];
+  const opacities = [40, 25, 18, 12, 8, 4, 2];
   const keys = ["", "-60", "-50", "-40", "-30", "-20", "-10"];
   const vars: Record<string, string> = {};
   for (let i = 0; i < opacities.length; i++) {
@@ -116,16 +116,16 @@ export function BorderGlow({
   children,
   className = "",
   style,
-  edgeSensitivity = 25,
-  glowColor = "20 100 50", // Neominds brand orange in HSL
+  edgeSensitivity = 20,
+  glowColor = "217 91 60", // Sapphire blue in HSL
   backgroundColor = "#FFFFFF",
-  borderRadius = 4,
-  glowRadius = 30,
-  glowIntensity = 1.0,
-  coneSpread = 25,
+  borderRadius = 0,
+  glowRadius = 18,
+  glowIntensity = 0.45,
+  coneSpread = 20,
   animated = false,
-  colors = ["#FF5200", "#FF7A33", "#FFA07A"], // Orange color spectrum
-  fillOpacity = 0.25,
+  colors = ["#10316B", "#1E5FD8", "#60A5FA"], // Blue gradient spectrum
+  fillOpacity = 0.05,
   onClick,
 }: BorderGlowProps) {
   const cardRef = useRef<HTMLDivElement | null>(null);

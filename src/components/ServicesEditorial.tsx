@@ -23,6 +23,9 @@ export function ServicesEditorial() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-3xl mb-16 sm:mb-20"
         >
+          <span className="text-xs font-mono font-bold text-[#1E5FD8] uppercase tracking-wider block mb-2">
+            Engineering Capabilities
+          </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-[#121316] leading-[1.08] tracking-tight">
             Comprehensive technical services for modern enterprises.
           </h2>
@@ -54,7 +57,7 @@ export function ServicesEditorial() {
                     <div className="flex items-center gap-4 sm:gap-6">
                       <span
                         className={`text-xs font-mono font-bold transition-colors ${
-                          isHovered ? "text-[#FF5200]" : "text-[#7C7D82]"
+                          isHovered ? "text-[#1E5FD8]" : "text-[#7C7D82]"
                         }`}
                       >
                         {serviceNumber}
@@ -62,7 +65,7 @@ export function ServicesEditorial() {
                       <div>
                         <h3
                           className={`text-xl sm:text-2xl font-serif transition-colors ${
-                            isHovered ? "text-[#FF5200]" : "text-[#121316]"
+                            isHovered ? "text-[#1E5FD8]" : "text-[#121316]"
                           }`}
                         >
                           {service.title}
@@ -74,9 +77,9 @@ export function ServicesEditorial() {
                     </div>
 
                     <div
-                      className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-200 flex-shrink-0 ${
+                      className={`w-8 h-8 rounded-none border flex items-center justify-center transition-all duration-200 flex-shrink-0 ${
                         isHovered
-                          ? "bg-[#FF5200] border-[#FF5200] text-white rotate-0"
+                          ? "bg-[#1E5FD8] border-[#1E5FD8] text-white rotate-0"
                           : "bg-[#FFFFFF] border-[#E6E6E8] text-[#7C7D82] -rotate-45"
                       }`}
                     >
@@ -93,20 +96,20 @@ export function ServicesEditorial() {
             <BorderGlow
               backgroundColor="#FFFFFF"
               borderRadius={0}
-              glowColor="20 100 50"
-              colors={["#FF5200", "#FF7A33", "#FFA07A"]}
-              glowRadius={36}
-              glowIntensity={1.0}
-              className="p-6 sm:p-8 border border-[#E6E6E8] shadow-[0_12px_40px_rgba(0,0,0,0.05)] rounded-none"
+              glowColor="217 91 60"
+              colors={["#10316B", "#1E5FD8", "#60A5FA"]}
+              glowRadius={20}
+              glowIntensity={0.4}
+              className="p-6 sm:p-8 border border-[#E6E6E8] shadow-[0_8px_30px_rgba(0,0,0,0.03)] rounded-none"
             >
               <div className="flex items-center justify-between border-b border-[#E6E6E8] pb-4 mb-6">
                 <div className="flex items-center gap-2">
-                  <Terminal className="w-4 h-4 text-[#FF5200]" />
+                  <Terminal className="w-4 h-4 text-[#1E5FD8]" />
                   <span className="text-[11px] font-mono text-[#121316] uppercase tracking-wider font-semibold">
                     Blueprint Inspector
                   </span>
                 </div>
-                <span className="text-[10px] font-mono font-bold text-[#FF5200] bg-[#FFF3ED] border border-[#FF5200]/30 px-2.5 py-0.5 rounded-none">
+                <span className="text-[10px] font-mono font-bold text-[#1E5FD8] bg-[#EDF4FF] border border-[#1E5FD8]/30 px-2.5 py-0.5 rounded-none">
                   LIVE TELEMETRY
                 </span>
               </div>
@@ -121,7 +124,7 @@ export function ServicesEditorial() {
                   className="space-y-6"
                 >
                   <div>
-                    <span className="text-[10px] font-mono font-bold text-[#FF5200] uppercase tracking-wider block">
+                    <span className="text-[10px] font-mono font-bold text-[#1E5FD8] uppercase tracking-wider block">
                       Target System
                     </span>
                     <h4 className="text-2xl font-serif text-[#121316] mt-1">
@@ -143,7 +146,7 @@ export function ServicesEditorial() {
                           key={dIdx}
                           className="flex items-center gap-2 text-xs text-[#121316]"
                         >
-                          <span className="w-1.5 h-1.5 bg-[#FF5200] rounded-none" />
+                          <span className="w-1.5 h-1.5 bg-[#1E5FD8] rounded-none" />
                           <span className="line-clamp-1">{item}</span>
                         </div>
                       ))}

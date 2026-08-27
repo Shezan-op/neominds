@@ -1,19 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Instrument_Serif, Manrope } from "next/font/google";
+import { Bricolage_Grotesque, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/SmoothScroll";
 
-const instrumentSerif = Instrument_Serif({
+const bricolageGrotesque = Bricolage_Grotesque({
   subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-instrument-serif",
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-bricolage",
   display: "swap",
 });
 
-const manrope = Manrope({
+const sourceSans3 = Source_Sans_3({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
-  variable: "--font-manrope",
+  variable: "--font-source-sans",
   display: "swap",
 });
 
@@ -57,24 +57,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${instrumentSerif.variable} ${manrope.variable}`}
+      className={`${bricolageGrotesque.variable} ${sourceSans3.variable}`}
     >
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="bg-[#FAF9F6] text-[#121316] antialiased selection:bg-[#FF5200] selection:text-white min-h-screen flex flex-col font-sans">
+      <body className="bg-[#FAF9F6] text-[#121316] antialiased selection:bg-[#1E5FD8] selection:text-white min-h-screen flex flex-col font-sans">
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>
   );
 }
-

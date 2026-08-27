@@ -23,7 +23,7 @@ export function LogoCredibility() {
                 key={item.name}
                 className="flex items-center gap-1.5 text-xs font-medium text-[#4A4B50] hover:text-[#121316] transition-colors"
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-[#E6E6E8]" />
+                <span className="w-1.5 h-1.5 rounded-none bg-[#E6E6E8]" />
                 <span>{item.name}</span>
               </div>
             ))}

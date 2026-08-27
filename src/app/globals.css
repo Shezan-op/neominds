@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  /* 🎨 COLOR SYSTEM */
+  /* 🎨 COLOR SYSTEM (Sapphire / Royal Gradient Theme) */
   --bg-main: #FAF9F6;
   --bg-surface: #FFFFFF;
   --bg-subtle: #F3F2EE;
@@ -12,25 +12,30 @@
   --text-muted: #7C7D82;
   --text-light: #9B9CA0;
 
-  --accent-orange: #FF5200;
-  --accent-orange-hover: #E04800;
-  --accent-orange-subtle: #FFF3ED;
-  --accent-orange-border: rgba(255, 82, 0, 0.35);
+  --accent-blue: #1E5FD8;
+  --accent-blue-hover: #174CB3;
+  --accent-blue-subtle: #EDF4FF;
+  --accent-blue-border: rgba(30, 95, 216, 0.35);
+
+  --accent-orange: #1E5FD8;
+  --accent-orange-hover: #174CB3;
+  --accent-orange-subtle: #EDF4FF;
+  --accent-orange-border: rgba(30, 95, 216, 0.35);
 
   --border-subtle: #E6E6E8;
   --border-strong: #D2D2D6;
   --border-dark: #121316;
 
-  /* 🔡 TYPOGRAPHY */
-  --font-serif: 'Instrument Serif', Georgia, serif;
-  --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* 🔡 TYPOGRAPHY - Bricolage Grotesque & Source Sans 3 */
+  --font-serif: var(--font-bricolage), 'Bricolage Grotesque', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: var(--font-source-sans), 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 @theme inline {
   --color-background: var(--bg-main);
   --color-foreground: var(--text-primary);
-  --font-serif: 'Instrument Serif', Georgia, serif;
-  --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: var(--font-bricolage), 'Bricolage Grotesque', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: var(--font-source-sans), 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 * {
@@ -48,16 +53,37 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Ballance Exact Lenis Global Overrides */
+html.lenis, html.lenis body {
+  height: auto !important;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
 ::selection {
-  background: var(--accent-orange);
+  background: var(--accent-blue);
   color: #FFFFFF;
 }
 
 /* Typography Scale */
 h1, h2, h3, h4, h5, h6, .font-serif, .font-heading {
   font-family: var(--font-serif);
-  font-weight: 400;
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  letter-spacing: -0.025em;
   color: inherit;
 }
 
@@ -100,7 +126,7 @@ p, .body-text {
   border-radius: 0px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-orange);
+  background: var(--accent-blue);
 }
 
 /* Button & Interactive Utility Classes */
@@ -109,20 +135,22 @@ p, .body-text {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background-color: var(--accent-orange);
+  background-color: var(--accent-blue);
   color: #FFFFFF;
   font-family: var(--font-sans);
   font-weight: 600;
   font-size: 0.875rem;
   padding: 0.75rem 1.5rem;
   border-radius: 0px;
-  transition: background-color 0.2s ease, transform 0.15s ease;
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
   cursor: pointer;
-  border: 1px solid var(--accent-orange);
+  border: 1px solid var(--accent-blue);
+  box-shadow: 0 2px 10px rgba(30, 95, 216, 0.2);
 }
 
 .btn-primary:hover {
-  background-color: var(--accent-orange-hover);
+  background-color: var(--accent-blue-hover);
+  box-shadow: 0 4px 18px rgba(30, 95, 216, 0.35);
 }
 
 .btn-primary:active {
@@ -184,4 +212,3 @@ p, .body-text {
 .animate-cursor-blink {
   animation: blink 1s step-end infinite;
 }
-

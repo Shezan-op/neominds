@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Minus, CheckCircle2, Shield, Zap, Terminal } from "lucide-react";
+import { Plus, Minus, Shield, Zap, Terminal } from "lucide-react";
 import { WHY_NEOMINDS_POINTS } from "@/lib/data";
 
 export function WhyNeomindsSection() {
@@ -14,14 +14,14 @@ export function WhyNeomindsSection() {
 
   return (
     <section id="why-us" className="py-24 sm:py-32 bg-[#FAF9F6] text-[#121316] border-b border-[#E6E6E8] relative overflow-hidden">
-      {/* Top Crossover Gradient from Dark `#090A0D` back into Soft-White `#FAF9F6` */}
-      <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-[#090A0D]/5 to-transparent pointer-events-none" />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left Column: Bold Narrative & Operational Benchmarks */}
           <div className="lg:col-span-5 space-y-8 lg:sticky lg:top-32">
             <div>
+              <span className="text-xs font-mono font-bold text-[#1E5FD8] uppercase tracking-wider block mb-2">
+                Engineered for Reliability
+              </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#121316] leading-tight">
                 Why companies choose Neominds over traditional agencies.
               </h2>
@@ -30,21 +30,21 @@ export function WhyNeomindsSection() {
               </p>
             </div>
 
-            {/* Operating Benchmarks Badge List with Sharp Corners */}
-            <div className="p-6 bg-[#FFFFFF] border border-[#E6E6E8] shadow-xs space-y-4 font-sans rounded-none">
-              <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#7C7D82] block border-b border-[#E6E6E8] pb-2">
-                Operational Benchmarks
+            {/* Operating Benchmarks with Clean Hairline Borders */}
+            <div className="pt-6 border-t border-[#E6E6E8] space-y-3.5 font-sans">
+              <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#7C7D82] block mb-2">
+                Operational Guarantees
               </span>
               <div className="flex items-center gap-3 text-xs sm:text-sm text-[#121316]">
-                <Zap className="w-4 h-4 text-[#FF5200] flex-shrink-0" />
+                <Zap className="w-4 h-4 text-[#1E5FD8] flex-shrink-0" />
                 <span>14-day average sprint delivery cadence</span>
               </div>
               <div className="flex items-center gap-3 text-xs sm:text-sm text-[#121316]">
-                <Shield className="w-4 h-4 text-[#FF5200] flex-shrink-0" />
+                <Shield className="w-4 h-4 text-[#1E5FD8] flex-shrink-0" />
                 <span>100% intellectual property & code ownership</span>
               </div>
               <div className="flex items-center gap-3 text-xs sm:text-sm text-[#121316]">
-                <Terminal className="w-4 h-4 text-[#FF5200] flex-shrink-0" />
+                <Terminal className="w-4 h-4 text-[#1E5FD8] flex-shrink-0" />
                 <span>Direct Slack / GitHub channel with senior architects</span>
               </div>
             </div>
@@ -59,17 +59,17 @@ export function WhyNeomindsSection() {
                 <div
                   key={point.number}
                   className={`transition-all duration-200 ${
-                    isOpen ? "bg-[#FFFFFF]" : "hover:bg-[#FFFFFF]/50"
+                    isOpen ? "bg-[#FFFFFF]" : "hover:bg-[#F7F6F2]"
                   }`}
                 >
                   <button
                     type="button"
                     onClick={() => toggleItem(idx)}
-                    className="w-full flex items-center justify-between py-6 sm:py-8 px-4 sm:px-6 text-left cursor-pointer focus:outline-none"
+                    className="w-full flex items-center justify-between py-6 sm:py-7 px-4 sm:px-6 text-left cursor-pointer focus:outline-none"
                     aria-expanded={isOpen}
                   >
                     <div className="flex items-center gap-4 sm:gap-6 pr-4">
-                      <span className="text-xs font-mono font-bold text-[#FF5200]">
+                      <span className="text-xs font-mono font-bold text-[#1E5FD8]">
                         {point.number}
                       </span>
                       <h3 className="text-xl sm:text-2xl font-serif text-[#121316]">
@@ -80,7 +80,7 @@ export function WhyNeomindsSection() {
                     <div
                       className={`w-7 h-7 border flex items-center justify-center transition-all duration-200 flex-shrink-0 rounded-none ${
                         isOpen
-                          ? "bg-[#121316] border-[#121316] text-white"
+                          ? "bg-[#1E5FD8] border-[#1E5FD8] text-white"
                           : "bg-[#FFFFFF] border-[#E6E6E8] text-[#7C7D82]"
                       }`}
                     >

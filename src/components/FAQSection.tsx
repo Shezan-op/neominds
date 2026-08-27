@@ -33,10 +33,10 @@ export function FAQSection({
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           >
-            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#FF5200] mb-3 flex items-center justify-center gap-2 font-sans">
-              <span className="inline-block w-5 h-px bg-[#FF5200]" />
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#1E5FD8] mb-3 flex items-center justify-center gap-2 font-sans">
+              <span className="inline-block w-5 h-px bg-[#1E5FD8]" />
               Support & Transparency
-              <span className="inline-block w-5 h-px bg-[#FF5200]" />
+              <span className="inline-block w-5 h-px bg-[#1E5FD8]" />
             </p>
 
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#121316] leading-tight mb-4">
@@ -72,8 +72,8 @@ export function FAQSection({
                   <span
                     className={`text-base sm:text-lg font-serif pr-4 transition-colors duration-200 ${
                       isOpen
-                        ? "text-[#FF5200] font-semibold"
-                        : "text-[#121316] font-normal group-hover:text-[#FF5200]"
+                        ? "text-[#1E5FD8] font-semibold"
+                        : "text-[#121316] font-normal group-hover:text-[#1E5FD8]"
                     }`}
                   >
                     {faq.question}
@@ -84,7 +84,7 @@ export function FAQSection({
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     className={`flex-shrink-0 p-1.5 border transition-colors duration-200 rounded-none ${
                       isOpen
-                        ? "text-[#FF5200] border-[#FF5200]/40 bg-[#FFF0EB]"
+                        ? "text-[#1E5FD8] border-[#1E5FD8]/40 bg-[#EDF4FF]"
                         : "text-[#7C7D82] border-[#E6E6E8] group-hover:text-[#121316] group-hover:border-[#D2D2D6]"
                     }`}
                   >
@@ -106,7 +106,7 @@ export function FAQSection({
                       }}
                       className="overflow-hidden"
                     >
-                      <div className="pb-5 text-sm sm:text-base text-[#4A4B50] font-sans leading-relaxed pr-6 border-l-2 border-[#FF5200]/40 pl-4 ml-0 mb-2">
+                      <div className="pb-5 text-sm sm:text-base text-[#4A4B50] font-sans leading-relaxed pr-6 border-l-2 border-[#1E5FD8]/40 pl-4 ml-0 mb-2">
                         {faq.answer}
                       </div>
                     </motion.div>

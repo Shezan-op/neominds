@@ -20,7 +20,7 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
   const [contactOpen, setContactOpen] = useState(false);
 
   return (
-    <div className="relative min-h-screen bg-[#FAF9F6] text-[#121316] overflow-x-clip selection:bg-[#FF5200] selection:text-white">
+    <div className="relative min-h-screen bg-[#FAF9F6] text-[#121316] overflow-x-clip selection:bg-[#1E5FD8] selection:text-white">
       {/* Universal Navigation */}
       <Navbar onOpenContact={() => setContactOpen(true)} />
 
@@ -58,7 +58,7 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
                     </span>
                     {service.deliverables.map((item, idx) => (
                       <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-[#4A4B50]">
-                        <CheckCircle2 className="w-4 h-4 text-[#FF5200] flex-shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-4 h-4 text-[#1E5FD8] flex-shrink-0 mt-0.5" />
                         <span>{item}</span>
                       </div>
                     ))}
@@ -82,8 +82,8 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
                 <BorderGlow
                   backgroundColor="#FFFFFF"
                   borderRadius={0}
-                  glowColor="20 100 50"
-                  colors={["#FF5200", "#FF7A33", "#FFA07A"]}
+                  glowColor="217 91 60"
+                  colors={["#10316B", "#1E5FD8", "#60A5FA"]}
                   glowRadius={30}
                   className="aspect-video p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_30px_rgba(0,0,0,0.03)] rounded-none"
                 >
@@ -99,7 +99,7 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
                   </div>
 
                   <div className="py-10 text-center flex flex-col items-center justify-center">
-                    <div className="w-10 h-10 bg-[#FAF9F6] border border-[#E6E6E8] flex items-center justify-center text-[#FF5200] mb-3 rounded-none">
+                    <div className="w-10 h-10 bg-[#FAF9F6] border border-[#E6E6E8] flex items-center justify-center text-[#1E5FD8] mb-3 rounded-none">
                       <Layers className="w-5 h-5" />
                     </div>
                     <span className="text-sm font-semibold text-[#121316]">
@@ -127,7 +127,8 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
               <BorderGlow
                 backgroundColor="#FFFFFF"
                 borderRadius={0}
-                glowColor="20 100 50"
+                glowColor="217 91 60"
+                colors={["#10316B", "#1E5FD8", "#60A5FA"]}
                 className="p-10 sm:p-14 space-y-4 rounded-none"
               >
                 <h2 className="text-2xl sm:text-3xl font-serif text-[#121316]">
@@ -167,14 +168,14 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
                         key={idx}
                         backgroundColor="#FFFFFF"
                         borderRadius={0}
-                        glowColor="20 100 50"
-                        colors={["#FF5200", "#FF7A33", "#FFA07A"]}
+                        glowColor="217 91 60"
+                        colors={["#10316B", "#1E5FD8", "#60A5FA"]}
                         glowRadius={28}
                         className="p-8 sm:p-10 flex flex-col justify-between rounded-none"
                       >
                         <div>
                           <div className="flex items-center justify-between border-b border-[#E6E6E8] pb-4 mb-6">
-                            <span className="text-xs font-mono font-bold text-[#FF5200] uppercase tracking-wider">
+                            <span className="text-xs font-mono font-bold text-[#1E5FD8] uppercase tracking-wider">
                               Project 0{idx + 1}
                             </span>
                             <span className="text-xs font-sans text-[#7C7D82] bg-[#FAF9F6] px-2.5 py-1 border border-[#E6E6E8] rounded-none">
@@ -222,13 +223,13 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
                         key={idx}
                         backgroundColor="#FFFFFF"
                         borderRadius={0}
-                        glowColor="20 100 50"
-                        colors={["#FF5200", "#FF7A33", "#FFA07A"]}
+                        glowColor="217 91 60"
+                        colors={["#10316B", "#1E5FD8", "#60A5FA"]}
                         glowRadius={28}
                         className="p-8 space-y-6 rounded-none"
                       >
                         <div>
-                          <span className="text-xs font-bold uppercase tracking-wider text-[#FF5200] block mb-2">
+                          <span className="text-xs font-bold uppercase tracking-wider text-[#1E5FD8] block mb-2">
                             The Common Problem
                           </span>
                           <h3 className="text-xl font-serif text-[#121316] mb-2">
@@ -270,12 +271,12 @@ export function ServicePageClient({ service }: ServicePageClientProps) {
                         key={idx}
                         backgroundColor="#FFFFFF"
                         borderRadius={0}
-                        glowColor="20 100 50"
-                        colors={["#FF5200", "#FF7A33", "#FFA07A"]}
+                        glowColor="217 91 60"
+                        colors={["#10316B", "#1E5FD8", "#60A5FA"]}
                         glowRadius={24}
                         className="p-8 space-y-3 rounded-none"
                       >
-                        <span className="text-xs font-mono font-bold text-[#FF5200] block">
+                        <span className="text-xs font-mono font-bold text-[#1E5FD8] block">
                           0{idx + 1}
                         </span>
                         <h3 className="text-lg font-serif text-[#121316]">

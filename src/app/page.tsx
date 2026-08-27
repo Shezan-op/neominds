@@ -3,15 +3,13 @@
 import React, { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { HeroSection } from "@/components/HeroSection";
-import { LogoCredibility } from "@/components/LogoCredibility";
-import { ScrollStackSection } from "@/components/ScrollStackSection";
+import { NumberChangerSection } from "@/components/NumberChangerSection";
+import { TechLogoLoop } from "@/components/TechLogoLoop";
 import { ServicesEditorial } from "@/components/ServicesEditorial";
-import { CaseStudiesSection } from "@/components/CaseStudiesSection";
-import { EngineeringDossier } from "@/components/EngineeringDossier";
+import { RobotCaseStudiesShowcase } from "@/components/RobotCaseStudiesShowcase";
+import { IndustriesSection } from "@/components/IndustriesSection";
 import { WhyNeomindsSection } from "@/components/WhyNeomindsSection";
-import { AboutSection } from "@/components/AboutSection";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
-import { FAQSection } from "@/components/FAQSection";
 import { ConversionCTA } from "@/components/ConversionCTA";
 import { Footer } from "@/components/Footer";
 import { ContactModal } from "@/components/ContactModal";
@@ -20,46 +18,40 @@ export default function Home() {
   const [contactOpen, setContactOpen] = useState(false);
 
   return (
-    <div className="relative min-h-screen bg-[#FAF9F6] text-[#121316] overflow-x-clip selection:bg-[#FF5200] selection:text-white font-sans">
+    <div className="relative min-h-screen bg-[#FAF9F6] text-[#121316] overflow-x-clip selection:bg-[#1E5FD8] selection:text-white font-sans">
       {/* 01. Clean Header with Services Dropdown */}
       <Navbar onOpenContact={() => setContactOpen(true)} />
 
       <main>
-        {/* 02. Plain Hero Section with 16:9 Canvas Placeholder */}
+        {/* 02. Ballance Hero Section with hero-image.png (1024x1536) */}
         <HeroSection onOpenContact={() => setContactOpen(true)} />
 
-        {/* 03. Credibility / Technology Marks Bar */}
-        <LogoCredibility />
+        {/* 03. Editorial Number Changer (Projects, Team, Experience) */}
+        <NumberChangerSection />
 
-        {/* 04. 4-Card Scroll Stack (Problem -> Capability -> Differentiator -> Contact) */}
-        <ScrollStackSection onOpenContact={() => setContactOpen(true)} />
+        {/* 04. Infinite Technology Logo Loop */}
+        <TechLogoLoop />
 
-        {/* 05. Editorial Services Overview */}
+        {/* 05. Editorial Services Overview & Blueprint Inspector */}
         <ServicesEditorial />
 
-        {/* 06. Selected Case Studies Showcase */}
-        <CaseStudiesSection onOpenContact={() => setContactOpen(true)} />
+        {/* 06. Full-Width Robot Case Studies Interactive Showcase */}
+        <RobotCaseStudiesShowcase onOpenContact={() => setContactOpen(true)} />
 
-        {/* 07. Interactive Engineering Dossier / Artifacts Vault */}
-        <EngineeringDossier />
+        {/* 07. Industries Served (Clean Horizontal Scroll) */}
+        <IndustriesSection />
 
-        {/* 08. Core Differentiators (Why Neominds) */}
+        {/* 08. Why Choose Neominds */}
         <WhyNeomindsSection />
 
-        {/* 09. About Neominds B2B Narrative */}
-        <AboutSection />
-
-        {/* 10. High-Legibility Testimonials */}
+        {/* 09. Testimonials */}
         <TestimonialsSection />
 
-        {/* 11. Centered FAQ Accordion */}
-        <FAQSection onOpenContact={() => setContactOpen(true)} />
-
-        {/* 12. Final Conversion Section */}
+        {/* 10. Direct Technical Discovery Consultation */}
         <ConversionCTA onOpenContact={() => setContactOpen(true)} />
       </main>
 
-      {/* 13. Structured Footer */}
+      {/* 11. Structured Footer */}
       <Footer onOpenContact={() => setContactOpen(true)} />
 
       {/* Direct Engineering Consultation Modal */}

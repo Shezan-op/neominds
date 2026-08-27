@@ -10,22 +10,16 @@ interface ConversionCTAProps {
 
 export function ConversionCTA({ onOpenContact }: ConversionCTAProps) {
   return (
-    <section className="relative py-28 sm:py-36 bg-[#07080A] text-[#FFFFFF] overflow-hidden border-t border-[#222530]">
-      {/* 1. Smooth Crossover Gradient from Light FAQ into Dark Conversion */}
-      <div className="absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-[#FAF9F6]/10 to-transparent pointer-events-none" />
-
-      {/* Ambient background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-[#FF5200]/15 via-transparent to-transparent rounded-full blur-3xl pointer-events-none" />
-
+    <section id="contact" className="relative py-28 sm:py-36 bg-[#07080A] text-[#FFFFFF] overflow-hidden border-t border-[#222530]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <BorderGlow
           backgroundColor="#0D0F14"
           borderRadius={0}
-          glowColor="20 100 50"
-          colors={["#FF5200", "#FF7A33", "#FFA07A"]}
+          glowColor="217 91 60"
+          colors={["#10316B", "#1E5FD8", "#60A5FA"]}
           edgeSensitivity={25}
-          glowRadius={40}
-          glowIntensity={1.2}
+          glowRadius={24}
+          glowIntensity={0.45}
           className="p-8 sm:p-14 lg:p-20 shadow-2xl border border-[#2D313F] rounded-none"
         >
           <div className="max-w-3xl">
@@ -52,15 +46,15 @@ export function ConversionCTA({ onOpenContact }: ConversionCTAProps) {
             {/* Credibility Guarantees */}
             <div className="mt-12 pt-8 border-t border-[#2D313F] grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs font-sans">
               <div className="flex items-center gap-2.5">
-                <Clock className="w-4 h-4 text-[#FF5200] flex-shrink-0" />
+                <Clock className="w-4 h-4 text-[#1E5FD8] flex-shrink-0" />
                 <span className="text-[#FFFFFF] font-medium">14-day average sprint delivery</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <FileCode className="w-4 h-4 text-[#FF5200] flex-shrink-0" />
+                <FileCode className="w-4 h-4 text-[#1E5FD8] flex-shrink-0" />
                 <span className="text-[#FFFFFF] font-medium">100% source code handover</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <ShieldCheck className="w-4 h-4 text-[#FF5200] flex-shrink-0" />
+                <ShieldCheck className="w-4 h-4 text-[#1E5FD8] flex-shrink-0" />
                 <span className="text-[#FFFFFF] font-medium">Zero vendor lock-in or royalties</span>
               </div>
             </div>
