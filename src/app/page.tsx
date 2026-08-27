@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { OpeningSequence } from "@/components/OpeningSequence";
 import { Navbar } from "@/components/Navbar";
 import { HeroSection } from "@/components/HeroSection";
 import { NumberChangerSection } from "@/components/NumberChangerSection";
@@ -19,10 +20,18 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-[#FAF9F6] text-[#121316] overflow-x-clip selection:bg-[#1E5FD8] selection:text-white font-sans">
-      {/* 01. Clean Header with Services Dropdown */}
+      {/* 
+        ========================================================================
+        00. PREMIUM CINEMATIC SCROLL-DRIVEN OPENING SEQUENCE
+        Architectural Skyscraper Canyon -> Camera Rise -> Deep Sky -> Cloud Veil -> Homepage Reveal
+        ========================================================================
+      */}
+      <OpeningSequence />
+
+      {/* 01. Floating Interactive Spotlight Navbar (Appears on Homepage) */}
       <Navbar onOpenContact={() => setContactOpen(true)} />
 
-      <main>
+      <main className="relative z-10 bg-[#FAF9F6]">
         {/* 02. Ballance Hero Section with hero-image.png (1024x1536) */}
         <HeroSection onOpenContact={() => setContactOpen(true)} />
 
@@ -32,7 +41,7 @@ export default function Home() {
         {/* 04. Infinite Technology Logo Loop */}
         <TechLogoLoop />
 
-        {/* 05. Editorial Services Overview & Blueprint Inspector */}
+        {/* 05. Centered Inline Expandable Capabilities Showcase */}
         <ServicesEditorial />
 
         {/* 06. Full-Width Robot Case Studies Interactive Showcase */}
@@ -51,7 +60,7 @@ export default function Home() {
         <ConversionCTA onOpenContact={() => setContactOpen(true)} />
       </main>
 
-      {/* 11. Structured Footer */}
+      {/* 11. Structured Footer with Silk Drapery */}
       <Footer onOpenContact={() => setContactOpen(true)} />
 
       {/* Direct Engineering Consultation Modal */}
