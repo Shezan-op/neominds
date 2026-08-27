@@ -76,7 +76,7 @@ export function Navbar({ onOpenContact }: NavbarProps) {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 py-3 sm:py-4 px-4 sm:px-6 flex justify-center pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] font-sans ${
+      className={`fixed top-0 inset-x-0 z-50 py-3 sm:py-4 px-4 sm:px-6 flex justify-center pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] font-serif ${
         isVisible
           ? "opacity-100 translate-y-0"
           : "opacity-0 -translate-y-6"
@@ -91,8 +91,8 @@ export function Navbar({ onOpenContact }: NavbarProps) {
           }}
           className="relative bg-[#FFFFFF] border border-[#E6E6E8] shadow-[0_8px_30px_rgba(0,0,0,0.06)] rounded-none px-0 py-0 flex items-stretch text-[#121316] overflow-hidden"
         >
-          {/* DESKTOP NAV ITEMS WITH FLUSH SPOTLIGHT CONE */}
-          <nav className="hidden md:flex items-stretch font-sans">
+          {/* DESKTOP NAV ITEMS WITH BRICOLAGE GROTESQUE, EQUAL STRICT SPACING & BOLD TEXT */}
+          <nav className="hidden md:flex items-stretch font-serif">
             {NAV_ITEMS.map((item, idx) => {
               const isHovered = hoveredIdx === idx;
               const isCenter = item.isCenterBrand;
@@ -109,7 +109,7 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                       setServicesOpen(false);
                     }
                   }}
-                  className="relative flex items-center justify-center min-h-[48px] px-5 lg:px-6 cursor-pointer select-none overflow-hidden"
+                  className="relative flex items-center justify-center min-h-[46px] min-w-[110px] lg:min-w-[125px] px-5 lg:px-6 cursor-pointer select-none overflow-hidden"
                 >
                   {/* FLUSH TRIANGULAR / TRAPEZOID SPOTLIGHT CONE */}
                   <AnimatePresence>
@@ -142,23 +142,23 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                     )}
                   </AnimatePresence>
 
-                  {/* Nav Item Text Label (Source Sans 3 Font Only) */}
+                  {/* Nav Item Text Label (Bricolage Grotesque Font & Bold Weight) */}
                   <Link
                     href={item.href}
-                    className={`relative z-10 transition-colors duration-200 flex items-center gap-1 font-sans text-[13px] ${
+                    className={`relative z-10 transition-colors duration-200 flex items-center gap-1 font-serif ${
                       isCenter
-                        ? "font-bold text-[14px] tracking-tight"
-                        : "font-semibold"
+                        ? "font-bold text-[15px] lg:text-[16px] tracking-tight"
+                        : "font-bold text-[13px] lg:text-[14px]"
                     } ${
                       isHovered
-                        ? "text-white font-bold"
+                        ? "text-white"
                         : "text-[#121316] hover:text-[#121316]"
                     }`}
                   >
                     <span>{item.label}</span>
                     {item.id === "services" && (
                       <ChevronDown
-                        className={`w-3 h-3 transition-transform duration-200 ${
+                        className={`w-3.5 h-3.5 transition-transform duration-200 ${
                           servicesOpen && isHovered ? "rotate-180 text-white" : "text-[#7C7D82]"
                         }`}
                       />
@@ -170,7 +170,7 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                     <div
                       onMouseEnter={() => setServicesOpen(true)}
                       onMouseLeave={() => setServicesOpen(false)}
-                      className="absolute top-full left-0 mt-0 w-80 bg-[#FFFFFF] border border-[#E6E6E8] shadow-2xl p-2.5 z-50 text-[#121316] rounded-none animate-in fade-in slide-in-from-top-2 duration-150 font-sans"
+                      className="absolute top-full left-0 mt-0 w-80 bg-[#FFFFFF] border border-[#E6E6E8] shadow-2xl p-2.5 z-50 text-[#121316] rounded-none animate-in fade-in slide-in-from-top-2 duration-150 font-serif"
                     >
                       <div className="px-3 py-1.5 border-b border-[#E6E6E8] mb-1">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-[#7C7D82] font-sans">
@@ -183,13 +183,13 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                             key={service.slug}
                             href={`/services/${service.slug}`}
                             onClick={() => setServicesOpen(false)}
-                            className="group flex items-start justify-between p-2 hover:bg-[#FAF9F6] transition-colors rounded-none font-sans"
+                            className="group flex items-start justify-between p-2 hover:bg-[#FAF9F6] transition-colors rounded-none font-serif"
                           >
                             <div className="flex flex-col">
-                              <span className="text-xs font-semibold text-[#121316] group-hover:text-[#1E5FD8] transition-colors font-sans">
+                              <span className="text-xs font-bold text-[#121316] group-hover:text-[#1E5FD8] transition-colors">
                                 {service.title}
                               </span>
-                              <span className="text-[10px] text-[#7C7D82] line-clamp-1 mt-0.5 font-sans">
+                              <span className="text-[10px] text-[#7C7D82] line-clamp-1 mt-0.5 font-sans font-normal">
                                 {service.shortDescription}
                               </span>
                             </div>
@@ -204,28 +204,28 @@ export function Navbar({ onOpenContact }: NavbarProps) {
             })}
           </nav>
 
-          {/* FAR RIGHT: SHARP RECTANGULAR BUTTON "Contact us →" */}
-          <div className="hidden md:flex items-center pl-3 pr-3 my-auto">
+          {/* FAR RIGHT: COMPACT RECTANGULAR BUTTON "Contact us →" */}
+          <div className="hidden md:flex items-center pl-2 pr-3 my-auto font-serif">
             <button
               type="button"
               onClick={onOpenContact}
-              className="bg-[#1E5FD8] hover:bg-[#174CB3] text-white text-[12px] font-sans font-bold uppercase tracking-wider px-4 py-2 rounded-none flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
+              className="bg-[#1E5FD8] hover:bg-[#174CB3] text-white text-[11px] lg:text-[12px] font-serif font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-none flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
             >
               <span>Contact us</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-3 h-3" />
             </button>
           </div>
 
           {/* MOBILE VIEWPORT CONTROLS */}
-          <div className="flex md:hidden items-center justify-between w-full min-w-[280px] px-4 py-2.5 font-sans">
+          <div className="flex md:hidden items-center justify-between w-full min-w-[280px] px-4 py-2 font-serif">
             <Link
               href="/"
-              className="font-sans font-bold text-sm text-[#121316] uppercase"
+              className="font-serif font-bold text-base text-[#121316] uppercase"
             >
               Neominds
             </Link>
 
-            <div className="flex items-center gap-2 font-sans">
+            <div className="flex items-center gap-2 font-serif">
               <button
                 type="button"
                 onClick={onOpenContact}
@@ -248,7 +248,7 @@ export function Navbar({ onOpenContact }: NavbarProps) {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed top-20 inset-x-4 bg-[#FFFFFF] border border-[#E6E6E8] p-5 shadow-2xl max-w-sm mx-auto text-[#121316] rounded-none pointer-events-auto font-sans">
+        <div className="md:hidden fixed top-20 inset-x-4 bg-[#FFFFFF] border border-[#E6E6E8] p-5 shadow-2xl max-w-sm mx-auto text-[#121316] rounded-none pointer-events-auto font-serif">
           <div className="py-2 border-b border-[#E6E6E8]">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#7C7D82] block mb-2 font-sans">
               Services
@@ -259,7 +259,7 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                   key={service.slug}
                   href={`/services/${service.slug}`}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="py-1.5 px-2 text-xs text-[#121316] hover:text-[#1E5FD8] hover:bg-[#FAF9F6] flex items-center justify-between transition-colors rounded-none font-sans"
+                  className="py-1.5 px-2 text-xs font-bold text-[#121316] hover:text-[#1E5FD8] hover:bg-[#FAF9F6] flex items-center justify-between transition-colors rounded-none"
                 >
                   <span>{service.title}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-[#7C7D82]" />
@@ -268,32 +268,32 @@ export function Navbar({ onOpenContact }: NavbarProps) {
             </div>
           </div>
 
-          <div className="flex flex-col space-y-2 py-3 font-sans">
+          <div className="flex flex-col space-y-2 py-3 font-serif">
             <Link
               href="/#services"
               onClick={() => setMobileMenuOpen(false)}
-              className="py-1 px-2 text-xs font-semibold hover:text-[#1E5FD8]"
+              className="py-1 px-2 text-xs font-bold hover:text-[#1E5FD8]"
             >
               Services
             </Link>
             <Link
               href="/#case-studies"
               onClick={() => setMobileMenuOpen(false)}
-              className="py-1 px-2 text-xs font-semibold hover:text-[#1E5FD8]"
+              className="py-1 px-2 text-xs font-bold hover:text-[#1E5FD8]"
             >
               Case studies
             </Link>
             <Link
               href="/#why-us"
               onClick={() => setMobileMenuOpen(false)}
-              className="py-1 px-2 text-xs font-semibold hover:text-[#1E5FD8]"
+              className="py-1 px-2 text-xs font-bold hover:text-[#1E5FD8]"
             >
               About us
             </Link>
             <Link
               href="/#industries"
               onClick={() => setMobileMenuOpen(false)}
-              className="py-1 px-2 text-xs font-semibold hover:text-[#1E5FD8]"
+              className="py-1 px-2 text-xs font-bold hover:text-[#1E5FD8]"
             >
               Industries
             </Link>
@@ -306,7 +306,7 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                 setMobileMenuOpen(false);
                 onOpenContact();
               }}
-              className="w-full bg-[#1E5FD8] text-white text-xs uppercase tracking-wider font-bold py-2.5 rounded-none flex items-center justify-center gap-1.5 font-sans"
+              className="w-full bg-[#1E5FD8] text-white text-xs uppercase tracking-wider font-bold py-2 rounded-none flex items-center justify-center gap-1.5"
             >
               <span>Contact us</span>
               <ArrowRight className="w-3.5 h-3.5" />
