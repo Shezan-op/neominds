@@ -30,14 +30,14 @@ export function OpeningSequence() {
 
       if (!container || !pin || !buildings || !text) return;
 
-      // Master Scroll-Driven Cinematic Camera Timeline (Deliberate, luxurious, smooth pacing)
+      // Master Scroll-Driven Cinematic Camera Timeline
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
           start: "top top",
-          end: "+=3800", // Expanded scroll distance for balanced, cinematic pacing
+          end: "+=3200", // Deliberate, smooth scroll distance
           pin: pin,
-          scrub: 1.5, // Heavier, luxurious momentum
+          scrub: 1.2, // Balanced, cinematic momentum
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
@@ -65,24 +65,24 @@ export function OpeningSequence() {
       if (fog3) gsap.set(fog3, { opacity: 0, scale: 0.7 });
       if (atmosphericOverlay) gsap.set(atmosphericOverlay, { opacity: 0 });
 
-      // PHASE 1: 0% -> 70% (Cinematic Camera Travelling Upward into Sky Canyon)
+      // PHASE 1: 0% -> 60% (Cinematic Camera Travelling Upward into Sky Canyon)
       tl.to(
         buildings,
         {
           scale: 2.75, // Deep upward magnification into canyon
           yPercent: -6, // Camera tilting/moving upward
-          ease: "power2.inOut",
-          duration: 7,
+          ease: "power1.inOut",
+          duration: 6,
         },
         0
       )
         .to(
           text,
           {
-            scale: 3.6, // Text scales naturally with the 3D space
+            scale: 3.6, // Text scales naturally with 3D scene
             yPercent: -8,
-            ease: "power2.inOut",
-            duration: 7,
+            ease: "power1.inOut",
+            duration: 6,
           },
           0
         )
@@ -92,12 +92,12 @@ export function OpeningSequence() {
             opacity: 0,
             filter: "blur(8px)",
             ease: "power2.in",
-            duration: 2.8,
+            duration: 2.2,
           },
-          4.2 // Text naturally passes behind camera
+          3.8 // Text smoothly passes behind the camera
         );
 
-      // PHASE 2: 70% -> 85% (Atmospheric Depth & Soft Fog Ingress)
+      // PHASE 2: 60% -> 78% (Atmospheric Fog Ingress)
       if (fog1) {
         tl.to(
           fog1,
@@ -106,9 +106,9 @@ export function OpeningSequence() {
             scale: 1.4,
             yPercent: -10,
             ease: "power1.out",
-            duration: 2.8,
+            duration: 2.2,
           },
-          6.5
+          5.6
         );
       }
 
@@ -120,35 +120,35 @@ export function OpeningSequence() {
             scale: 1.5,
             yPercent: 10,
             ease: "power1.out",
-            duration: 2.8,
+            duration: 2.2,
           },
-          7.0
+          6.0
         );
       }
 
-      // PHASE 3: 85% -> 100% (Cloud Veil & Seamless Dissolve to Homepage Hero)
       if (fog3) {
         tl.to(
           fog3,
           {
-            opacity: 0.98,
+            opacity: 0.95,
             scale: 1.6,
             ease: "power2.inOut",
-            duration: 2.2,
+            duration: 1.8,
           },
-          8.0
+          6.8
         );
       }
 
+      // PHASE 3: 78% -> 92% (Seamless Cloud Dissolve Revealing Full Hero Section)
       if (atmosphericOverlay) {
         tl.to(
           atmosphericOverlay,
           {
             opacity: 1,
             ease: "power2.inOut",
-            duration: 1.8,
+            duration: 1.6,
           },
-          8.4
+          7.2
         );
       }
 
@@ -157,9 +157,18 @@ export function OpeningSequence() {
         {
           opacity: 0,
           ease: "power2.inOut",
-          duration: 1.4,
+          duration: 1.8,
         },
-        8.8
+        7.6
+      );
+
+      // PHASE 4: 92% -> 100% (Clear Buffer Zone where Hero Section is 100% visible & stationary)
+      tl.to(
+        {},
+        {
+          duration: 1.5, // Generous stationary buffer allowing the user to read the top hero headline
+        },
+        8.5
       );
     }, containerRef);
 
@@ -170,7 +179,7 @@ export function OpeningSequence() {
     <div
       ref={containerRef}
       className="relative w-full z-40 bg-[#1255C8]"
-      style={{ height: "460vh" }}
+      style={{ height: "420vh" }}
     >
       {/* Pinned 100vh Scene Viewport */}
       <div
@@ -215,7 +224,7 @@ export function OpeningSequence() {
 
         {/* 
           ======================================================================
-          LAYER 3: NEOMINDS TEXT (EXPLICIT PURE WHITE COLOR)
+          LAYER 3: NEOMINDS TEXT (PURE WHITE)
           ======================================================================
         */}
         <div
@@ -226,7 +235,7 @@ export function OpeningSequence() {
           <span
             className="font-serif font-bold tracking-tight text-center select-none"
             style={{
-              color: "#FFFFFF", // 100% Guaranteed Pure Crisp White
+              color: "#FFFFFF",
               fontSize: "clamp(3.5rem, 8.5vw, 9.5rem)",
               textShadow: "0 4px 30px rgba(10, 30, 80, 0.4)",
               letterSpacing: "-0.03em",
@@ -265,7 +274,7 @@ export function OpeningSequence() {
           }}
         />
 
-        {/* Fog Mist Volume 3 (Center Camera Envelopment) */}
+        {/* Fog Mist Volume 3 */}
         <div
           ref={fogLayer3Ref}
           className="absolute inset-0 w-full h-full pointer-events-none z-30 opacity-0"
