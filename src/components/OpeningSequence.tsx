@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 interface OpeningSequenceProps {
   onComplete?: () => void;
@@ -23,11 +24,22 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
   const targetProgressRef = useRef(0);
 
   useEffect(() => {
-    // If already completed in session, don't block
     if (isCompleted) return;
 
-    // Reset scroll to absolute top
+    // 1. Completely lock background homepage at y = 0
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
     window.scrollTo(0, 0);
+
+    // Stop Lenis while opening sequence plays
+    const pauseLenis = () => {
+      if (window.__lenis) {
+        window.__lenis.stop();
+        window.__lenis.scrollTo(0, { immediate: true });
+      }
+    };
+    pauseLenis();
+    const lenisCheckInterval = setInterval(pauseLenis, 50);
 
     const buildings = buildingsRef.current;
     const text = textRef.current;
@@ -36,7 +48,7 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
     const fog3 = fogLayer3Ref.current;
     const overlay = atmosphericFlashRef.current;
 
-    // Initial positioning
+    // Initial visual state
     if (buildings) {
       gsap.set(buildings, { scale: 1, yPercent: 0, transformOrigin: "50% 46%", force3D: true });
     }
@@ -49,7 +61,7 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
     if (overlay) gsap.set(overlay, { opacity: 0 });
 
     const updateScene = (p: number) => {
-      // 0.0 -> 0.70: Camera zoom upward into canyon
+      // 0.0 -> 0.72: Camera zoom upward into canyon
       const zoomProgress = Math.min(p / 0.75, 1);
       const easeZoom = gsap.parseEase("power1.inOut")(zoomProgress);
 
@@ -66,11 +78,11 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
           yPercent: -easeZoom * 8,
         });
 
-        // Text fades as it passes behind camera (around p = 0.45 -> 0.65)
-        if (p < 0.45) {
+        // Text passes behind camera (p = 0.40 -> 0.65)
+        if (p < 0.40) {
           gsap.set(text, { opacity: 1, filter: "blur(0px)" });
-        } else if (p < 0.68) {
-          const fadeP = (p - 0.45) / 0.23;
+        } else if (p < 0.65) {
+          const fadeP = (p - 0.40) / 0.25;
           gsap.set(text, {
             opacity: 1 - fadeP,
             filter: `blur(${fadeP * 8}px)`,
@@ -80,9 +92,9 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
         }
       }
 
-      // 0.60 -> 0.85: Atmospheric fog ingress
+      // 0.55 -> 0.82: Atmospheric fog ingress
       if (fog1) {
-        const fog1P = Math.max(0, Math.min((p - 0.55) / 0.25, 1));
+        const fog1P = Math.max(0, Math.min((p - 0.50) / 0.25, 1));
         gsap.set(fog1, {
           opacity: fog1P * 0.75,
           scale: 0.8 + fog1P * 0.6,
@@ -91,7 +103,7 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
       }
 
       if (fog2) {
-        const fog2P = Math.max(0, Math.min((p - 0.60) / 0.25, 1));
+        const fog2P = Math.max(0, Math.min((p - 0.55) / 0.25, 1));
         gsap.set(fog2, {
           opacity: fog2P * 0.85,
           scale: 0.9 + fog2P * 0.6,
@@ -100,23 +112,23 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
       }
 
       if (fog3) {
-        const fog3P = Math.max(0, Math.min((p - 0.68) / 0.22, 1));
+        const fog3P = Math.max(0, Math.min((p - 0.65) / 0.22, 1));
         gsap.set(fog3, {
           opacity: fog3P * 0.95,
           scale: 0.7 + fog3P * 0.9,
         });
       }
 
-      // 0.82 -> 1.0: Seamless dissolve into Hero Section at y = 0
+      // 0.80 -> 1.0: Seamless dissolve revealing top of Hero Section
       if (overlay && containerRef.current) {
-        if (p < 0.82) {
+        if (p < 0.80) {
           gsap.set(containerRef.current, { opacity: 1 });
           gsap.set(overlay, { opacity: 0 });
         } else {
-          const dissolveP = (p - 0.82) / 0.18;
+          const dissolveP = (p - 0.80) / 0.20;
           const easeDissolve = gsap.parseEase("power2.inOut")(dissolveP);
           gsap.set(overlay, { opacity: easeDissolve });
-          gsap.set(containerRef.current, { opacity: 1 - easeDissolve * 0.95 });
+          gsap.set(containerRef.current, { opacity: 1 - easeDissolve });
         }
       }
     };
@@ -126,23 +138,28 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
     const renderLoop = () => {
       const diff = targetProgressRef.current - progressRef.current;
       if (Math.abs(diff) > 0.0005) {
-        progressRef.current += diff * 0.065; // Balanced, smooth cinematic easing
+        progressRef.current += diff * 0.07; // Smooth deliberate momentum
         updateScene(progressRef.current);
       }
 
       // Check if reached completion threshold
-      if (progressRef.current >= 0.985 && !isCompleted) {
+      if (progressRef.current >= 0.99 && !isCompleted) {
+        clearInterval(lenisCheckInterval);
         setIsCompleted(true);
-        if (containerRef.current) {
-          gsap.to(containerRef.current, {
-            opacity: 0,
-            duration: 0.5,
-            ease: "power2.out",
-            onComplete: () => {
-              if (onComplete) onComplete();
-            },
-          });
+
+        // Unlock page and restart Lenis at exact y = 0
+        document.body.style.overflow = "";
+        document.documentElement.style.overflow = "";
+        window.scrollTo(0, 0);
+
+        if (window.__lenis) {
+          window.__lenis.start();
+          window.__lenis.scrollTo(0, { immediate: true });
         }
+
+        ScrollTrigger.refresh();
+
+        if (onComplete) onComplete();
         return;
       }
 
@@ -151,15 +168,14 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
 
     animId = requestAnimationFrame(renderLoop);
 
-    // Wheel event handler during opening sequence
+    // Wheel event handler: controls opening progress only, homepage stays at y=0
     const handleWheel = (e: WheelEvent) => {
       if (isCompleted) return;
-
-      // Prevent native body scrolling until opening finishes
       e.preventDefault();
+      e.stopPropagation();
 
       const delta = e.deltaY;
-      const step = (delta / 1800) * 0.7; // Controlled, deliberate speed
+      const step = (delta / 1600) * 0.75;
 
       targetProgressRef.current = Math.max(
         0,
@@ -180,22 +196,26 @@ export function OpeningSequence({ onComplete }: OpeningSequenceProps) {
       touchStartY = currentY;
 
       e.preventDefault();
-      const step = (deltaY / 1200) * 0.7;
+      e.stopPropagation();
+      const step = (deltaY / 1000) * 0.75;
       targetProgressRef.current = Math.max(
         0,
         Math.min(1, targetProgressRef.current + step)
       );
     };
 
-    window.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("wheel", handleWheel, { passive: false, capture: true });
     window.addEventListener("touchstart", handleTouchStart, { passive: true });
-    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("touchmove", handleTouchMove, { passive: false, capture: true });
 
     return () => {
+      clearInterval(lenisCheckInterval);
       cancelAnimationFrame(animId);
-      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("wheel", handleWheel, { capture: true });
       window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchmove", handleTouchMove, { capture: true });
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     };
   }, [isCompleted, onComplete]);
 

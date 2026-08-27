@@ -6,6 +6,12 @@ import "lenis/dist/lenis.css";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+declare global {
+  interface Window {
+    __lenis?: Lenis | null;
+  }
+}
+
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
 
@@ -26,6 +32,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       autoRaf: false,
     });
     lenisRef.current = lenis;
+    window.__lenis = lenis;
 
     // 2. Synchronize ScrollTrigger with Lenis
     lenis.on("scroll", ScrollTrigger.update);
@@ -67,6 +74,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       window.removeEventListener("load", handleLoad);
       lenis.destroy();
       lenisRef.current = null;
+      window.__lenis = null;
       listeners.forEach(({ anchor, listener }) => {
         anchor.removeEventListener("click", listener);
       });
