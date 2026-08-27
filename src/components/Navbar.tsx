@@ -42,9 +42,9 @@ export function Navbar({ onOpenContact }: NavbarProps) {
         clearTimeout(scrollTimeoutRef.current);
       }
 
-      // Show navbar ONLY after user has stopped scrolling for 1.5 seconds (1500ms) and has reached the homepage
+      // Show navbar ONLY after user has stopped scrolling for 1.5 seconds (1500ms)
       scrollTimeoutRef.current = setTimeout(() => {
-        const scrollThreshold = 1500;
+        const scrollThreshold = 180;
         if (window.scrollY > scrollThreshold) {
           setIsVisible(true);
         }

@@ -45,6 +45,7 @@ next-env.d.ts
 
 # media & large assets
 *.mp4
+Screen Recording*.mp4
 public/*.mp4
 frames/
 public/frames/
