@@ -12,27 +12,77 @@ export function Footer({ onOpenContact }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative w-full text-white font-sans overflow-hidden border-t border-[#1E293B] select-none">
-      {/* SPHERICAL CIRCULAR MIDNIGHT SAPPHIRE & WHITE GRADIENT BACKGROUND */}
-      <div className="absolute inset-0 bg-[#030611] pointer-events-none" />
+    <footer className="relative w-full text-white font-sans overflow-hidden border-t border-[#1E293B] select-none bg-[#030611]">
+      {/* 
+        ========================================================================
+        LUXURY DRAPERY / SILK SATIN FABRIC TEXTURE BACKGROUND
+        Fluid organic satin waves with sapphire specular lighting and deep midnight folds
+        ========================================================================
+      */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Base deep midnight canvas */}
+        <div className="absolute inset-0 bg-[#02050E]" />
 
-      {/* Radial spherical glow simulating the circular world loop with the hero section */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-85"
-        style={{
-          background:
-            "radial-gradient(ellipse 130% 95% at 50% 100%, rgba(96, 165, 250, 0.32) 0%, rgba(30, 95, 216, 0.48) 32%, rgba(16, 49, 107, 0.75) 58%, rgba(8, 25, 61, 0.96) 82%, #030611 100%)",
-        }}
-      />
+        {/* Fluid Satin Wave Layer 1 (Upper diagonal silk sheen) */}
+        <div
+          className="absolute -top-[30%] -left-[10%] w-[130%] h-[120%] opacity-40 blur-3xl transform rotate-[-8deg] pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse 65% 45% at 40% 40%, rgba(30, 95, 216, 0.45) 0%, rgba(16, 49, 107, 0.35) 45%, transparent 75%)",
+          }}
+        />
 
-      {/* Subtle ambient diagonal light streak matching Fargo aesthetic */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-20"
-        style={{
-          background:
-            "linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.12) 45%, rgba(96, 165, 250, 0.15) 50%, transparent 60%)",
-        }}
-      />
+        {/* Fluid Satin Wave Layer 2 (Lower luxury drapery fold highlight) */}
+        <div
+          className="absolute -bottom-[20%] -right-[10%] w-[120%] h-[110%] opacity-50 blur-3xl transform rotate-[12deg] pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse 70% 50% at 60% 70%, rgba(96, 165, 250, 0.35) 0%, rgba(30, 95, 216, 0.4) 35%, rgba(8, 25, 61, 0.6) 70%, transparent 95%)",
+          }}
+        />
+
+        {/* Satin Fabric Specular Curves (SVG Silk Folds) */}
+        <svg
+          className="absolute inset-0 w-full h-full object-cover opacity-25 mix-blend-screen pointer-events-none"
+          viewBox="0 0 1440 600"
+          preserveAspectRatio="none"
+          fill="none"
+        >
+          {/* Wave Fold 1 */}
+          <path
+            d="M-100 200 C 300 120, 600 380, 1000 180 C 1200 80, 1400 260, 1600 200 L 1600 700 L -100 700 Z"
+            fill="url(#silk-gradient-1)"
+          />
+          {/* Wave Fold 2 */}
+          <path
+            d="M-100 350 C 400 220, 800 480, 1200 300 C 1350 240, 1500 360, 1600 320 L 1600 700 L -100 700 Z"
+            fill="url(#silk-gradient-2)"
+          />
+          <defs>
+            <linearGradient id="silk-gradient-1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#1E5FD8" stopOpacity="0.6" />
+              <stop offset="45%" stopColor="#60A5FA" stopOpacity="0.3" />
+              <stop offset="70%" stopColor="#0D2760" stopOpacity="0.5" />
+              <stop offset="100%" stopColor="#030712" stopOpacity="0.8" />
+            </linearGradient>
+            <linearGradient id="silk-gradient-2" x1="100%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#60A5FA" stopOpacity="0.4" />
+              <stop offset="35%" stopColor="#1E5FD8" stopOpacity="0.5" />
+              <stop offset="80%" stopColor="#08193D" stopOpacity="0.7" />
+              <stop offset="100%" stopColor="#02050E" stopOpacity="0.9" />
+            </linearGradient>
+          </defs>
+        </svg>
+
+        {/* Subtle diagonal ambient light streak */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-20"
+          style={{
+            background:
+              "linear-gradient(125deg, transparent 20%, rgba(255, 255, 255, 0.12) 45%, rgba(96, 165, 250, 0.18) 52%, transparent 65%)",
+          }}
+        />
+      </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-0">
         {/* TOP ROW: 3 Columns matching Fargo Reference Image */}
@@ -161,7 +211,7 @@ export function Footer({ onOpenContact }: FooterProps) {
           </div>
         </div>
 
-        {/* BOTTOM SECTION: HUGE DISPLAY WORDMARK "neominds" (CENTERED) */}
+        {/* BOTTOM SECTION: HUGE DISPLAY WORDMARK "Neominds" (CAPITAL 'N', CENTERED) */}
         <div className="w-full pt-8 sm:pt-14 pb-0 overflow-hidden flex items-end justify-center text-center">
           <h2
             className="text-white font-serif font-bold tracking-tighter leading-none select-none text-center w-full -mb-3 sm:-mb-6 opacity-95"
@@ -170,7 +220,7 @@ export function Footer({ onOpenContact }: FooterProps) {
               textShadow: "0 0 80px rgba(96, 165, 250, 0.3)",
             }}
           >
-            neominds
+            Neominds
           </h2>
         </div>
       </div>

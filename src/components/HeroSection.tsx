@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
   ArrowRight,
   Sparkles,
@@ -13,11 +13,60 @@ import {
   CheckCircle2,
   Zap,
   Grid2X2,
-  ChevronRight,
 } from "lucide-react";
 
 interface HeroSectionProps {
   onOpenContact: () => void;
+}
+
+// Animated Counter Component with smooth easing when in view
+function AnimatedStat({
+  value,
+  decimals = 0,
+  suffix = "",
+  prefix = "",
+}: {
+  value: number;
+  decimals?: number;
+  suffix?: string;
+  prefix?: string;
+}) {
+  const [displayValue, setDisplayValue] = useState<string>("0");
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-40px" });
+
+  useEffect(() => {
+    if (!isInView) return;
+
+    let startTime: number | null = null;
+    const duration = 1800; // 1.8 seconds smooth animation
+
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      // Ease-out cubic: 1 - pow(1 - progress, 3)
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      const current = easeOut * value;
+
+      setDisplayValue(current.toFixed(decimals));
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        setDisplayValue(value.toFixed(decimals));
+      }
+    };
+
+    requestAnimationFrame(step);
+  }, [isInView, value, decimals]);
+
+  return (
+    <span ref={ref} className="font-serif font-bold text-4xl sm:text-5xl lg:text-6xl text-[#121316] tracking-tight">
+      {prefix}
+      {displayValue}
+      {suffix}
+    </span>
+  );
 }
 
 export function HeroSection({ onOpenContact }: HeroSectionProps) {
@@ -35,8 +84,6 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
       {/* 
         ========================================================================
         01. ROYAL SAPPHIRE & WHITE CIRCULAR ATMOSPHERIC GRADIENT
-        Deep midnight sapphire at top, transitioning down to light atmospheric blue
-        and fading seamlessly into #FAF9F6 right at the tablet height.
         ========================================================================
       */}
       <div className="absolute inset-0 pointer-events-none z-0">
@@ -55,46 +102,22 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-16 sm:pb-24">
         {/* 
           ========================================================================
-          02. TOP HEADER BAR (Logo, Case Study Pill, Menu Button)
+          02. TOP HEADER: CENTERED NEOMINDS LOGO
           ========================================================================
         */}
-        <div className="flex items-center justify-between py-3 mb-14 sm:mb-20">
-          {/* Top-Left: Neominds Brand Logo */}
+        <div className="flex items-center justify-center py-3 mb-14 sm:mb-20">
           <a
             href="/"
-            className="flex items-center gap-2 text-white/95 hover:text-white transition-opacity group focus:outline-none"
+            className="flex items-center gap-2.5 text-white hover:text-white/90 transition-opacity group focus:outline-none"
             aria-label="Neominds"
           >
             <div className="w-6 h-6 flex items-center justify-center text-white font-serif text-lg font-bold">
               ❄
             </div>
-            <span className="font-sans font-semibold text-sm tracking-tight text-white/90 group-hover:text-white">
+            <span className="font-serif font-bold text-lg tracking-tight text-white uppercase">
               neominds
             </span>
           </a>
-
-          {/* Top-Center: Pill Badge */}
-          <motion.a
-            href="#case-studies"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="hidden sm:inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 hover:bg-white/15 border border-white/20 backdrop-blur-md text-[11px] font-mono uppercase tracking-wider text-white/90 hover:text-white transition-all shadow-xs cursor-pointer rounded-full"
-          >
-            <span className="w-1.5 h-1.5 bg-[#38BDF8] rounded-none animate-pulse" />
-            <span>READ VERIFIED CASE STUDIES</span>
-            <ChevronRight className="w-3.5 h-3.5 text-white/70" />
-          </motion.a>
-
-          {/* Top-Right: Menu / Direct Contact Button */}
-          <button
-            type="button"
-            onClick={onOpenContact}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/10 hover:bg-white/15 border border-white/20 backdrop-blur-md text-xs font-mono uppercase tracking-wider text-white transition-all cursor-pointer rounded-none"
-          >
-            <Grid2X2 className="w-3.5 h-3.5 text-white/80" />
-            <span className="font-bold">MENU</span>
-          </button>
         </div>
 
         {/* 
@@ -154,7 +177,7 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
         {/* 
           ========================================================================
           04. CENTERPIECE: TRANSPARENT ROBOT HOLDING TABLET
-          With smooth white gradient cover ending at the waistline/below tablet
+          Seamless waistline fade with zero shadow lines or box artifacts
           ========================================================================
         */}
         <div className="relative mt-8 sm:mt-12 flex flex-col items-center justify-center">
@@ -166,34 +189,32 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
               transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="relative w-full select-none"
             >
-              {/* Backgroundless Transparent Robot Image */}
+              {/* Backgroundless Transparent Robot Image with clean alpha */}
               <Image
-                src="/hero-image.png?v=2"
+                src="/hero-image.png?v=3"
                 alt="Neominds Applied AI and Enterprise Architecture"
                 width={1024}
                 height={1536}
                 priority
                 unoptimized
-                className="w-full h-auto object-contain pointer-events-none drop-shadow-[0_12px_40px_rgba(0,0,0,0.15)]"
+                className="w-full h-auto object-contain pointer-events-none"
               />
 
               {/* 
                 SMOOTH WHITE GRADIENT COVER:
-                Transparent on upper body/tablet, smoothly fades to solid white/page background (#FAF9F6)
-                right below the tablet (at the marked waist line).
+                Fades softly starting right below the tablet into pure #FAF9F6 with zero harsh edges
               */}
               <div
                 className="absolute inset-0 pointer-events-none z-10"
                 style={{
                   background:
-                    "linear-gradient(to bottom, transparent 0%, transparent 48%, rgba(250, 249, 246, 0.45) 62%, rgba(250, 249, 246, 0.94) 75%, #FAF9F6 86%, #FAF9F6 100%)",
+                    "linear-gradient(to bottom, transparent 0%, transparent 46%, rgba(250, 249, 246, 0.4) 58%, rgba(250, 249, 246, 0.92) 72%, #FAF9F6 84%, #FAF9F6 100%)",
                 }}
               />
 
               {/* 
                 ====================================================================
                 05. INTERACTIVE TABLET SCREEN OVERLAY
-                Fitted right onto the tablet held horizontally in the robot's hands!
                 ====================================================================
               */}
               <div
@@ -353,42 +374,36 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
 
         {/* 
           ========================================================================
-          06. 3-COLUMN STATS ROW (Light Atmospheric Zone at bottom)
+          06. 3-COLUMN STATS ROW WITH ANIMATED NUMBER COUNTERS (CENTERED & HIGH CONTRAST)
           ========================================================================
         */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-6 sm:mt-10 pt-8 sm:pt-12 border-t border-[#D0DFEE]/60 max-w-5xl mx-auto"
+          className="mt-6 sm:mt-10 pt-8 sm:pt-10 max-w-5xl mx-auto"
         >
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10 text-center sm:text-left">
-            {/* Stat 01 */}
-            <div className="flex flex-col items-center sm:items-start">
-              <span className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#121316] tracking-tight">
-                99.9%
-              </span>
-              <p className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed mt-2 max-w-[240px]">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10 text-center">
+            {/* Stat 01: 99.9% */}
+            <div className="flex flex-col items-center justify-center">
+              <AnimatedStat value={99.9} decimals={1} suffix="%" />
+              <p className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed mt-2 max-w-[260px] text-center">
                 increase in system visibility & uptime across enterprise deployments
               </p>
             </div>
 
-            {/* Stat 02 */}
-            <div className="flex flex-col items-center sm:items-start">
-              <span className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#121316] tracking-tight">
-                10x
-              </span>
-              <p className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed mt-2 max-w-[240px]">
+            {/* Stat 02: 10x */}
+            <div className="flex flex-col items-center justify-center">
+              <AnimatedStat value={10} decimals={0} suffix="x" />
+              <p className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed mt-2 max-w-[260px] text-center">
                 faster setup time from technical onboarding to first production run
               </p>
             </div>
 
-            {/* Stat 03 */}
-            <div className="flex flex-col items-center sm:items-start">
-              <span className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#121316] tracking-tight">
-                64%
-              </span>
-              <p className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed mt-2 max-w-[240px]">
+            {/* Stat 03: 64% */}
+            <div className="flex flex-col items-center justify-center">
+              <AnimatedStat value={64} decimals={0} suffix="%" />
+              <p className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed mt-2 max-w-[260px] text-center">
                 reduction in manual follow-ups across mission-critical workflows
               </p>
             </div>
