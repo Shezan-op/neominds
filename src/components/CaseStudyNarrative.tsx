@@ -5,7 +5,6 @@ import { SCROLL_STACK_CASE_STUDIES } from "@/lib/data";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { TravelingLine } from "./motion/TravelingLine";
-import { TextFillScroll } from "./motion/TextFillScroll";
 import { trackEvent } from "@/lib/analytics";
 
 interface CaseStudyNarrativeProps {
@@ -39,7 +38,7 @@ export function CaseStudyNarrative({ onOpenContact }: CaseStudyNarrativeProps = 
         ScrollTrigger.create({
           trigger: section,
           start: "top top",
-          end: `+=${studies.length * 350}`, // Smooth, compact scroll distance
+          end: `+=${studies.length * 350}`,
           pin: pinContainer,
           pinSpacing: true,
           anticipatePin: 1,
@@ -57,7 +56,7 @@ export function CaseStudyNarrative({ onOpenContact }: CaseStudyNarrativeProps = 
               trackEvent({
                 action: "case_narrative_step",
                 category: "case_study_inspection",
-                label: studies[index]?.client || `Case Study 0${index + 1}`,
+                label: studies[index]?.client || `Case Study ${index + 1}`,
               });
             }
 
@@ -79,7 +78,6 @@ export function CaseStudyNarrative({ onOpenContact }: CaseStudyNarrativeProps = 
   }, [studies.length, studies]);
 
   const activeStudy = studies[activeIdx] || studies[0];
-  const numString = `0${activeIdx + 1}`;
 
   return (
     <section
@@ -94,9 +92,9 @@ export function CaseStudyNarrative({ onOpenContact }: CaseStudyNarrativeProps = 
         {/* Section Header */}
         <div>
           <div className="pt-2 pb-4 flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#E6E6E8] gap-4">
-            <span className="text-xs font-semibold text-[#1E5FD8] uppercase tracking-wider font-sans">
-              Client Story // {activeStudy.client}
-            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold font-serif text-[#121316]">
+              Detailed Case Studies
+            </h2>
             <div className="flex items-center gap-2">
               {studies.map((s, idx) => (
                 <button
@@ -111,7 +109,7 @@ export function CaseStudyNarrative({ onOpenContact }: CaseStudyNarrativeProps = 
                   data-cursor
                   data-cursor-text="SWITCH"
                 >
-                  0{idx + 1} {s.client.split(" ")[0]}
+                  {s.client}
                 </button>
               ))}
             </div>
@@ -126,8 +124,7 @@ export function CaseStudyNarrative({ onOpenContact }: CaseStudyNarrativeProps = 
                 phase >= 1 ? "border-[#1E5FD8] text-[#121316]" : "border-[#E6E6E8] text-[#A0A1A6]"
               }`}
             >
-              <span className="text-xs font-bold block text-[#1E5FD8]">01</span>
-              <span className="text-xs sm:text-sm font-semibold">The Problem</span>
+              <span className="text-xs sm:text-sm font-bold">The Problem</span>
             </div>
 
             <div
@@ -135,8 +132,7 @@ export function CaseStudyNarrative({ onOpenContact }: CaseStudyNarrativeProps = 
                 phase >= 2 ? "border-[#1E5FD8] text-[#121316]" : "border-[#E6E6E8] text-[#A0A1A6]"
               }`}
             >
-              <span className="text-xs font-bold block text-[#1E5FD8]">02</span>
-              <span className="text-xs sm:text-sm font-semibold">What We Built</span>
+              <span className="text-xs sm:text-sm font-bold">What We Built</span>
             </div>
 
             <div
@@ -144,17 +140,16 @@ export function CaseStudyNarrative({ onOpenContact }: CaseStudyNarrativeProps = 
                 phase >= 3 ? "border-[#1E5FD8] text-[#121316]" : "border-[#E6E6E8] text-[#A0A1A6]"
               }`}
             >
-              <span className="text-xs font-bold block text-[#1E5FD8]">03</span>
-              <span className="text-xs sm:text-sm font-semibold">The Result</span>
+              <span className="text-xs sm:text-sm font-bold">The Result</span>
             </div>
           </div>
 
           {/* Dynamic Open Stage Content */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Left Monumental Number & Title */}
-            <div className="lg:col-span-4 space-y-2">
-              <span className="text-6xl sm:text-8xl lg:text-9xl font-serif font-black text-[#1E5FD8]/15 leading-none block select-none">
-                {numString}
+            {/* Left Title & Industry */}
+            <div className="lg:col-span-4 space-y-3">
+              <span className="text-xs font-semibold text-[#1E5FD8] uppercase tracking-wider block font-sans">
+                {activeStudy.client}
               </span>
               <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#121316] leading-tight">
                 {activeStudy.title}
@@ -164,11 +159,11 @@ export function CaseStudyNarrative({ onOpenContact }: CaseStudyNarrativeProps = 
               </p>
             </div>
 
-            {/* Right Open Typography Flow (ZERO CARDS) */}
+            {/* Right Open Typography Flow (ZERO CARDS, ZERO BADGES) */}
             <div className="lg:col-span-8 space-y-6 lg:pl-6">
               {phase === 1 && (
                 <div className="space-y-3 py-2 border-l-2 border-[#1E5FD8] pl-6">
-                  <span className="text-xs font-bold text-[#1E5FD8] uppercase tracking-wider block font-sans">
+                  <span className="text-xs font-bold text-[#7C7D82] uppercase tracking-wider block font-sans">
                     The Challenge
                   </span>
                   <p className="text-lg sm:text-2xl font-serif text-[#121316] leading-relaxed">
@@ -179,7 +174,7 @@ export function CaseStudyNarrative({ onOpenContact }: CaseStudyNarrativeProps = 
 
               {phase === 2 && (
                 <div className="space-y-4 py-2 border-l-2 border-[#1E5FD8] pl-6">
-                  <span className="text-xs font-bold text-[#1E5FD8] uppercase tracking-wider block font-sans">
+                  <span className="text-xs font-bold text-[#7C7D82] uppercase tracking-wider block font-sans">
                     The Engineering Solution
                   </span>
                   <p className="text-lg sm:text-2xl font-serif text-[#121316] leading-relaxed">
@@ -197,7 +192,7 @@ export function CaseStudyNarrative({ onOpenContact }: CaseStudyNarrativeProps = 
 
               {phase === 3 && (
                 <div className="space-y-4 py-2 border-l-2 border-[#1E5FD8] pl-6">
-                  <span className="text-xs font-bold text-[#1E5FD8] uppercase tracking-wider block font-sans">
+                  <span className="text-xs font-bold text-[#7C7D82] uppercase tracking-wider block font-sans">
                     Verified Results
                   </span>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2">

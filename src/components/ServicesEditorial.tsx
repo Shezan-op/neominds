@@ -48,7 +48,7 @@ export function ServicesEditorial() {
         ScrollTrigger.create({
           trigger: section,
           start: "top top",
-          end: `+=${totalServices * 320}`, // Snappy, effortless scroll distance
+          end: `+=${totalServices * 320}`,
           pin: pinContainer,
           pinSpacing: true,
           anticipatePin: 1,
@@ -66,7 +66,7 @@ export function ServicesEditorial() {
               trackEvent({
                 action: "service_machine_step",
                 category: "service_inspection",
-                label: SERVICES_DATA[index]?.title || `Service 0${index + 1}`,
+                label: SERVICES_DATA[index]?.title || `Service ${index + 1}`,
               });
             }
 
@@ -100,28 +100,9 @@ export function ServicesEditorial() {
         {/* Section Header */}
         <div>
           <div className="pt-2 pb-5 flex flex-col sm:flex-row sm:items-end justify-between border-b border-[#E6E6E8]">
-            <div>
-              <h2 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#121316] font-serif uppercase">
-                Services
-              </h2>
-            </div>
-
-            {/* Simple Rolling Counter */}
-            <div className="flex items-baseline gap-2 mt-4 sm:mt-0 font-sans">
-              <div className="h-6 overflow-hidden relative flex items-center font-bold text-lg text-[#1E5FD8]">
-                <div
-                  className="transition-transform duration-300 ease-out flex flex-col"
-                  style={{ transform: `translateY(-${activeIdx * 100}%)` }}
-                >
-                  {SERVICES_DATA.map((_, i) => (
-                    <span key={i} className="h-6 flex items-center">
-                      0{i + 1}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <span className="text-xs text-[#7C7D82] font-semibold">of 0{totalServices}</span>
-            </div>
+            <h2 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#121316] font-serif uppercase">
+              Services
+            </h2>
           </div>
         </div>
 
@@ -140,16 +121,6 @@ export function ServicesEditorial() {
                   data-cursor-text="SELECT"
                 >
                   <div className="flex items-baseline gap-3 sm:gap-4">
-                    <span
-                      className={`text-xs sm:text-sm font-bold transition-colors duration-300 ${
-                        isActive
-                          ? "text-[#1E5FD8]"
-                          : "text-[#B0B1B6] group-hover:text-[#7C7D82]"
-                      }`}
-                    >
-                      0{idx + 1}
-                    </span>
-
                     <h3
                       className={`font-serif font-bold tracking-tight uppercase transition-all duration-300 ${
                         isActive
@@ -162,20 +133,16 @@ export function ServicesEditorial() {
                   </div>
 
                   {isActive && (
-                    <div className="w-16 h-[2px] bg-[#1E5FD8] mt-1.5 ml-7 sm:ml-8 will-change-transform" />
+                    <div className="w-16 h-[2px] bg-[#1E5FD8] mt-1.5 will-change-transform" />
                   )}
                 </div>
               );
             })}
           </div>
 
-          {/* Right Column: Active Service Details (ZERO CARDS) */}
+          {/* Right Column: Active Service Details (ZERO CARDS, ZERO BADGES) */}
           <div className="lg:col-span-6 lg:border-l lg:border-[#E6E6E8] lg:pl-10 space-y-5">
             <div className="space-y-3">
-              <span className="text-xs font-semibold text-[#1E5FD8] uppercase tracking-wider block">
-                0{activeIdx + 1} // {activeService.title}
-              </span>
-
               <div className="font-serif text-2xl sm:text-4xl lg:text-5xl font-bold text-[#121316] leading-tight">
                 <span className="inline-block transition-transform duration-300 ease-out">
                   {firstWord}
@@ -245,7 +212,7 @@ export function ServicesEditorial() {
           <div className="fixed inset-0 z-40 bg-[#FAF9F6]/95 backdrop-blur-md flex flex-col justify-between p-8 sm:p-14 pointer-events-none transition-opacity duration-300">
             <div className="flex items-center justify-between border-b border-[#E6E6E8] pb-4">
               <span className="text-xs text-[#1E5FD8] font-bold uppercase tracking-wider">
-                FEATURED SERVICE // 02
+                Application Development
               </span>
               <span className="text-xs text-[#7C7D82]">
                 Custom Software & Apps

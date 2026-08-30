@@ -34,7 +34,7 @@ export function IndustriesSection() {
         ScrollTrigger.create({
           trigger: section,
           start: "top top",
-          end: `+=${totalIndustries * 320}`, // Snappy, buttery scroll distance
+          end: `+=${totalIndustries * 320}`,
           pin: pinContainer,
           pinSpacing: true,
           anticipatePin: 1,
@@ -52,7 +52,7 @@ export function IndustriesSection() {
               trackEvent({
                 action: "industry_field_focus",
                 category: "industry_inspection",
-                label: INDUSTRIES_DATA[index]?.name || `Industry 0${index + 1}`,
+                label: INDUSTRIES_DATA[index]?.name || `Industry ${index + 1}`,
               });
             }
 
@@ -81,17 +81,11 @@ export function IndustriesSection() {
         {/* Section Header */}
         <div>
           <div className="pt-2 pb-5 flex flex-col sm:flex-row sm:items-end justify-between border-b border-[#E6E6E8]">
-            <div>
-              <CharacterAssemble
-                text="INDUSTRIES"
-                as="h2"
-                className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight uppercase text-[#121316] font-serif"
-              />
-            </div>
-
-            <div className="text-right mt-4 sm:mt-0 font-sans text-xs text-[#7C7D82] font-semibold">
-              <span className="text-[#1E5FD8] font-bold">0{activeIdx + 1}</span> / 0{totalIndustries}
-            </div>
+            <CharacterAssemble
+              text="INDUSTRIES"
+              as="h2"
+              className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight uppercase text-[#121316] font-serif"
+            />
           </div>
         </div>
 
@@ -119,14 +113,6 @@ export function IndustriesSection() {
                 >
                   <div className="flex items-baseline gap-3 sm:gap-4">
                     <span
-                      className={`text-xs font-bold transition-colors duration-300 font-sans ${
-                        isActive ? "text-[#1E5FD8]" : "text-[#B0B1B6]"
-                      }`}
-                    >
-                      0{idx + 1}
-                    </span>
-
-                    <span
                       className={`font-serif font-bold uppercase tracking-tight transition-all duration-300 ${
                         isActive
                           ? "text-2xl sm:text-4xl lg:text-5xl text-[#121316]"
@@ -138,20 +124,16 @@ export function IndustriesSection() {
                   </div>
 
                   {isActive && (
-                    <div className="w-20 h-[2px] bg-[#1E5FD8] mt-1 ml-6 sm:ml-7" />
+                    <div className="w-20 h-[2px] bg-[#1E5FD8] mt-1" />
                   )}
                 </div>
               );
             })}
           </div>
 
-          {/* Right Column: Active Industry Open Dossier (ZERO CARDS) */}
+          {/* Right Column: Active Industry Open Dossier (ZERO CARDS, ZERO BADGES) */}
           <div className="lg:col-span-5 border-l border-[#E6E6E8] pl-6 sm:pl-8 lg:pl-10 space-y-5">
             <div className="space-y-2">
-              <span className="text-xs font-semibold text-[#1E5FD8] uppercase tracking-wider block font-sans">
-                Sector 0{activeIdx + 1} // {activeIndustry.name}
-              </span>
-
               <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#121316] leading-tight">
                 {activeIndustry.tagline}
               </h3>

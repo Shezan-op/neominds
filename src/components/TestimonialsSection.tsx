@@ -131,7 +131,7 @@ export function TestimonialsSection() {
                     </span>
                   </div>
 
-                  <span className="text-xs font-semibold text-[#1E5FD8] bg-[#EDF4FF] border border-[#1E5FD8]/20 px-4 py-2 self-start sm:self-auto">
+                  <span className="text-xs font-medium text-[#7C7D82] self-start sm:self-auto">
                     {activeTestimonial.serviceUsed}
                   </span>
                 </motion.div>
