@@ -10,7 +10,6 @@ import { TechLogoLoop } from "@/components/TechLogoLoop";
 import { ServicesEditorial } from "@/components/ServicesEditorial";
 import { TextCollision } from "@/components/motion/TextCollision";
 import { RobotCaseStudiesShowcase } from "@/components/RobotCaseStudiesShowcase";
-import { CaseStudyNarrative } from "@/components/CaseStudyNarrative";
 import { IndustriesSection } from "@/components/IndustriesSection";
 import { WordMorph } from "@/components/motion/WordMorph";
 import { WhyNeomindsSection } from "@/components/WhyNeomindsSection";
@@ -59,32 +58,29 @@ export default function Home() {
         {/* 06. Typography Collision (SYSTEMS + SCALE) */}
         <TextCollision />
 
-        {/* 07. Section 03: Interactive Systems Mannequin Stage (ZERO CARDS) */}
+        {/* 07. Section 03: Interactive Systems Showcase (ZERO CARDS) */}
         <RobotCaseStudiesShowcase onOpenContact={() => setContactOpen(true)} />
 
-        {/* 08. Section 03B: Pinned Cinematic Case Study Narrative (ZERO CARDS) */}
-        <CaseStudyNarrative onOpenContact={() => setContactOpen(true)} />
-
-        {/* 09. Section 04: Industries Typographic Spotlight Focus (ZERO CARDS) */}
+        {/* 08. Section 04: Industries Typographic Spotlight (ZERO CARDS) */}
         <IndustriesSection />
 
-        {/* 10. Word Morphing (WE BUILD SOFTWARE THAT...) */}
+        {/* 09. Word Morphing (WE BUILD SOFTWARE THAT...) */}
         <WordMorph />
 
-        {/* 11. Section 05: Why Neominds (ZERO CARDS) */}
+        {/* 10. Section 05: Why Neominds (ZERO CARDS) */}
         <WhyNeomindsSection />
 
-        {/* 12. Section 06: Client Voices with Alternating Line-Split (ZERO CARDS) */}
+        {/* 11. Section 06: Client Voices with Alternating Line-Split (ZERO CARDS) */}
         <TestimonialsSection />
 
-        {/* 13. Section 07: Conversion CTA */}
+        {/* 12. Section 07: Conversion CTA */}
         <ConversionCTA onOpenContact={() => setContactOpen(true)} />
 
-        {/* 14. Cinematic Closing Sequence */}
+        {/* 13. Cinematic Closing Sequence */}
         <ClosingSequence />
       </main>
 
-      {/* 15. Grand Structured Footer with Monumental Wordmark */}
+      {/* 14. Grand Structured Footer with Monumental Wordmark */}
       <Footer onOpenContact={() => setContactOpen(true)} />
 
       {/* Direct Engineering Consultation Modal */}
