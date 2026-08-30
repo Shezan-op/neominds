@@ -38,9 +38,8 @@ export function Navbar({ onOpenContact }: NavbarProps) {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      setIsVisible(scrollY > 120);
+      setIsVisible(scrollY > 100);
 
-      // Track active section for traveling blue marker
       const sections = ["services", "case-studies", "industries", "why-us"];
       const currentPos = scrollY + 300;
 
@@ -79,45 +78,47 @@ export function Navbar({ onOpenContact }: NavbarProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const effectiveMarkerId = hoveredId || activeSectionId;
-
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 py-3 sm:py-4 px-4 sm:px-6 flex justify-center pointer-events-none transition-all duration-300 ease-out font-serif ${
+      className={`fixed top-0 inset-x-0 z-50 py-3 sm:py-4 px-4 sm:px-6 flex justify-center pointer-events-none transition-all duration-300 ease-out font-sans ${
         isVisible
           ? "opacity-100 translate-y-0"
           : "opacity-0 -translate-y-4 pointer-events-none"
       }`}
     >
       <nav
-        className="w-full max-w-7xl flex items-center justify-between pointer-events-auto select-none"
+        className="w-full max-w-5xl flex items-center justify-between pointer-events-auto select-none"
         aria-label="Main Navigation"
       >
         {/* Left Side: Mobile Logo */}
         <div className="flex items-center md:hidden">
           <Link
             href="/"
-            className="flex items-center gap-2 text-[#121316] font-bold text-sm bg-white/90 backdrop-blur-md px-3.5 py-2 border border-[#E6E6E8] shadow-sm"
+            className="flex items-center gap-2 text-[#121316] font-bold text-sm bg-white/90 backdrop-blur-md px-4 py-2 border border-[#E6E6E8] rounded-full shadow-sm"
           >
             <span className="text-[#1E5FD8]">❄</span>
-            <span className="tracking-tight uppercase">neominds</span>
+            <span className="tracking-tight uppercase font-serif">neominds</span>
           </Link>
         </div>
 
         {/* 
           ======================================================================
-          CENTER PILL NAVIGATION (DESKTOP) WITH TRAVELING BLUE MARKER
+          PREMIUM FLOATING PILL NAVIGATION (DESKTOP)
+          When hovered, text turns crisp WHITE on top of sliding dark capsule
           ======================================================================
         */}
         <div className="hidden md:flex items-center justify-center flex-1">
-          <div className="relative flex items-center bg-[#FFFFFF]/90 backdrop-blur-md border border-[#E6E6E8] px-2 py-1.5 shadow-sm">
+          <div
+            onMouseLeave={() => setHoveredId(null)}
+            className="relative flex items-center bg-[#FFFFFF]/90 backdrop-blur-xl border border-[#E6E6E8] p-1.5 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
+          >
             {NAV_ITEMS.map((item) => {
               if (item.isCenterBrand) {
                 return (
                   <Link
                     key={item.id}
                     href={item.href}
-                    className="mx-3.5 flex items-center gap-1.5 font-serif font-bold text-sm text-[#121316] hover:text-[#1E5FD8] transition-colors group"
+                    className="mx-3.5 px-3 py-2 flex items-center gap-2 font-serif font-bold text-sm text-[#121316] hover:text-[#1E5FD8] transition-colors group"
                     data-cursor
                     data-cursor-text="NEOMINDS"
                   >
@@ -129,7 +130,8 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                 );
               }
 
-              const isMarkerTarget = effectiveMarkerId === item.id;
+              const isHovered = hoveredId === item.id;
+              const isActive = activeSectionId === item.id && !hoveredId;
               const isServicesButton = item.id === "capabilities";
 
               if (isServicesButton) {
@@ -139,54 +141,55 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                       type="button"
                       onClick={() => setServicesOpen(!servicesOpen)}
                       onMouseEnter={() => setHoveredId(item.id)}
-                      onMouseLeave={() => setHoveredId(null)}
-                      className={`relative px-3.5 py-1.5 text-xs font-sans font-medium transition-colors duration-200 flex items-center gap-1 cursor-pointer ${
-                        isMarkerTarget ? "text-[#1E5FD8] font-semibold" : "text-[#4A4B50] hover:text-[#121316]"
+                      className={`relative px-4 py-2 text-xs font-medium rounded-full transition-colors duration-200 flex items-center gap-1.5 cursor-pointer z-10 ${
+                        isHovered || (isActive && !servicesOpen)
+                          ? "text-white font-semibold"
+                          : "text-[#121316] hover:text-white"
                       }`}
                       data-cursor
                       data-cursor-text="CAPABILITIES"
                     >
+                      {/* Sliding Dark Pill Background: Turns text white on hover */}
+                      {(isHovered || (isActive && !servicesOpen)) && (
+                        <motion.div
+                          layoutId="nav-pill-bg"
+                          className="absolute inset-0 bg-[#121316] rounded-full z-[-1]"
+                          transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                        />
+                      )}
+
                       <span>{item.label}</span>
                       <ChevronDown
                         className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                          servicesOpen ? "rotate-180 text-[#1E5FD8]" : ""
+                          servicesOpen ? "rotate-180 text-[#60A5FA]" : ""
                         }`}
                       />
-
-                      {/* Traveling Active Blue Marker */}
-                      {isMarkerTarget && (
-                        <motion.div
-                          layoutId="nav-traveling-marker"
-                          className="absolute bottom-0 inset-x-2 h-[2px] bg-[#1E5FD8]"
-                          transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                        />
-                      )}
                     </button>
 
                     {/* Services Dropdown */}
                     <AnimatePresence>
                       {servicesOpen && (
                         <motion.div
-                          initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                          initial={{ opacity: 0, y: 10, scale: 0.96 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 8, scale: 0.98 }}
-                          transition={{ duration: 0.15 }}
-                          className="absolute top-full left-0 mt-2 w-80 bg-[#FFFFFF] border border-[#E6E6E8] shadow-2xl p-2 z-50 space-y-1"
+                          exit={{ opacity: 0, y: 10, scale: 0.96 }}
+                          transition={{ duration: 0.18, ease: "easeOut" }}
+                          className="absolute top-full left-0 mt-3 w-80 bg-[#FFFFFF] border border-[#E6E6E8] shadow-[0_20px_50px_rgba(0,0,0,0.12)] p-2 rounded-2xl z-50 space-y-1"
                         >
-                          <div className="px-3 py-1.5 border-b border-[#F0EFEB] font-mono text-[10px] text-[#7C7D82] uppercase tracking-wider font-bold">
-                            CORE CAPABILITY DOSSIERS
+                          <div className="px-3.5 py-2 border-b border-[#F0EFEB] text-[11px] text-[#7C7D82] uppercase tracking-wider font-bold">
+                            What We Build
                           </div>
                           {SERVICES_DATA.map((service, i) => (
                             <Link
                               key={service.slug}
                               href={`/services/${service.slug}`}
                               onClick={() => setServicesOpen(false)}
-                              className="flex items-center justify-between px-3 py-2 text-xs font-sans text-[#121316] hover:bg-[#FAF9F6] hover:text-[#1E5FD8] transition-colors group"
+                              className="flex items-center justify-between px-3.5 py-2.5 text-xs text-[#121316] hover:bg-[#121316] hover:text-white rounded-xl transition-all group"
                             >
                               <span className="font-medium">
-                                0{i + 1} {service.title}
+                                {service.title}
                               </span>
-                              <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                              <ArrowUpRight className="w-3.5 h-3.5 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                             </Link>
                           ))}
                         </motion.div>
@@ -201,49 +204,51 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                   key={item.id}
                   href={item.href}
                   onMouseEnter={() => setHoveredId(item.id)}
-                  onMouseLeave={() => setHoveredId(null)}
-                  className={`relative px-3.5 py-1.5 text-xs font-sans font-medium transition-colors duration-200 ${
-                    isMarkerTarget ? "text-[#1E5FD8] font-semibold" : "text-[#4A4B50] hover:text-[#121316]"
+                  className={`relative px-4 py-2 text-xs font-medium rounded-full transition-colors duration-200 cursor-pointer z-10 ${
+                    isHovered || isActive
+                      ? "text-white font-semibold"
+                      : "text-[#121316] hover:text-white"
                   }`}
                   data-cursor
                   data-cursor-text={item.label.toUpperCase()}
                 >
-                  <span>{item.label}</span>
-
-                  {/* Traveling Active Blue Marker */}
-                  {isMarkerTarget && (
+                  {/* Sliding Dark Pill Background: Turns text white on hover */}
+                  {(isHovered || isActive) && (
                     <motion.div
-                      layoutId="nav-traveling-marker"
-                      className="absolute bottom-0 inset-x-2 h-[2px] bg-[#1E5FD8]"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      layoutId="nav-pill-bg"
+                      className="absolute inset-0 bg-[#121316] rounded-full z-[-1]"
+                      transition={{ type: "spring", stiffness: 450, damping: 32 }}
                     />
                   )}
+
+                  <span>{item.label}</span>
                 </Link>
               );
             })}
+
+            {/* Integrated Contact CTA Button */}
+            <button
+              type="button"
+              onClick={() => {
+                trackEvent({ action: "click_navbar_start_project", category: "cta", label: "Navbar CTA" });
+                onOpenContact();
+              }}
+              className="ml-2 bg-[#1E5FD8] hover:bg-[#164fc0] text-white text-xs font-bold uppercase tracking-wider px-5 py-2 rounded-full transition-all duration-200 cursor-pointer shadow-sm active:scale-95 flex items-center gap-1.5"
+              data-cursor
+              data-cursor-text="CONTACT"
+            >
+              <span>Contact Us</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
           </div>
         </div>
 
-        {/* Right Side: Primary Contact CTA & Mobile Toggle */}
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => {
-              trackEvent({ action: "click_navbar_start_project", category: "cta", label: "Navbar CTA" });
-              onOpenContact();
-            }}
-            className="hidden sm:inline-flex btn-primary text-xs uppercase tracking-wider font-bold px-4 py-2 text-white shadow-sm cursor-pointer"
-            data-cursor
-            data-cursor-text="START"
-          >
-            Start a Project
-          </button>
-
-          {/* Mobile Menu Button */}
+        {/* Mobile Menu Button */}
+        <div className="md:hidden">
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 bg-[#FFFFFF] border border-[#E6E6E8] text-[#121316] shadow-sm"
+            className="p-2.5 bg-[#FFFFFF] border border-[#E6E6E8] text-[#121316] rounded-full shadow-sm cursor-pointer"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4 text-[#1E5FD8]" />}
@@ -261,19 +266,14 @@ export function Navbar({ onOpenContact }: NavbarProps) {
             className="fixed inset-0 top-16 bg-[#FAF9F6] p-6 z-40 flex flex-col justify-between md:hidden border-t border-[#E6E6E8]"
           >
             <div className="space-y-4 pt-4">
-              <span className="text-[10px] font-mono font-bold text-[#1E5FD8] uppercase tracking-widest block">
-                SYSTEM NAVIGATION //
-              </span>
-              {NAV_ITEMS.filter((item) => !item.isCenterBrand).map((item, idx) => (
+              {NAV_ITEMS.filter((item) => !item.isCenterBrand).map((item) => (
                 <div key={item.id} className="border-b border-[#E6E6E8] pb-3">
                   <Link
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
                     className="flex items-center justify-between text-xl font-serif font-bold text-[#121316]"
                   >
-                    <span>
-                      0{idx + 1} {item.label}
-                    </span>
+                    <span>{item.label}</span>
                     <ArrowRight className="w-4 h-4 text-[#1E5FD8]" />
                   </Link>
                 </div>
@@ -287,7 +287,7 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                   setMobileMenuOpen(false);
                   onOpenContact();
                 }}
-                className="w-full btn-primary py-3.5 text-xs font-bold uppercase tracking-wider text-white flex items-center justify-center gap-2"
+                className="w-full bg-[#1E5FD8] hover:bg-[#164fc0] py-3.5 text-xs font-bold uppercase tracking-wider text-white rounded-full flex items-center justify-center gap-2 cursor-pointer shadow-md"
               >
                 <span>Start a Project</span>
                 <ArrowRight className="w-4 h-4" />
