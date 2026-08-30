@@ -90,11 +90,11 @@ export function Navbar({ onOpenContact }: NavbarProps) {
         className="w-full max-w-5xl flex items-center justify-between pointer-events-auto select-none"
         aria-label="Main Navigation"
       >
-        {/* Left Side: Mobile Logo */}
+        {/* Left Side: Mobile Logo with Sharp Edges */}
         <div className="flex items-center md:hidden">
           <Link
             href="/"
-            className="flex items-center gap-2 text-[#121316] font-bold text-sm bg-white/90 backdrop-blur-md px-4 py-2 border border-[#E6E6E8] rounded-full shadow-sm"
+            className="flex items-center gap-2 text-[#121316] font-bold text-sm bg-white/90 backdrop-blur-md px-4 py-2 border border-[#E6E6E8] rounded-none shadow-sm"
           >
             <span className="text-[#1E5FD8]">❄</span>
             <span className="tracking-tight uppercase font-serif">neominds</span>
@@ -103,14 +103,14 @@ export function Navbar({ onOpenContact }: NavbarProps) {
 
         {/* 
           ======================================================================
-          PREMIUM FLOATING PILL NAVIGATION (DESKTOP)
-          When hovered, text turns crisp WHITE on top of sliding dark capsule
+          SHARP-EDGED EDITORIAL FLOATING NAVIGATION (DESKTOP)
+          When hovered, text turns crisp WHITE on top of sliding dark box
           ======================================================================
         */}
         <div className="hidden md:flex items-center justify-center flex-1">
           <div
             onMouseLeave={() => setHoveredId(null)}
-            className="relative flex items-center bg-[#FFFFFF]/90 backdrop-blur-xl border border-[#E6E6E8] p-1.5 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
+            className="relative flex items-center bg-[#FFFFFF]/90 backdrop-blur-xl border border-[#E6E6E8] p-1.5 rounded-none shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
           >
             {NAV_ITEMS.map((item) => {
               if (item.isCenterBrand) {
@@ -118,7 +118,7 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                   <Link
                     key={item.id}
                     href={item.href}
-                    className="mx-3.5 px-3 py-2 flex items-center gap-2 font-serif font-bold text-sm text-[#121316] hover:text-[#1E5FD8] transition-colors group"
+                    className="mx-3.5 px-3 py-2 flex items-center gap-2 font-serif font-bold text-sm text-[#121316] hover:text-[#1E5FD8] transition-colors group rounded-none"
                     data-cursor
                     data-cursor-text="NEOMINDS"
                   >
@@ -141,7 +141,7 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                       type="button"
                       onClick={() => setServicesOpen(!servicesOpen)}
                       onMouseEnter={() => setHoveredId(item.id)}
-                      className={`relative px-4 py-2 text-xs font-medium rounded-full transition-colors duration-200 flex items-center gap-1.5 cursor-pointer z-10 ${
+                      className={`relative px-4 py-2 text-xs font-medium rounded-none transition-colors duration-200 flex items-center gap-1.5 cursor-pointer z-10 ${
                         isHovered || (isActive && !servicesOpen)
                           ? "text-white font-semibold"
                           : "text-[#121316] hover:text-white"
@@ -149,11 +149,11 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                       data-cursor
                       data-cursor-text="CAPABILITIES"
                     >
-                      {/* Sliding Dark Pill Background: Turns text white on hover */}
+                      {/* Sliding Sharp Dark Background: Turns text white on hover */}
                       {(isHovered || (isActive && !servicesOpen)) && (
                         <motion.div
                           layoutId="nav-pill-bg"
-                          className="absolute inset-0 bg-[#121316] rounded-full z-[-1]"
+                          className="absolute inset-0 bg-[#121316] rounded-none z-[-1]"
                           transition={{ type: "spring", stiffness: 450, damping: 32 }}
                         />
                       )}
@@ -166,7 +166,7 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                       />
                     </button>
 
-                    {/* Services Dropdown */}
+                    {/* Services Dropdown with Sharp Edges */}
                     <AnimatePresence>
                       {servicesOpen && (
                         <motion.div
@@ -174,17 +174,17 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 10, scale: 0.96 }}
                           transition={{ duration: 0.18, ease: "easeOut" }}
-                          className="absolute top-full left-0 mt-3 w-80 bg-[#FFFFFF] border border-[#E6E6E8] shadow-[0_20px_50px_rgba(0,0,0,0.12)] p-2 rounded-2xl z-50 space-y-1"
+                          className="absolute top-full left-0 mt-3 w-80 bg-[#FFFFFF] border border-[#E6E6E8] shadow-[0_20px_50px_rgba(0,0,0,0.12)] p-2 rounded-none z-50 space-y-1"
                         >
                           <div className="px-3.5 py-2 border-b border-[#F0EFEB] text-[11px] text-[#7C7D82] uppercase tracking-wider font-bold">
                             What We Build
                           </div>
-                          {SERVICES_DATA.map((service, i) => (
+                          {SERVICES_DATA.map((service) => (
                             <Link
                               key={service.slug}
                               href={`/services/${service.slug}`}
                               onClick={() => setServicesOpen(false)}
-                              className="flex items-center justify-between px-3.5 py-2.5 text-xs text-[#121316] hover:bg-[#121316] hover:text-white rounded-xl transition-all group"
+                              className="flex items-center justify-between px-3.5 py-2.5 text-xs text-[#121316] hover:bg-[#121316] hover:text-white rounded-none transition-all group"
                             >
                               <span className="font-medium">
                                 {service.title}
@@ -204,7 +204,7 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                   key={item.id}
                   href={item.href}
                   onMouseEnter={() => setHoveredId(item.id)}
-                  className={`relative px-4 py-2 text-xs font-medium rounded-full transition-colors duration-200 cursor-pointer z-10 ${
+                  className={`relative px-4 py-2 text-xs font-medium rounded-none transition-colors duration-200 cursor-pointer z-10 ${
                     isHovered || isActive
                       ? "text-white font-semibold"
                       : "text-[#121316] hover:text-white"
@@ -212,11 +212,11 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                   data-cursor
                   data-cursor-text={item.label.toUpperCase()}
                 >
-                  {/* Sliding Dark Pill Background: Turns text white on hover */}
+                  {/* Sliding Sharp Dark Background: Turns text white on hover */}
                   {(isHovered || isActive) && (
                     <motion.div
                       layoutId="nav-pill-bg"
-                      className="absolute inset-0 bg-[#121316] rounded-full z-[-1]"
+                      className="absolute inset-0 bg-[#121316] rounded-none z-[-1]"
                       transition={{ type: "spring", stiffness: 450, damping: 32 }}
                     />
                   )}
@@ -226,14 +226,14 @@ export function Navbar({ onOpenContact }: NavbarProps) {
               );
             })}
 
-            {/* Integrated Contact CTA Button */}
+            {/* Integrated Contact CTA Button with Sharp Edges */}
             <button
               type="button"
               onClick={() => {
                 trackEvent({ action: "click_navbar_start_project", category: "cta", label: "Navbar CTA" });
                 onOpenContact();
               }}
-              className="ml-2 bg-[#1E5FD8] hover:bg-[#164fc0] text-white text-xs font-bold uppercase tracking-wider px-5 py-2 rounded-full transition-all duration-200 cursor-pointer shadow-sm active:scale-95 flex items-center gap-1.5"
+              className="ml-2 bg-[#1E5FD8] hover:bg-[#164fc0] text-white text-xs font-bold uppercase tracking-wider px-5 py-2 rounded-none transition-all duration-200 cursor-pointer shadow-sm active:scale-95 flex items-center gap-1.5"
               data-cursor
               data-cursor-text="CONTACT"
             >
@@ -243,12 +243,12 @@ export function Navbar({ onOpenContact }: NavbarProps) {
           </div>
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Menu Button with Sharp Edges */}
         <div className="md:hidden">
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2.5 bg-[#FFFFFF] border border-[#E6E6E8] text-[#121316] rounded-full shadow-sm cursor-pointer"
+            className="p-2.5 bg-[#FFFFFF] border border-[#E6E6E8] text-[#121316] rounded-none shadow-sm cursor-pointer"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4 text-[#1E5FD8]" />}
@@ -256,7 +256,7 @@ export function Navbar({ onOpenContact }: NavbarProps) {
         </div>
       </nav>
 
-      {/* Mobile Fullscreen Menu */}
+      {/* Mobile Fullscreen Menu with Sharp Edges */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -287,7 +287,7 @@ export function Navbar({ onOpenContact }: NavbarProps) {
                   setMobileMenuOpen(false);
                   onOpenContact();
                 }}
-                className="w-full bg-[#1E5FD8] hover:bg-[#164fc0] py-3.5 text-xs font-bold uppercase tracking-wider text-white rounded-full flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                className="w-full bg-[#1E5FD8] hover:bg-[#164fc0] py-3.5 text-xs font-bold uppercase tracking-wider text-white rounded-none flex items-center justify-center gap-2 cursor-pointer shadow-md"
               >
                 <span>Start a Project</span>
                 <ArrowRight className="w-4 h-4" />
