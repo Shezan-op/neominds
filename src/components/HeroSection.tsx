@@ -378,35 +378,35 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
                         className="space-y-1.5 sm:space-y-2 font-mono text-[8px] sm:text-[11px]"
                       >
                         <div className="flex items-center justify-between text-[#8E92A4] border-b border-[#1A2030] pb-1">
-                          <span className="text-[#60A5FA] font-bold uppercase">Workflow Node // v2.4</span>
-                          <span className="text-white/60">Latency: 142ms</span>
+                          <span className="text-[#60A5FA] font-bold uppercase">AI Workflow Pipeline</span>
+                          <span className="text-white/60">Speed: 140ms</span>
                         </div>
 
                         {/* Pipeline stages */}
                         <div className="grid grid-cols-3 gap-1 sm:gap-2">
                           <div className="bg-[#121624] border border-[#222A40] p-1 sm:p-1.5 rounded-none flex flex-col justify-between">
                             <span className="text-[7px] sm:text-[9px] text-[#8E92A4] uppercase">01. INGEST</span>
-                            <span className="text-white font-bold text-[8px] sm:text-[10px] truncate">Vector Sync</span>
-                            <span className="text-[#38BDF8] text-[7px] sm:text-[8px]">● Verified</span>
+                            <span className="text-white font-bold text-[8px] sm:text-[10px] truncate">Data Sync</span>
+                            <span className="text-[#38BDF8] text-[7px] sm:text-[8px]">● Ready</span>
                           </div>
 
                           <div className="bg-[#121624] border border-[#1E5FD8] p-1 sm:p-1.5 rounded-none flex flex-col justify-between relative overflow-hidden">
                             <div className="absolute top-0 right-0 w-2 h-2 bg-[#1E5FD8]" />
-                            <span className="text-[7px] sm:text-[9px] text-[#60A5FA] uppercase">02. EXECUTE</span>
-                            <span className="text-white font-bold text-[8px] sm:text-[10px] truncate">LLM Reasoning</span>
+                            <span className="text-[7px] sm:text-[9px] text-[#60A5FA] uppercase">02. PROCESS</span>
+                            <span className="text-white font-bold text-[8px] sm:text-[10px] truncate">AI Logic</span>
                             <span className="text-[#38BDF8] text-[7px] sm:text-[8px]">⚡ Running</span>
                           </div>
 
                           <div className="bg-[#121624] border border-[#222A40] p-1 sm:p-1.5 rounded-none flex flex-col justify-between">
                             <span className="text-[7px] sm:text-[9px] text-[#8E92A4] uppercase">03. OUTPUT</span>
-                            <span className="text-white font-bold text-[8px] sm:text-[10px] truncate">Deterministic</span>
-                            <span className="text-[#38BDF8] text-[7px] sm:text-[8px]">● Complete</span>
+                            <span className="text-white font-bold text-[8px] sm:text-[10px] truncate">Clean Response</span>
+                            <span className="text-[#38BDF8] text-[7px] sm:text-[8px]">● Done</span>
                           </div>
                         </div>
 
                         <div className="flex items-center justify-between text-[7px] sm:text-[9px] text-[#8E92A4] pt-0.5">
-                          <span className="text-white/70 truncate">Engine: Claude 3.7 + Custom Backend</span>
-                          <span className="text-[#38BDF8] font-bold">0 FAILURES</span>
+                          <span className="text-white/70 truncate">Backend: Next.js + Custom API</span>
+                          <span className="text-[#38BDF8] font-bold">100% RELIABLE</span>
                         </div>
                       </motion.div>
                     )}
@@ -422,21 +422,21 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
                         className="space-y-1.5 sm:space-y-2 font-mono text-[8px] sm:text-[11px]"
                       >
                         <div className="flex items-center justify-between text-[#8E92A4] border-b border-[#1A2030] pb-1">
-                          <span className="text-[#38BDF8] font-bold">SYSTEM TELEMETRY</span>
-                          <span className="text-white/60">Cluster: US-EAST-1</span>
+                          <span className="text-[#38BDF8] font-bold">SYSTEM STATUS</span>
+                          <span className="text-white/60">Global Cloud</span>
                         </div>
 
                         <div className="grid grid-cols-2 gap-1 sm:gap-2">
                           <div className="bg-[#121624] border border-[#222A40] p-1 sm:p-1.5">
-                            <span className="text-[7px] sm:text-[8px] text-[#8E92A4] block">API THROUGHPUT</span>
-                            <span className="text-sm sm:text-lg font-bold text-white leading-none">18,420</span>
+                            <span className="text-[7px] sm:text-[8px] text-[#8E92A4] block">API REQUESTS</span>
+                            <span className="text-sm sm:text-lg font-bold text-white leading-none">18,400</span>
                             <span className="text-[7px] sm:text-[8px] text-[#38BDF8] block mt-0.5">req / sec</span>
                           </div>
 
                           <div className="bg-[#121624] border border-[#222A40] p-1 sm:p-1.5">
-                            <span className="text-[7px] sm:text-[8px] text-[#8E92A4] block">ERROR RATE</span>
-                            <span className="text-sm sm:text-lg font-bold text-[#38BDF8] leading-none">0.001%</span>
-                            <span className="text-[7px] sm:text-[8px] text-white/60 block mt-0.5">zero downtime</span>
+                            <span className="text-[7px] sm:text-[8px] text-[#8E92A4] block">UPTIME</span>
+                            <span className="text-sm sm:text-lg font-bold text-[#38BDF8] leading-none">99.99%</span>
+                            <span className="text-[7px] sm:text-[8px] text-white/60 block mt-0.5">always online</span>
                           </div>
                         </div>
 
@@ -456,10 +456,10 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
                         transition={{ duration: 0.2 }}
                         className="font-mono text-[7px] sm:text-[9px] text-[#A0A6BD] space-y-0.5 sm:space-y-1"
                       >
-                        <p className="text-white/40">&gt; neominds deploy --cluster=prod-alpha</p>
-                        <p className="text-[#38BDF8]">&gt; [OK] Connected to multi-region mesh</p>
-                        <p className="text-white/80">&gt; Compiled 14 microservices in 4.2s</p>
-                        <p className="text-[#60A5FA]">&gt; System ready: 0 errors, 100% test pass</p>
+                        <p className="text-white/40">&gt; neominds build --release</p>
+                        <p className="text-[#38BDF8]">&gt; Connected to cloud database</p>
+                        <p className="text-white/80">&gt; All automated tests passed (100%)</p>
+                        <p className="text-[#60A5FA]">&gt; System ready: zero errors</p>
                       </motion.div>
                     )}
                   </AnimatePresence>

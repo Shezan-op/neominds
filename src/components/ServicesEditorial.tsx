@@ -21,11 +21,9 @@ const SERVICE_DNA_MAP: Record<string, string[]> = {
 
 export function ServicesEditorial() {
   const [activeIdx, setActiveIdx] = useState<number>(0);
-  const [isTakeover, setIsTakeover] = useState<boolean>(false);
   const sectionRef = useRef<HTMLElement>(null);
   const pinContainerRef = useRef<HTMLDivElement>(null);
   const lastIdxRef = useRef<number>(0);
-  const lastTakeoverRef = useRef<boolean>(false);
 
   const totalServices = SERVICES_DATA.length;
   const activeService = SERVICES_DATA[activeIdx] || SERVICES_DATA[0];
@@ -69,12 +67,6 @@ export function ServicesEditorial() {
                 label: SERVICES_DATA[index]?.title || `Service ${index + 1}`,
               });
             }
-
-            const takeover = progress >= 0.22 && progress <= 0.35;
-            if (takeover !== lastTakeoverRef.current) {
-              lastTakeoverRef.current = takeover;
-              setIsTakeover(takeover);
-            }
           },
         });
       }
@@ -116,13 +108,13 @@ export function ServicesEditorial() {
                 <div
                   key={service.slug}
                   onClick={() => setActiveIdx(idx)}
-                  className="cursor-pointer group transition-all duration-300 select-none"
+                  className="cursor-pointer group transition-all duration-200 select-none"
                   data-cursor
                   data-cursor-text="SELECT"
                 >
                   <div className="flex items-baseline gap-3 sm:gap-4">
                     <h3
-                      className={`font-serif font-bold tracking-tight uppercase transition-all duration-300 ${
+                      className={`font-serif font-bold tracking-tight uppercase transition-all duration-200 ${
                         isActive
                           ? "text-2xl sm:text-4xl lg:text-5xl text-[#121316] translate-x-2"
                           : "text-base sm:text-xl text-[#A0A1A6] hover:text-[#505156] translate-x-0"
@@ -144,10 +136,10 @@ export function ServicesEditorial() {
           <div className="lg:col-span-6 lg:border-l lg:border-[#E6E6E8] lg:pl-10 space-y-5">
             <div className="space-y-3">
               <div className="font-serif text-2xl sm:text-4xl lg:text-5xl font-bold text-[#121316] leading-tight">
-                <span className="inline-block transition-transform duration-300 ease-out">
+                <span className="inline-block transition-transform duration-200 ease-out">
                   {firstWord}
                 </span>{" "}
-                <span className="inline-block text-[#1E5FD8] transition-transform duration-300 ease-out">
+                <span className="inline-block text-[#1E5FD8] transition-transform duration-200 ease-out">
                   {remainingWords}
                 </span>
               </div>
@@ -157,21 +149,14 @@ export function ServicesEditorial() {
               </p>
             </div>
 
-            {/* Tools We Use */}
-            <div className="pt-3 border-t border-[#E6E6E8] space-y-2">
+            {/* Tools We Use: Pure Typography */}
+            <div className="pt-3 border-t border-[#E6E6E8] space-y-1.5">
               <span className="text-xs font-bold text-[#7C7D82] uppercase tracking-wider block">
                 Tools & Frameworks:
               </span>
-              <div className="flex flex-wrap items-center gap-2 font-sans text-xs">
-                {activeDnaTokens.map((token, i) => (
-                  <span
-                    key={i}
-                    className="bg-[#EDF4FF] text-[#1E5FD8] px-3 py-1 font-medium border border-[#1E5FD8]/20"
-                  >
-                    {token}
-                  </span>
-                ))}
-              </div>
+              <p className="text-sm font-sans font-medium text-[#1E5FD8]">
+                {activeDnaTokens.join("  •  ")}
+              </p>
             </div>
 
             {/* Deliverables */}
@@ -206,37 +191,6 @@ export function ServicesEditorial() {
             </div>
           </div>
         </div>
-
-        {/* Full-viewport Takeover Banner */}
-        {isTakeover && (
-          <div className="fixed inset-0 z-40 bg-[#FAF9F6]/95 backdrop-blur-md flex flex-col justify-between p-8 sm:p-14 pointer-events-none transition-opacity duration-300">
-            <div className="flex items-center justify-between border-b border-[#E6E6E8] pb-4">
-              <span className="text-xs text-[#1E5FD8] font-bold uppercase tracking-wider">
-                Application Development
-              </span>
-              <span className="text-xs text-[#7C7D82]">
-                Custom Software & Apps
-              </span>
-            </div>
-
-            <div className="my-auto text-center space-y-4">
-              <h2 className="font-serif font-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-[#121316] tracking-tight uppercase leading-none will-change-transform">
-                Application
-              </h2>
-              <h3 className="font-serif font-bold text-3xl sm:text-5xl md:text-6xl text-[#1E5FD8] tracking-tight uppercase leading-none">
-                Development
-              </h3>
-              <p className="text-sm sm:text-base text-[#4A4B50] max-w-xl mx-auto pt-2 font-sans">
-                Fast web apps and mobile tools built to handle thousands of users smoothly without crashing.
-              </p>
-            </div>
-
-            <div className="flex items-center justify-between text-xs text-[#7C7D82] border-t border-[#E6E6E8] pt-4 font-sans">
-              <span>Neominds Services</span>
-              <span>Scroll to see more services</span>
-            </div>
-          </div>
-        )}
 
         <TravelingLine className="mt-4" />
       </div>
