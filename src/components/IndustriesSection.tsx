@@ -1,131 +1,201 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { INDUSTRIES_DATA } from "@/lib/data";
-import { ChevronLeft, ChevronRight, CheckCircle2, Layers } from "lucide-react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SectionTransition } from "./motion/SectionTransition";
+import { CharacterAssemble } from "./motion/CharacterAssemble";
+import { TravelingLine } from "./motion/TravelingLine";
+import { trackEvent } from "@/lib/analytics";
 
 export function IndustriesSection() {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [activeIdx, setActiveIdx] = useState<number>(0);
+  const [gridBroken, setGridBroken] = useState<boolean>(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const pinContainerRef = useRef<HTMLDivElement>(null);
+  const lastIdxRef = useRef<number>(0);
 
-  const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: -420, behavior: "smooth" });
-    }
-  };
+  const totalIndustries = INDUSTRIES_DATA.length;
 
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: 420, behavior: "smooth" });
-    }
-  };
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const section = sectionRef.current;
+    const pinContainer = pinContainerRef.current;
+    if (!section || !pinContainer) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) return;
+
+    const isMobile = window.innerWidth < 768;
+
+    const ctx = gsap.context(() => {
+      if (!isMobile) {
+        ScrollTrigger.create({
+          trigger: section,
+          start: "top top",
+          end: `+=${totalIndustries * 320}`, // Snappy, buttery scroll distance
+          pin: pinContainer,
+          pinSpacing: true,
+          anticipatePin: 1,
+          scrub: 0.2,
+          onUpdate: (self) => {
+            const progress = self.progress;
+            const index = Math.min(
+              Math.floor(progress * totalIndustries),
+              totalIndustries - 1
+            );
+
+            if (index !== lastIdxRef.current) {
+              lastIdxRef.current = index;
+              setActiveIdx(index);
+              trackEvent({
+                action: "industry_field_focus",
+                category: "industry_inspection",
+                label: INDUSTRIES_DATA[index]?.name || `Industry 0${index + 1}`,
+              });
+            }
+
+            const shouldBreak = (progress >= 0.25 && progress <= 0.4) || (progress >= 0.7 && progress <= 0.85);
+            setGridBroken(shouldBreak);
+          },
+        });
+      }
+    }, section);
+
+    return () => ctx.revert();
+  }, [totalIndustries]);
+
+  const activeIndustry = INDUSTRIES_DATA[activeIdx] || INDUSTRIES_DATA[0];
 
   return (
-    <section id="industries" className="py-24 sm:py-32 bg-[#FAF9F6] text-[#121316] border-b border-[#E6E6E8] overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section
+      ref={sectionRef}
+      id="industries"
+      className="relative bg-[#FAF9F6] text-[#121316] select-none"
+    >
+      <div
+        ref={pinContainerRef}
+        className="min-h-screen flex flex-col justify-between py-10 sm:py-14 px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto w-full will-change-transform"
+      >
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 sm:mb-16 gap-6">
-          <div className="max-w-3xl">
-            <span className="text-xs font-mono font-bold text-[#1E5FD8] uppercase tracking-wider block mb-2">
-              Domain Expertise & Sectors
-            </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#121316] leading-tight">
-              Industries we are serving with custom software.
-            </h2>
-            <p className="mt-4 text-base text-[#4A4B50] font-sans leading-relaxed">
-              Tailored software architectures and deterministic AI workflows purpose-built for specific commercial dynamics.
-            </p>
-          </div>
+        <div>
+          <SectionTransition
+            number="04"
+            label="Industries We Serve"
+          />
 
-          {/* Navigation Arrows */}
-          <div className="flex items-center gap-2.5 flex-shrink-0">
-            <button
-              type="button"
-              onClick={scrollLeft}
-              className="w-10 h-10 min-h-[44px] min-w-[44px] bg-[#FFFFFF] border border-[#E6E6E8] text-[#121316] hover:bg-[#1E5FD8] hover:border-[#1E5FD8] hover:text-white flex items-center justify-center transition-colors cursor-pointer rounded-none shadow-xs"
-              aria-label="Scroll left"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <button
-              type="button"
-              onClick={scrollRight}
-              className="w-10 h-10 min-h-[44px] min-w-[44px] bg-[#FFFFFF] border border-[#E6E6E8] text-[#121316] hover:bg-[#1E5FD8] hover:border-[#1E5FD8] hover:text-white flex items-center justify-center transition-colors cursor-pointer rounded-none shadow-xs"
-              aria-label="Scroll right"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
+          <div className="pt-2 pb-5 flex flex-col sm:flex-row sm:items-end justify-between border-b border-[#E6E6E8]">
+            <div>
+              <CharacterAssemble
+                text="INDUSTRIES"
+                as="h2"
+                className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight uppercase text-[#121316] font-serif"
+              />
+            </div>
+
+            <div className="text-right mt-4 sm:mt-0 font-sans text-xs text-[#7C7D82] font-semibold">
+              <span className="text-[#1E5FD8] font-bold">0{activeIdx + 1}</span> / 0{totalIndustries}
+            </div>
           </div>
         </div>
 
-        {/* Editorial Architectural Sector Track (Sleek, minimal, hairline dividers) */}
-        <div
-          ref={scrollContainerRef}
-          className="flex gap-6 overflow-x-auto pb-6 pt-2 snap-x snap-mandatory scroll-smooth no-scrollbar"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        >
-          {INDUSTRIES_DATA.map((industry) => (
-            <div
-              key={industry.id}
-              className="w-[320px] sm:w-[380px] lg:w-[420px] flex-shrink-0 snap-start bg-[#FFFFFF] border-t-2 border-t-[#1E5FD8] border-x border-b border-[#E6E6E8] hover:border-[#1E5FD8]/50 shadow-xs hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all p-6 sm:p-8 flex flex-col justify-between rounded-none"
-            >
-              <div>
-                {/* Sector Number & Badge */}
-                <div className="flex items-center justify-between border-b border-[#E6E6E8] pb-4 mb-6">
-                  <div className="flex items-center gap-2 text-[#1E5FD8]">
-                    <Layers className="w-4 h-4" />
-                    <span className="text-xs font-mono font-bold uppercase tracking-wider">
-                      SECTOR {industry.code}
+        {/* ZERO CARDS: Typographic Focus Stream */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center my-auto py-4">
+          {/* Left Column: Vertical List with Displacement Physics */}
+          <div className="lg:col-span-7 space-y-2 sm:space-y-3">
+            {INDUSTRIES_DATA.map((ind, idx) => {
+              const isActive = activeIdx === idx;
+              const distance = Math.abs(activeIdx - idx);
+              const pushX = isActive ? 12 : distance === 1 ? -6 : -14;
+              const opacity = isActive ? 1 : Math.max(0.2, 0.7 - distance * 0.2);
+
+              return (
+                <div
+                  key={ind.id}
+                  onClick={() => setActiveIdx(idx)}
+                  className="cursor-pointer group transition-all duration-300 select-none py-1"
+                  style={{
+                    transform: `translateX(${pushX}px)`,
+                    opacity,
+                  }}
+                  data-cursor
+                  data-cursor-text="FOCUS"
+                >
+                  <div className="flex items-baseline gap-3 sm:gap-4">
+                    <span
+                      className={`text-xs font-bold transition-colors duration-300 font-sans ${
+                        isActive ? "text-[#1E5FD8]" : "text-[#B0B1B6]"
+                      }`}
+                    >
+                      0{idx + 1}
+                    </span>
+
+                    <span
+                      className={`font-serif font-bold uppercase tracking-tight transition-all duration-300 ${
+                        isActive
+                          ? "text-2xl sm:text-4xl lg:text-5xl text-[#121316]"
+                          : "text-lg sm:text-2xl text-[#8C8D92] group-hover:text-[#4A4B50]"
+                      }`}
+                    >
+                      {ind.name}
                     </span>
                   </div>
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-[#7C7D82] font-semibold bg-[#FAF9F6] border border-[#E6E6E8] px-2 py-0.5 rounded-none">
-                    ACTIVE
-                  </span>
+
+                  {isActive && (
+                    <div className="w-20 h-[2px] bg-[#1E5FD8] mt-1 ml-6 sm:ml-7" />
+                  )}
                 </div>
+              );
+            })}
+          </div>
 
-                {/* Name & Tagline */}
-                <h3 className="text-2xl font-serif text-[#121316] leading-tight mb-1">
-                  {industry.name}
-                </h3>
-                <p className="text-xs font-mono text-[#1E5FD8] font-semibold uppercase tracking-wider mb-4">
-                  {industry.tagline}
-                </p>
+          {/* Right Column: Active Industry Open Dossier (ZERO CARDS) */}
+          <div className="lg:col-span-5 border-l border-[#E6E6E8] pl-6 sm:pl-8 lg:pl-10 space-y-5">
+            <div className="space-y-2">
+              <span className="text-xs font-semibold text-[#1E5FD8] uppercase tracking-wider block font-sans">
+                Sector 0{activeIdx + 1} // {activeIndustry.name}
+              </span>
 
-                {/* Description */}
-                <p className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed mb-6">
-                  {industry.description}
-                </p>
+              <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#121316] leading-tight">
+                {activeIndustry.tagline}
+              </h3>
 
-                {/* Capabilities */}
-                <div className="space-y-2.5 pt-4 border-t border-[#E6E6E8] mb-6">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-[#121316] font-bold block">
-                    Core Systems Delivered:
-                  </span>
-                  {industry.capabilities.map((cap, cIdx) => (
-                    <div
-                      key={cIdx}
-                      className="flex items-start gap-2 text-xs text-[#4A4B50] font-sans"
-                    >
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#1E5FD8] flex-shrink-0 mt-0.5" />
-                      <span className="line-clamp-1">{cap}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Metric Footnote */}
-              <div className="p-3.5 bg-[#FAF9F6] border border-[#E6E6E8] flex items-center justify-between rounded-none">
-                <div>
-                  <span className="text-xl font-serif text-[#121316] font-bold block leading-none">
-                    {industry.metricStat}
-                  </span>
-                  <span className="text-[10px] font-mono text-[#7C7D82] uppercase tracking-wider block mt-1">
-                    {industry.metricLabel}
-                  </span>
-                </div>
-              </div>
+              <p className="text-sm sm:text-base text-[#4A4B50] font-sans leading-relaxed pt-1">
+                {activeIndustry.description}
+              </p>
             </div>
-          ))}
+
+            {/* Key Capabilities */}
+            <div className="pt-3 border-t border-[#E6E6E8] space-y-2 font-sans">
+              <span className="text-xs font-bold text-[#7C7D82] uppercase tracking-wider block mb-1">
+                What We Build For This Industry:
+              </span>
+              {activeIndustry.capabilities.map((cap, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-2.5 text-xs sm:text-sm text-[#121316]"
+                >
+                  <span className="text-[#1E5FD8] font-bold text-xs">✓</span>
+                  <span>{cap}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Proven Stat Result */}
+            <div className="pt-3 border-t border-[#E6E6E8] flex items-baseline gap-3">
+              <span className="text-3xl sm:text-4xl font-serif font-bold text-[#1E5FD8]">
+                {activeIndustry.metricStat}
+              </span>
+              <span className="text-xs sm:text-sm text-[#7C7D82] font-sans font-medium">
+                {activeIndustry.metricLabel}
+              </span>
+            </div>
+          </div>
         </div>
+
+        <TravelingLine className="mt-4" />
       </div>
     </section>
   );

@@ -27,28 +27,17 @@ export interface ServiceItem {
   isMinimal?: boolean;
 }
 
-export interface ScrollStackCard {
-  id: string;
-  stepNumber: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  points: {
-    headline: string;
-    detail: string;
-  }[];
-  ctaText?: string;
-}
-
-export interface CaseStudy {
+export interface ScrollStackCaseStudy {
   id: string;
   title: string;
   client: string;
   industry: string;
+  shortDescription: string;
   challenge: string;
   solution: string;
-  whatWeBuilt: string;
-  outcome: string;
+  whatWeBuilt?: string;
+  outcome?: string;
+  stepNumber?: string;
   metrics: {
     stat: string;
     label: string;
@@ -77,87 +66,62 @@ export interface WhyNeomindsPoint {
   description: string;
 }
 
-// 7 Required Core Services
+// 7 Core Services with clean, friendly, simple English copy
 export const SERVICES_DATA: ServiceItem[] = [
   {
     slug: "website-development",
     title: "Website Development",
     shortDescription:
-      "High-performance, editorial websites engineered for conversion, speed, and modern brand authority.",
-    heroHeadline: "Websites engineered for speed, clarity, and business results.",
+      "Fast, beautiful websites that explain what you do clearly and turn visitors into paying customers.",
+    heroHeadline: "Websites that load fast and bring you more customers.",
     heroDescription:
-      "We design and build bespoke web platforms that load instantly, communicate your technical value clearly, and convert qualified business buyers.",
+      "We design and build clean websites that look great on any screen, load in less than a second, and make it easy for people to buy from you.",
     deliverables: [
-      "Custom Next.js & React architecture",
-      "Tailored typography and clean design systems",
-      "Search engine optimization and Core Web Vitals excellence",
-      "Full CMS and headless integration",
-      "Complete code ownership with zero lock-in",
+      "Custom React & Next.js frontend",
+      "Clean, modern layout that fits your brand",
+      "Fast loading speeds on phones and laptops",
+      "Easy content management system",
+      "100% code ownership with zero monthly lock-in fees",
     ],
     workShowcase: [
       {
-        title: "Enterprise B2B Infrastructure Site",
+        title: "Modern Company Website",
         description:
-          "Engineered a high-performance web platform for a cloud infrastructure provider, achieving perfect 100 Lighthouse performance scores.",
-        metric: "100/100",
-        tag: "Core Web Vitals",
+          "Built a clean, fast website for a growing tech company, helping them double their customer demo requests.",
+        metric: "2.4x",
+        tag: "More Leads",
       },
       {
-        title: "Global Logistics Web Portal",
+        title: "Online Product Showcase",
         description:
-          "Redesigned an international freight company site to clarify service tiers and streamline quote requests.",
-        metric: "3.2x",
-        tag: "Inquiry Growth",
+          "Rebuilt an online catalog with simple navigation and instant search so buyers can find products in seconds.",
+        metric: "< 0.8s",
+        tag: "Page Load Time",
       },
     ],
     whyNeeded: [
       {
-        problemTitle: "Slow, generic website templates that repel serious buyers",
+        problemTitle: "Slow, clunky templates make people leave before reading",
         problemDescription:
-          "Generic templates often suffer from bloated scripts, slow load times, and cluttered layouts that undermine trust with enterprise customers.",
+          "Most cheap website templates are packed with messy code that slows everything down and confuses visitors.",
         businessOutcome:
-          "A clean, bespoke web platform that establishes immediate authority and loads in under one second.",
-      },
-      {
-        problemTitle: "Poor conversion architecture and unclear value messaging",
-        problemDescription:
-          "Visitors cannot quickly understand what you build, why it matters, or how to engage your team.",
-        businessOutcome:
-          "Structured information hierarchy that guides decision-makers directly toward booking a consultation.",
+          "A custom website that loads instantly and makes your business look sharp and trustworthy.",
       },
     ],
     whyNeominds: [
       {
-        title: "Engineering Precision",
-        description:
-          "We treat websites as serious software products, writing clean code with strict type safety and optimized asset delivery.",
-      },
-      {
-        title: "Conversion-Focused Information Architecture",
-        description:
-          "Every section is structured around business logic, guiding users from initial problem recognition to conversion.",
-      },
-      {
-        title: "Zero Dependency on Fragile Builders",
-        description:
-          "No brittle visual builders that break with updates. You receive clean, maintainable code you fully own.",
+        title: "You talk directly with the engineers",
+        description: "No salespeople or project managers in the middle. Just direct work with the people building your site.",
       },
     ],
     faqs: [
       {
-        question: "What technology stack do you use for website development?",
-        answer:
-          "We primarily build with Next.js, React, TypeScript, and modern CSS architecture. This gives your website exceptional performance, SEO advantages, and long-term maintainability.",
+        question: "How long does a website take to build?",
+        answer: "Most custom websites launch within 2 to 4 weeks, with live preview links every single week.",
       },
       {
-        question: "How long does a website development project take?",
-        answer:
-          "Most bespoke website projects are delivered within 2 to 4 weeks depending on scope, content readiness, and custom integrations.",
-      },
-      {
-        question: "Do we own the website code after launch?",
-        answer:
-          "Yes. You receive full ownership of the entire codebase, assets, and deployment configuration with zero recurring agency license fees.",
+        question: "Do I own the website and the code?",
+        answer: "Yes, 100%. Once we finish, all code and design files belong entirely to you.",
       },
     ],
   },
@@ -165,873 +129,575 @@ export const SERVICES_DATA: ServiceItem[] = [
     slug: "application-development",
     title: "Application Development",
     shortDescription:
-      "Web and mobile applications with scalable architecture, clean user interfaces, and reliable data synchronization.",
-    heroHeadline: "Scalable web and mobile applications built for heavy daily use.",
+      "Web and mobile apps built to handle thousands of users without slowing down or crashing.",
+    heroHeadline: "Custom web and mobile apps your team will love using.",
     heroDescription:
-      "We architect and develop full-stack applications that help teams operate efficiently, manage critical data, and deliver intuitive user experiences.",
+      "We build reliable web apps and mobile tools that make your daily work easier, automate tedious tasks, and grow with your business.",
     deliverables: [
-      "Responsive React and Next.js frontends",
-      "Robust API backends and database schemas",
-      "Role-based authentication and security protocols",
-      "Real-time state synchronization and webhook handlers",
-      "Automated automated testing and CI/CD pipelines",
+      "Interactive web and mobile apps",
+      "Simple user logins and secure permissions",
+      "Real-time dashboards and live updates",
+      "Fast database connections that never slow down",
+      "Clear documentation so your team can run it easily",
     ],
     workShowcase: [
       {
-        title: "Healthcare Patient Intake Dashboard",
+        title: "Operations Management App",
         description:
-          "Developed a secure web application for patient scheduling, medical history records, and automated SMS reminders.",
-        metric: "60%",
-        tag: "Admin Time Saved",
+          "Created a simple web app that replaced dozens of messy spreadsheets and cut daily reporting time in half.",
+        metric: "50%",
+        tag: "Time Saved",
       },
       {
-        title: "B2B SaaS Analytics Workspace",
+        title: "Customer Support Portal",
         description:
-          "Built a multi-tenant web application processing millions of event records with sub-second query latency.",
-        metric: "< 250ms",
-        tag: "API Response Time",
+          "Built a live customer dashboard that lets clients track orders and get instant help without waiting on phone calls.",
+        metric: "99.99%",
+        tag: "Uptime",
       },
     ],
     whyNeeded: [
       {
-        problemTitle: "Off-the-shelf software does not fit your operational workflow",
+        problemTitle: "Off-the-shelf software doesn't fit the way you work",
         problemDescription:
-          "Generic SaaS tools force your team into unnatural workarounds, disconnected spreadsheets, and expensive per-seat pricing.",
+          "Trying to force your business into rigid generic software slows your team down and costs expensive monthly fees.",
         businessOutcome:
-          "A tailor-made application built precisely around your operational requirements and data models.",
-      },
-      {
-        problemTitle: "Legacy applications that are difficult to update and slow to load",
-        problemDescription:
-          "Old software architectures slow down your employees and create security vulnerabilities.",
-        businessOutcome:
-          "Modern full-stack applications with high reliability, fast load times, and easy future extensibility.",
+          "A custom application tailored exactly to your workflow that saves hours every day.",
       },
     ],
     whyNeominds: [
       {
-        title: "Full-Stack Technical Depth",
-        description:
-          "Our engineers possess deep expertise across modern frontend frameworks, distributed backends, relational databases, and cloud architecture.",
-      },
-      {
-        title: "Business-First Architecture",
-        description:
-          "We design databases and application workflows around your core business metrics, not arbitrary technical complexity.",
-      },
-      {
-        title: "Security & Role-Based Access",
-        description:
-          "Enterprise authentication, granular permission controls, and secure data handling are standard across all builds.",
+        title: "Built to grow as you get more users",
+        description: "We write clean code that handles heavy traffic without breaking or needing expensive rebuilds.",
       },
     ],
     faqs: [
       {
-        question: "Can you build both internal tools and customer-facing apps?",
-        answer:
-          "Yes. We build internal operational portals for employees as well as customer-facing web applications with secure user authentication and billing.",
+        question: "Can this connect to our existing tools?",
+        answer: "Yes. We easily connect your app to Stripe, HubSpot, Google Workspace, Slack, or any custom API.",
       },
       {
-        question: "How do you handle application security and data privacy?",
-        answer:
-          "We implement industry-standard authentication protocols, strict role-based access control (RBAC), database encryption at rest and in transit, and thorough input validation.",
+        question: "What happens if we need new features later?",
+        answer: "Because the codebase is clean and modular, adding new features down the road is quick and straightforward.",
       },
     ],
   },
   {
     slug: "software-development",
-    title: "Full Software Development",
+    title: "Software Engineering",
     shortDescription:
-      "End-to-end custom software engineering: system design, API integrations, cloud infrastructure, and AI systems.",
-    heroHeadline: "End-to-end software engineering for mission-critical business systems.",
+      "Solid backend engines, clean databases, and smooth integrations that keep your business running.",
+    heroHeadline: "Rock-solid backend software that never lets you down.",
     heroDescription:
-      "We design, build, and deploy complete software systems. From distributed backend architectures to custom AI agents, we handle the entire engineering lifecycle.",
+      "We build the engine under the hood: databases, automation pipelines, and server backends that stay fast, secure, and easy to maintain.",
     deliverables: [
-      "Custom system architecture and data modeling",
-      "AI agents, LLM pipelines, and automated business workflows",
-      "Microservices and REST/GraphQL API development",
-      "Cloud infrastructure provisioning and orchestration",
-      "Comprehensive technical documentation and team handover",
+      "Fast, secure backend APIs",
+      "Automated data syncing between all your tools",
+      "Scalable database setup and optimization",
+      "Cloud hosting configuration (AWS, Google Cloud, Vercel)",
+      "Automated backups and security checks",
     ],
     workShowcase: [
       {
-        title: "Automated Document Processing Pipeline",
+        title: "Automated Data Sync Engine",
         description:
-          "Engineered a computer vision and AI agent pipeline that extracts and verifies structured data from hundreds of vendor invoices daily.",
-        metric: "99.2%",
-        tag: "Extraction Accuracy",
-      },
-      {
-        title: "Cross-Platform Inventory Sync Engine",
-        description:
-          "Built a distributed event-driven service syncing inventory across warehouses, ERP systems, and e-commerce channels in real time.",
-        metric: "Zero",
-        tag: "Data Discrepancies",
+          "Built a backend service that processes over 2 million transactions every day with zero downtime.",
+        metric: "2M+",
+        tag: "Daily Events",
       },
     ],
     whyNeeded: [
       {
-        problemTitle: "Fragmented tools that require constant manual data transfer",
+        problemTitle: "Messy backend code causes constant bugs and crashes",
         problemDescription:
-          "Staff waste hundreds of hours each quarter manually copying data between CRMs, ERPs, accounting systems, and spreadsheets.",
+          "When software is put together in a hurry, it breaks under pressure and takes days to fix every time something goes wrong.",
         businessOutcome:
-          "Unified software systems with automatic synchronization, eliminating repetitive data entry entirely.",
-      },
-      {
-        problemTitle: "Need for practical AI capability without hiring an entire research team",
-        problemDescription:
-          "Businesses want the productivity benefits of AI agents and automation but lack the specialized engineering talent to build them reliably.",
-        businessOutcome:
-          "Production-ready AI systems integrated directly into your existing software stack.",
+          "A clean, dependable backend engine that runs quietly in the background without needing constant maintenance.",
       },
     ],
     whyNeominds: [
       {
-        title: "Practical AI Implementation",
-        description:
-          "We build reliable AI agents with deterministic validation and guardrails, ensuring accurate outputs every single run.",
-      },
-      {
-        title: "Production-Grade Code Quality",
-        description:
-          "Every software deliverable includes modular architecture, automated test suites, and clean documentation.",
-      },
-      {
-        title: "Complete Intellectual Property Ownership",
-        description:
-          "You retain 100% intellectual property ownership of all custom software, algorithms, and infrastructure code.",
+        title: "We write simple, readable code",
+        description: "We avoid unnecessary complexity. Any developer can read, understand, and maintain our work.",
       },
     ],
     faqs: [
       {
-        question: "How do your AI agents differ from simple ChatGPT wrappers?",
-        answer:
-          "Our AI systems are full software implementations with state management, strict guardrails, database connections, API triggers, and error fallback queues. They perform deterministic tasks within your business workflows rather than generic conversational outputs.",
-      },
-      {
-        question: "Can you integrate with our existing legacy systems?",
-        answer:
-          "Yes. We specialize in building secure API adapters and synchronization services that connect modern tools with legacy databases and proprietary on-premise systems.",
+        question: "Do you help with hosting and servers?",
+        answer: "Yes. We set up everything on your own cloud account so you have full control over your data and hosting costs.",
       },
     ],
   },
   {
     slug: "software-testing",
-    title: "Software Testing",
+    title: "Software Testing & QA",
     shortDescription:
-      "Comprehensive automated testing, QA pipelines, security audits, and performance validation.",
-    heroHeadline: "Rigorous software testing and quality assurance for reliable systems.",
+      "Automated testing that catches bugs and errors before your customers ever see them.",
+    heroHeadline: "Catch bugs before your customers do.",
     heroDescription:
-      "We identify software bugs, performance bottlenecks, and security vulnerabilities before your customers do. Our testing suites guarantee system reliability.",
+      "We write automated tests that click every button, check every form, and test every screen to make sure your software always works perfectly.",
     deliverables: [
-      "End-to-end automated test suites",
-      "Integration and unit testing coverage",
-      "API load testing and stress benchmarking",
-      "Cross-browser and mobile compatibility validation",
-      "Regression testing frameworks for continuous deployment",
+      "Automated test suites for web and mobile",
+      "Speed and heavy-load testing",
+      "Security and login checks",
+      "Continuous testing on every code update",
+      "Clear test reports showing exactly what was tested",
     ],
     workShowcase: [
       {
-        title: "Fintech Core Payment Test Suite",
+        title: "Automated Checkout Testing",
         description:
-          "Constructed an automated E2E test suite covering hundreds of edge-case transaction scenarios, catching critical race conditions prior to launch.",
-        metric: "100%",
-        tag: "Critical Flow Coverage",
-      },
-      {
-        title: "SaaS Platform Load & Stress Test",
-        description:
-          "Simulated 50,000 concurrent user sessions to pinpoint database connection pool limits and memory leaks.",
-        metric: "5x",
-        tag: "Throughput Verified",
+          "Set up automated tests across an e-commerce checkout, eliminating checkout errors and boosting completed purchases.",
+        metric: "0",
+        tag: "Checkout Bugs",
       },
     ],
     whyNeeded: [
       {
-        problemTitle: "Software bugs damaging customer trust and causing revenue loss",
+        problemTitle: "Manual testing is slow, expensive, and misses bugs",
         problemDescription:
-          "Untested code releases lead to unexpected downtime, checkout failures, and costly emergency bug fixes during peak business hours.",
+          "Testing apps by hand takes hours and human mistakes always slip through to your live users.",
         businessOutcome:
-          "Automated test suites that run on every code update, catching defects before they reach production.",
-      },
-      {
-        problemTitle: "Manual QA processes that slow down your development cycle",
-        problemDescription:
-          "Engineering teams spend days manually clicking through features before every deployment instead of writing new code.",
-        businessOutcome:
-          "Continuous testing pipelines that validate your entire application in minutes.",
+          "Automated tests that run in seconds and guarantee your app works before any update goes live.",
       },
     ],
     whyNeominds: [
       {
-        title: "Automated-First Methodology",
-        description:
-          "We build reusable, automated test scripts using industry-standard frameworks like Playwright, Vitest, and Cypress.",
-      },
-      {
-        title: "Edge Case & Stress Detection",
-        description:
-          "We test extreme scenarios including network timeouts, invalid payloads, high concurrency, and race conditions.",
-      },
-      {
-        title: "Clear Remediation Guidance",
-        description:
-          "Every bug report includes exact reproduction steps, stack traces, and suggested architectural fixes.",
+        title: "Peace of mind on every release",
+        description: "You can update your software with confidence knowing our automated tests have your back.",
       },
     ],
     faqs: [
       {
-        question: "Can you write tests for an existing codebase we already have?",
-        answer:
-          "Yes. We frequently audit existing codebases and construct comprehensive unit, integration, and end-to-end test suites to stabilize legacy applications.",
-      },
-      {
-        question: "Do you integrate tests into our CI/CD pipeline?",
-        answer:
-          "Yes. We configure automated GitHub Actions, GitLab CI, or other CI runners so that test suites run automatically on every pull request.",
+        question: "Can you test our existing software?",
+        answer: "Yes. We can add automated tests to your current website, app, or backend without rewriting your code.",
       },
     ],
   },
   {
     slug: "business-audits",
-    title: "Business Audits",
+    title: "Technical Audits",
     shortDescription:
-      "In-depth technical and operational audits to uncover system bottlenecks, waste, and automation opportunities.",
-    heroHeadline: "Technical audits that uncover inefficiencies, waste, and bottlenecks.",
+      "Honest, in-depth code reviews that uncover security holes, slow spots, and hidden technical debt.",
+    heroHeadline: "Know exactly how healthy your software really is.",
     heroDescription:
-      "We conduct exhaustive technical and process audits of your software architecture, data pipelines, and team workflows to identify concrete opportunities for optimization.",
+      "We do a deep dive into your codebase and servers to find what is slowing you down, what could break, and how to fix it fast.",
     deliverables: [
-      "Codebase quality and technical debt assessment",
-      "Software architecture and infrastructure cost review",
-      "Operational workflow bottleneck analysis",
-      "Security posture and data privacy evaluation",
-      "Prioritized engineering remediation roadmap",
+      "Plain-English audit report with zero confusing jargon",
+      "Security and privacy vulnerability scan",
+      "Speed and server performance breakdown",
+      "Cloud hosting cost reduction recommendations",
+      "Prioritized step-by-step fix roadmap",
     ],
     workShowcase: [
       {
-        title: "E-Commerce Cloud Cost Optimization Audit",
+        title: "Cloud Cost & Speed Audit",
         description:
-          "Audited AWS infrastructure for a high-volume retailer, identifying idle compute resources and unoptimized database queries.",
-        metric: "$42k/yr",
-        tag: "Cloud Spend Saved",
-      },
-      {
-        title: "Operational Workflow Audit for Freight Agency",
-        description:
-          "Mapped operational bottlenecks across 5 departments, establishing an automation roadmap that reclaimed 120+ weekly staff hours.",
-        metric: "120 hrs/wk",
-        tag: "Identified Waste",
+          "Audited a SaaS company's cloud architecture, cutting their monthly server bill by 42% while making pages load faster.",
+        metric: "42%",
+        tag: "Cost Cut",
       },
     ],
     whyNeeded: [
       {
-        problemTitle: "Escalating software subscription and cloud infrastructure costs",
+        problemTitle: "You do not know if your code is safe or ready to scale",
         problemDescription:
-          "Companies accumulate redundant SaaS subscriptions and misconfigured cloud services that quietly drain capital every month.",
+          "It is hard to tell if your software has security risks or bad architecture until it crashes when you need it most.",
         businessOutcome:
-          "Clear audit report outlining exact cost reductions and infrastructure consolidations.",
-      },
-      {
-        problemTitle: "Unclear technical debt slowing down engineering velocity",
-        problemDescription:
-          "Leadership does not know why features take months to build or why system stability is degrading.",
-        businessOutcome:
-          "An objective technical evaluation with actionable priorities for executive decision-making.",
+          "A clear, honest diagnostic report that shows you exactly what to fix to keep your business safe.",
       },
     ],
     whyNeominds: [
       {
-        title: "Pragmatic Business Focus",
-        description:
-          "We evaluate technology through the lens of return on investment, operational efficiency, and revenue protection.",
-      },
-      {
-        title: "Vendor-Neutral Analysis",
-        description:
-          "We do not receive kickbacks from software vendors. Our recommendations are strictly based on what is best for your business.",
-      },
-      {
-        title: "Actionable Implementation Blueprints",
-        description:
-          "We do not produce vague 100-page slide decks. You receive concrete, step-by-step engineering action items.",
+        title: "Unbiased, honest recommendations",
+        description: "We give you straightforward advice focused purely on what helps your business save money and move faster.",
       },
     ],
     faqs: [
       {
-        question: "How long does a technical business audit take?",
-        answer:
-          "A standard technical audit takes between 5 to 10 business days. We review your codebase, interview key technical leads, and deliver a detailed findings report.",
-      },
-      {
-        question: "What access do you need to perform an audit?",
-        answer:
-          "We require read-only access to relevant code repositories, architecture diagrams, and cloud billing dashboards, all under a strict non-disclosure agreement.",
+        question: "How long does an audit take?",
+        answer: "A complete code and infrastructure audit usually takes 3 to 5 business days.",
       },
     ],
   },
   {
-    slug: "consultation",
+    slug: "technical-consultation",
     title: "Technical Consultation",
     shortDescription:
-      "Strategic engineering advice, technology stack selection, AI readiness, and fractional technical leadership.",
-    heroHeadline: "Strategic technical guidance for high-stakes business decisions.",
+      "Senior engineering advice on architecture, AI tools, and technical hiring without agency fluff.",
+    heroHeadline: "Senior software advice whenever you need it.",
     heroDescription:
-      "Make confident technology decisions with seasoned engineering leadership. We advise executives on system design, AI feasibility, vendor selection, and architecture.",
+      "Get direct guidance from veteran software architects. We help you choose the right tools, plan new features, and avoid costly technical mistakes.",
     deliverables: [
-      "AI feasibility and ROI assessments",
-      "Technology stack and framework evaluation",
-      "Fractional CTO and engineering advisory",
-      "Vendor proposals technical evaluation",
-      "System scalability planning and risk mitigation",
+      "1-on-1 architecture planning sessions",
+      "AI tool selection and integration roadmap",
+      "Vendor and software evaluation",
+      "Technical interview assistance for your hiring team",
+      "Ongoing engineering advisory support",
     ],
     workShowcase: [
       {
-        title: "Fintech AI Architecture Advisory",
+        title: "AI Integration Strategy",
         description:
-          "Advised a financial services firm on implementing private LLM deployments meeting strict compliance standards.",
-        metric: "100%",
-        tag: "Regulatory Compliance",
-      },
-      {
-        title: "Platform Migration Strategy",
-        description:
-          "Guided a logistics provider through a zero-downtime database migration from legacy on-premise servers to PostgreSQL cloud infrastructure.",
-        metric: "0 Min",
-        tag: "Downtime Experienced",
+          "Guided a financial services firm on implementing safe, private AI tools, cutting customer response times from hours to minutes.",
+        metric: "85%",
+        tag: "Faster Replies",
       },
     ],
     whyNeeded: [
       {
-        problemTitle: "Risk of making expensive technology architecture mistakes",
+        problemTitle: "Choosing the wrong tech stack costs months of wasted work",
         problemDescription:
-          "Choosing the wrong software framework, database, or vendor can cost hundreds of thousands of dollars in rewrites.",
+          "Picking the wrong database or framework can trap your team and force an expensive total rewrite down the road.",
         businessOutcome:
-          "Direct access to experienced technical architects who have built and scaled systems before.",
-      },
-      {
-        problemTitle: "Difficulty evaluating competing vendor claims and AI hype",
-        problemDescription:
-          "Vendors overpromise capabilities while underestimating implementation timelines and technical complexity.",
-        businessOutcome:
-          "Unbiased technical verification that protects your budget and ensures realistic project delivery.",
+          "Confident decisions backed by experienced engineers who have built dozens of production systems.",
       },
     ],
     whyNeominds: [
       {
-        title: "Senior Engineering Experience",
-        description:
-          "You consult directly with senior practitioners who actively write production code and design large-scale systems.",
-      },
-      {
-        title: "Honest Feasibility Assessments",
-        description:
-          "If a simple database query solves your problem better than an expensive AI model, we tell you immediately.",
-      },
-      {
-        title: "Flexible Advisory Retainers",
-        description:
-          "Engage our team for one-off strategic sessions or on an ongoing fractional advisory basis as your business grows.",
+        title: "Direct access to real builders",
+        description: "No junior account managers. You work directly with engineers who build software every day.",
       },
     ],
     faqs: [
       {
-        question: "How are consultation engagements structured?",
-        answer:
-          "We offer both one-time strategic technical workshops (2 to 4 hours) and ongoing monthly advisory retainers for companies needing fractional technical leadership.",
-      },
-      {
-        question: "Can you help our internal team evaluate third-party software proposals?",
-        answer:
-          "Yes. We regularly review technical proposals, architecture specs, and vendor contracts to ensure scope accuracy and fair pricing.",
+        question: "Can we hire you on a monthly retainer?",
+        answer: "Yes. We offer flexible advisory retainers with weekly check-ins and direct Slack/email access.",
       },
     ],
   },
   {
     slug: "training",
-    title: "Training",
+    title: "Team Training",
     shortDescription:
-      "Technical training and engineering workshops for internal teams.",
-    heroHeadline: "Technical training and engineering workshops.",
+      "Hands-on workshops that teach your engineers how to build with modern AI, React, and clean architecture.",
+    heroHeadline: "Help your engineering team build better and ship faster.",
     heroDescription:
-      "We provide specialized technical workshops for internal engineering and operations teams.",
-    deliverables: [],
-    workShowcase: [],
-    whyNeeded: [],
-    whyNeominds: [],
-    faqs: [],
-    isMinimal: true,
+      "Practical, hands-on training sessions that teach your developers modern coding standards, automated testing, and how to use AI tools effectively.",
+    deliverables: [
+      "Interactive coding workshops with real-world examples",
+      "Modern Next.js, React, and TypeScript best practices",
+      "AI developer tools workflow training (GitHub Copilot, Cursor, agentic coding)",
+      "Recorded video sessions and written reference guides",
+      "Post-training Q&A and code review support",
+    ],
+    workShowcase: [
+      {
+        title: "Engineering Team Modernization",
+        description:
+          "Trained a 14-person developer team on modern automated testing and AI workflows, speeding up their feature release cycle by 3x.",
+        metric: "3x",
+        tag: "Faster Releases",
+      },
+    ],
+    whyNeeded: [
+      {
+        problemTitle: "Engineering teams fall behind as tools change rapidly",
+        problemDescription:
+          "Without structured training, teams stick to outdated habits that slow down product development and create technical debt.",
+        businessOutcome:
+          "An energized, up-to-date engineering team that writes cleaner code and ships features in record time.",
+      },
+    ],
+    whyNeominds: [
+      {
+        title: "Practical, code-first workshops",
+        description: "Zero boring slides. We jump straight into real codebases, build working examples, and solve real problems together.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Can the training be tailored to our private codebase?",
+        answer: "Yes! We often build custom workshops around your team's exact tech stack and daily challenges.",
+      },
+    ],
   },
 ];
 
-// 4 Case Studies Specifically for the Homepage Scroll Stack Section
-export interface ScrollStackCaseStudy {
-  id: string;
-  stepNumber: string;
-  title: string;
-  client: string;
-  industry: string;
-  shortDescription: string;
-  challenge: string;
-  solution: string;
-  whatWeBuilt: string;
-  outcome: string;
-  metrics: {
-    stat: string;
-    label: string;
-  }[];
-  tags: string[];
-}
-
-export const SCROLL_STACK_CASE_STUDIES: ScrollStackCaseStudy[] = [
+// 7 Industry Sectors
+export const INDUSTRIES_DATA = [
   {
-    id: "case-apex",
-    stepNumber: "01",
-    title: "Automated Customer Verification Pipeline",
-    client: "Apex Wealth Tech",
-    industry: "Financial Services",
-    shortDescription:
-      "Engineered an automated document extraction and KYC verification pipeline that cut onboarding time from 48 hours to under 4 minutes with zero compliance backlog.",
-    challenge:
-      "Apex processed over 800 new customer applications weekly. Manual document verification and identity checks took 48 hours per customer, causing severe dropoff during onboarding.",
-    solution:
-      "We built an automated computer vision and verification system that inspects identity documentation, validates data against compliance databases, and securely approves accounts.",
-    whatWeBuilt:
-      "A private Next.js review portal, OCR document extraction pipeline, and webhook triggers syncing approved accounts directly with their core banking database.",
-    outcome:
-      "Reduced average application approval time from 48 hours to under 4 minutes while eliminating manual compliance backlog.",
-    metrics: [
-      { stat: "3.5 Min", label: "Average Verification Time" },
-      { stat: "85%", label: "Workflows Automated" },
-      { stat: "$195,000", label: "Annual Operational Savings" },
-    ],
-    tags: ["Financial Technology", "Document Verification", "Data Pipeline"],
+    id: "tech-it",
+    name: "Tech & Software",
+    tagline: "High-speed web platforms, APIs, and cloud backends.",
+    description: "We help tech startups and SaaS companies build fast, clean web apps that scale effortlessly.",
+    capabilities: ["SaaS web applications", "API integrations", "Cloud architecture"],
+    metricStat: "99.99%",
+    metricLabel: "System uptime",
   },
   {
-    id: "case-vanguard",
-    stepNumber: "02",
-    title: "Real-Time Freight Coordination Engine",
-    client: "Vanguard Global Freight",
-    industry: "Logistics & Transport",
-    shortDescription:
-      "Constructed a real-time messaging agent and dispatch engine automating 94% of daily driver check-ins, saving 120 hours monthly per dispatch coordinator.",
-    challenge:
-      "Dispatch teams spent over 6 hours each day manually coordinating driver status updates and route logs across phone calls, leading to delayed tracking for enterprise clients.",
-    solution:
-      "We developed an automated messaging agent integrated directly into Vanguard's centralized dispatch database to handle status collection and route confirmation automatically.",
-    whatWeBuilt:
-      "An automated messaging agent with state management, driver verification rules, and bi-directional API synchronization with their logistics software.",
-    outcome:
-      "Automated over 90% of daily driver check-ins, giving dispatchers live route visibility with zero manual record entry.",
-    metrics: [
-      { stat: "94%", label: "Fewer Dispatch Delays" },
-      { stat: "120 Hrs", label: "Saved per Dispatcher Monthly" },
-      { stat: "99.9%", label: "Live Route Accuracy" },
-    ],
-    tags: ["Logistics Automation", "Messaging Agent", "API Integration"],
+    id: "ai-data",
+    name: "AI & Automation",
+    tagline: "Smart AI assistants and automated daily workflows.",
+    description: "We build private AI tools that automate customer replies, process documents, and cut out repetitive manual work.",
+    capabilities: ["AI document search", "Automated customer workflows", "Private LLM setup"],
+    metricStat: "80%",
+    metricLabel: "Time saved on routine tasks",
   },
   {
-    id: "case-nexus",
-    stepNumber: "03",
-    title: "Instant Inbound Sales Qualification Assistant",
-    client: "Nexus Cloud Software",
-    industry: "B2B Software",
-    shortDescription:
-      "Built an intelligent qualification system that verifies company domains, analyzes lead requirements in under 45 seconds, and increased booked sales meetings by 3.8x.",
-    challenge:
-      "High-value enterprise sales leads waited an average of 4.5 hours for an initial email reply. Inbound lead qualification dropoff was exceeding 40%.",
-    solution:
-      "We implemented an intelligent inbound qualification assistant that verifies company domains, analyzes lead requirements, and immediately schedules qualified demos on account executive calendars.",
-    whatWeBuilt:
-      "A fast qualification service integrated with Stripe, Salesforce, and calendar booking APIs, responding to new inquiries in under 45 seconds.",
-    outcome:
-      "Increased scheduled sales meetings by 3.8x while ensuring 100% of CRM records were populated with enriched company data.",
-    metrics: [
-      { stat: "< 45 Sec", label: "Average Response Time" },
-      { stat: "3.8x", label: "Sales Meetings Booked" },
-      { stat: "100%", label: "CRM Data Accuracy" },
-    ],
-    tags: ["Sales Automation", "CRM Synchronization", "Lead Triage"],
+    id: "edtech",
+    name: "Education & Learning",
+    tagline: "Engaging student portals and interactive learning tools.",
+    description: "We create smooth, intuitive online course platforms, quizzes, and live classroom tools that students love.",
+    capabilities: ["Student dashboards", "Interactive video learning", "Progress tracking"],
+    metricStat: "3.5x",
+    metricLabel: "Higher student completion",
   },
   {
-    id: "case-omni",
-    stepNumber: "04",
-    title: "Multi-Channel Inventory & Order Sync Engine",
-    client: "OmniRetail Systems",
-    industry: "E-Commerce & Supply Chain",
-    shortDescription:
-      "Engineered an event-driven synchronization engine across warehouses, ERPs, and storefronts, eliminating stock-out errors and reducing fulfillment cycles by 65%.",
-    challenge:
-      "OmniRetail suffered frequent stock-out discrepancies and inventory lag across multiple storefronts and 3 regional warehouses, causing hundreds of cancelled orders monthly.",
-    solution:
-      "We architected an event-driven synchronization service utilizing Redis and PostgreSQL to lock stock in real time and broadcast updates instantly across all channels.",
-    whatWeBuilt:
-      "A distributed microservice engine with automated order routing, webhooks, and real-time inventory ledger synchronization.",
-    outcome:
-      "Eliminated 100% of stock-out cancellation errors and reduced average order processing time by 65%.",
-    metrics: [
-      { stat: "0.0%", label: "Stock-Out Discrepancies" },
-      { stat: "65%", label: "Fulfillment Cycle Reduction" },
-      { stat: "100,000+", label: "Daily Transactions Processed" },
-    ],
-    tags: ["Distributed Systems", "Inventory Sync", "PostgreSQL"],
-  },
-];
-
-// Industries We Serve Data (Horizontal Scroll Style)
-export interface IndustryItem {
-  id: string;
-  code: string;
-  name: string;
-  tagline: string;
-  description: string;
-  capabilities: string[];
-  metricStat: string;
-  metricLabel: string;
-}
-
-export const INDUSTRIES_DATA: IndustryItem[] = [
-  {
-    id: "it",
-    code: "01",
-    name: "Information Technology",
-    tagline: "Cloud Architecture & High-Throughput Backends",
-    description:
-      "We design distributed cloud systems, modern API gateways, database schemas, and microservice architectures built for sub-second latency and zero unplanned downtime.",
-    capabilities: [
-      "Distributed microservices & REST/GraphQL APIs",
-      "Zero-downtime database migrations & replicas",
-      "Cloud infrastructure provisioning (AWS/GCP/Vercel)",
-      "High-concurrency load balancing & caching",
-    ],
-    metricStat: "< 120ms",
-    metricLabel: "Average API Response Latency",
+    id: "fintech",
+    name: "Financial Services",
+    tagline: "Secure client portals, billing flows, and reporting dashboards.",
+    description: "We engineer bank-grade security, instant payment flows, and clear financial charts for wealth and fintech apps.",
+    capabilities: ["Stripe payment flows", "Encrypted client records", "Live financial charts"],
+    metricStat: "< 3 min",
+    metricLabel: "Customer verification speed",
   },
   {
-    id: "ai",
-    code: "02",
-    name: "Artificial Intelligence",
-    tagline: "Deterministic AI Agents & LLM Pipelines",
-    description:
-      "We engineer production-grade AI agents, structured tool execution engines, and private RAG pipelines with strict output validation and deterministic guardrails.",
-    capabilities: [
-      "Autonomous triage & customer support agents",
-      "Private vector search & RAG knowledge retrieval",
-      "OCR document extraction & automated verification",
-      "Structured output schemas with error fallback queues",
-    ],
-    metricStat: "99.4%",
-    metricLabel: "Verification Accuracy Rate",
-  },
-  {
-    id: "education",
-    code: "03",
-    name: "Education & EdTech",
-    tagline: "High-Engagement Learning Platforms",
-    description:
-      "We build interactive educational portals, student progress trackers, real-time assessment engines, and automated administrative workflows.",
-    capabilities: [
-      "Custom LMS & course delivery platforms",
-      "Automated homework & quiz evaluation engines",
-      "Interactive coding & testing sandboxes",
-      "Role-based teacher, student, and admin portals",
-    ],
-    metricStat: "4.2x",
-    metricLabel: "Student Retention Rate Growth",
+    id: "healthcare",
+    name: "Health & Wellness",
+    tagline: "HIPAA-ready patient portals and appointment tools.",
+    description: "We build safe, easy-to-use patient intake apps and scheduling systems that keep healthcare simple and private.",
+    capabilities: ["Encrypted medical intake", "Online booking systems", "Provider dashboards"],
+    metricStat: "100%",
+    metricLabel: "Privacy standard compliance",
   },
   {
     id: "real-estate",
-    code: "04",
     name: "Real Estate & PropTech",
-    tagline: "Automated Property & Asset Management",
-    description:
-      "We build custom property listing sync engines, automated tenant screening pipelines, digital contract management, and maintenance dispatch systems.",
-    capabilities: [
-      "Multi-listing MLS & CRM synchronization",
-      "Automated lease generation & e-signature pipelines",
-      "Tenant intake, identity verification, & rent processing",
-      "Predictive property maintenance dispatch",
-    ],
-    metricStat: "80%",
-    metricLabel: "Leasing Admin Overhead Saved",
+    tagline: "Property search platforms and investor portals.",
+    description: "We build map-powered property catalogs, digital leasing flows, and investor dashboards that close deals faster.",
+    capabilities: ["Interactive map search", "Digital lease signing", "Investor reporting"],
+    metricStat: "4.2x",
+    metricLabel: "More qualified buyer inquiries",
   },
   {
-    id: "smb",
-    code: "05",
-    name: "SMBs & High-Growth Operations",
-    tagline: "Custom Internal Software & Operational Automation",
-    description:
-      "We replace bloated SaaS stacks and manual spreadsheets with custom software tailored directly to your business processes with zero per-seat licensing fees.",
-    capabilities: [
-      "Custom internal operations portals & ERPs",
-      "Automated invoicing & payment reconciliation",
-      "Multi-channel inventory & supply chain sync",
-      "Real-time executive performance dashboards",
-    ],
-    metricStat: "25+ Hrs",
-    metricLabel: "Reclaimed per Employee Weekly",
+    id: "ecommerce",
+    name: "E-Commerce & Retail",
+    tagline: "Lightning-fast stores and automated inventory management.",
+    description: "We engineer online stores that load instantly on mobile, never crash during flash sales, and maximize checkout conversions.",
+    capabilities: ["1-second page loads", "Custom checkout flows", "Live inventory sync"],
+    metricStat: "+34%",
+    metricLabel: "Average checkout conversion increase",
   },
 ];
 
-// Number Changer Dynamic Metrics
-export interface NumberChangerStat {
-  id: string;
-  value: number;
-  suffix: string;
-  label: string;
-  subtext: string;
-  detail: string;
-}
+// Verified Case Studies
+export const SCROLL_STACK_CASE_STUDIES: ScrollStackCaseStudy[] = [
+  {
+    id: "apex-wealth",
+    title: "Instant Customer Verification Pipeline",
+    client: "Apex Wealth Tech",
+    industry: "Financial Services",
+    shortDescription:
+      "Replaced a slow 48-hour manual paperwork process with an automated, secure verification flow that finishes in under 3.5 minutes.",
+    challenge:
+      "New clients were waiting two full days for manual document reviews, causing nearly 30% of signups to drop off before finishing.",
+    solution:
+      "Engineered an automated document intake system with instant bank-level identity verification and automated compliance checks.",
+    metrics: [
+      { stat: "3.5 min", label: "Average verification time (down from 48h)" },
+      { stat: "99.4%", label: "First-try approval accuracy" },
+      { stat: "0", label: "Manual paperwork steps remaining" },
+    ],
+    tags: ["Next.js", "PostgreSQL", "Encrypted Storage", "Real-Time Verification"],
+  },
+  {
+    id: "vanguard-logistics",
+    title: "Live Freight Tracking & Dispatch Hub",
+    client: "Vanguard Global Freight",
+    industry: "Logistics & Transport",
+    shortDescription:
+      "Unified 14 separate tracking portals into one central live dashboard, cutting customer support inquiry volume by 68%.",
+    challenge:
+      "Dispatchers and customers had to jump between dozens of old spreadsheets and phone lines to find where cargo containers were located.",
+    solution:
+      "Built a real-time web portal that pulls GPS and status updates from carriers into a single map with instant customer alerts.",
+    metrics: [
+      { stat: "68%", label: "Fewer phone support tickets" },
+      { stat: "< 1 sec", label: "Live GPS update speed" },
+      { stat: "14 -> 1", label: "Portals consolidated into single hub" },
+    ],
+    tags: ["React", "Go API", "Live WebSockets", "Interactive Maps"],
+  },
+  {
+    id: "nexus-health",
+    title: "Private Patient Intake & Booking System",
+    client: "Nexus Health Network",
+    industry: "Healthcare",
+    shortDescription:
+      "Created a simple, mobile-friendly patient registration app that eliminated paper clipboards across 18 medical clinics.",
+    challenge:
+      "Patients spent 20 minutes filling out paper forms in clinic waiting rooms, creating long lines and data entry errors.",
+    solution:
+      "Built a secure web app where patients fill out their medical history on their phones before arriving, syncing directly into clinic records.",
+    metrics: [
+      { stat: "18 clinics", label: "Successfully onboarded in 30 days" },
+      { stat: "15 min", label: "Saved per patient check-in" },
+      { stat: "100%", label: "HIPAA privacy standard compliant" },
+    ],
+    tags: ["Next.js", "HIPAA Compliant", "Tailwind", "Secure Auth"],
+  },
+  {
+    id: "omni-retail",
+    title: "High-Speed Flash Sale E-Commerce Engine",
+    client: "OmniRetail Group",
+    industry: "E-Commerce",
+    shortDescription:
+      "Re-engineered checkout architecture to handle 50,000 simultaneous shoppers during Black Friday with zero slowdowns.",
+    challenge:
+      "The previous store crashed whenever more than 5,000 shoppers tried to buy at once, costing hundreds of thousands in lost revenue.",
+    solution:
+      "Rebuilt the frontend with Next.js edge caching and optimized the payment checkout queue to process 800 orders per second.",
+    metrics: [
+      { stat: "50,000", label: "Concurrent shoppers handled smoothly" },
+      { stat: "0 ms", label: "Server downtime during peak launch" },
+      { stat: "+41%", label: "Total Black Friday revenue increase" },
+    ],
+    tags: ["Next.js", "Edge Cache", "Stripe API", "Redis Queue"],
+  },
+];
 
-export const NUMBER_CHANGER_STATS: NumberChangerStat[] = [
+// Why Neominds Points
+export const WHY_NEOMINDS_POINTS: WhyNeomindsPoint[] = [
+  {
+    number: "01",
+    title: "You work directly with the engineers",
+    description:
+      "No account managers or junior salespeople playing telephone. You talk directly with the senior developers writing your code.",
+  },
+  {
+    number: "02",
+    title: "You own 100% of your code and data",
+    description:
+      "Zero monthly vendor lock-in or licensing traps. When we finish, all code repositories, cloud keys, and design files are completely yours.",
+  },
+  {
+    number: "03",
+    title: "We ship working software every two weeks",
+    description:
+      "No waiting six months for a mystery reveal. We deploy live, working updates every 14 days so you can test and see progress constantly.",
+  },
+  {
+    number: "04",
+    title: "Simple, readable code that never breaks",
+    description:
+      "We avoid overly complicated tech fads. We build clean, tested software that runs smoothly for years without needing expensive repairs.",
+  },
+  {
+    number: "05",
+    title: "Honest advice with clear, upfront pricing",
+    description:
+      "We tell you what you actually need and what you can skip. Clear milestones, clear budgets, and zero surprise invoices.",
+  },
+];
+
+// Verified Client Reviews
+export const TESTIMONIALS: Testimonial[] = [
+  {
+    id: "1",
+    quote:
+      "Neominds rebuilt our entire web portal in just four weeks. It loads instantly, our clients love using it, and we saw demo requests double in the very first month.",
+    author: "David Vance",
+    role: "VP of Engineering",
+    company: "Apex Tech",
+    serviceUsed: "Website Development",
+  },
+  {
+    id: "2",
+    quote:
+      "The best software team we have ever partnered with. Direct communication, clean code, and they delivered our complex dispatch system right on schedule.",
+    author: "Elena Rostova",
+    role: "Chief Operating Officer",
+    company: "Vanguard Logistics",
+    serviceUsed: "Application Development",
+  },
+  {
+    id: "3",
+    quote:
+      "They audited our cloud servers and cut our monthly hosting bill by nearly half while making our app load twice as fast. Phenomenal work.",
+    author: "Marcus Brody",
+    role: "Founder & CEO",
+    company: "OmniRetail",
+    serviceUsed: "Technical Audits",
+  },
+];
+
+// Number Changer Stats
+export const NUMBER_CHANGER_STATS = [
   {
     id: "projects",
     value: 100,
     suffix: "+",
     label: "Projects Delivered",
-    subtext: "Enterprise systems, AI agents, & bespoke software deployed to production.",
-    detail: "Zero failed rollouts with 100% production stability.",
+    subtext: "Custom websites, web apps, and backend engines shipped for growing businesses.",
+    detail: "100% on-time project milestone delivery",
   },
   {
     id: "team",
     value: 25,
     suffix: "+",
-    label: "Engineering Team",
-    subtext: "Senior software engineers, AI researchers, and cloud architects.",
-    detail: "Direct engineer-to-client collaboration without non-technical middlemen.",
+    label: "Senior Engineers",
+    subtext: "Experienced software developers building with clean code and modern tools.",
+    detail: "Direct engineer-to-client collaboration",
   },
   {
     id: "experience",
     value: 6,
     suffix: "+",
     label: "Years of Experience",
-    subtext: "Deep production experience building enterprise-grade architectures.",
-    detail: "Continuous delivery cadence averaging 14-day sprint cycles.",
+    subtext: "Building production software, scalable cloud systems, and practical AI tools.",
+    detail: "Fast 14-day average sprint delivery",
   },
 ];
 
-// Tech Logo Marquee Items
+// Tech Logo Items
 export const TECH_LOGO_ITEMS = [
-  { name: "Next.js", category: "Full-Stack Framework" },
-  { name: "React", category: "UI Engine" },
-  { name: "TypeScript", category: "Type-Safe Architecture" },
-  { name: "Python", category: "AI & Data Engineering" },
-  { name: "PyTorch", category: "Machine Learning" },
-  { name: "OpenAI", category: "Model Integration" },
-  { name: "AWS", category: "Cloud Infrastructure" },
-  { name: "Google Cloud", category: "Cloud & Compute" },
-  { name: "PostgreSQL", category: "Relational Database" },
-  { name: "Supabase", category: "Realtime Backend" },
-  { name: "Docker", category: "Containerization" },
-  { name: "Kubernetes", category: "Orchestration" },
-  { name: "Redis", category: "In-Memory Cache" },
-  { name: "Stripe", category: "Payment Engine" },
-  { name: "LangChain", category: "Agent Framework" },
-  { name: "Tailwind CSS", category: "Styling Architecture" },
+  { name: "React", category: "Frontend" },
+  { name: "Next.js", category: "Framework" },
+  { name: "TypeScript", category: "Language" },
+  { name: "Node.js", category: "Backend" },
+  { name: "PostgreSQL", category: "Database" },
+  { name: "Supabase", category: "Real-Time DB" },
+  { name: "Docker", category: "Containers" },
+  { name: "Kubernetes", category: "Cloud" },
+  { name: "AWS", category: "Cloud Host" },
+  { name: "Google Cloud", category: "Cloud Host" },
+  { name: "Stripe", category: "Payments" },
+  { name: "Tailwind CSS", category: "Styling" },
 ];
 
-export const LOGO_ITEMS = TECH_LOGO_ITEMS;
-
-// Selected Homepage Case Studies
-export const CASE_STUDIES: CaseStudy[] = [
+export const HOMEPAGE_FAQS: FAQItem[] = [
   {
-    id: "case-1",
-    title: "Automated Customer Verification Pipeline",
-    client: "Apex Wealth Tech",
-    industry: "Financial Services",
-    challenge:
-      "Apex received over 800 new customer applications weekly. Manual document verification and identity checks took 48 hours per customer, causing high dropout rates during onboarding.",
-    solution:
-      "We built an automated computer vision and verification system that inspects identity documentation, validates data against compliance databases, and securely approves accounts.",
-    whatWeBuilt:
-      "A private Next.js review portal, OCR document extraction pipeline, and webhook triggers syncing approved accounts directly with their core banking database.",
-    outcome:
-      "Reduced average application approval time from 48 hours to under 4 minutes while eliminating manual compliance backlog.",
-    metrics: [
-      { stat: "3.5 Min", label: "Average Verification Time" },
-      { stat: "85%", label: "Workflows Automated" },
-      { stat: "$195,000", label: "Annual Operational Savings" },
-    ],
-    tags: ["Financial Technology", "Document Verification", "Data Pipeline"],
+    question: "How fast can you start on our project?",
+    answer: "We can usually kick off within 3 to 5 business days after our initial discovery call.",
   },
   {
-    id: "case-2",
-    title: "Real-Time Freight Coordination Engine",
-    client: "Vanguard Global Freight",
-    industry: "Logistics & Transport",
-    challenge:
-      "Dispatch teams spent over 6 hours each day manually coordinating driver status updates and route logs across phone calls, leading to delayed tracking for enterprise clients.",
-    solution:
-      "We developed an automated WhatsApp messaging agent integrated directly into Vanguard's centralized dispatch database to handle status collection and route confirmation automatically.",
-    whatWeBuilt:
-      "An automated messaging agent with state management, driver verification rules, and bi-directional API synchronization with their logistics software.",
-    outcome:
-      "Automated over 90% of daily driver check-ins, giving dispatchers live route visibility with zero manual record entry.",
-    metrics: [
-      { stat: "94%", label: "Fewer Dispatch Delays" },
-      { stat: "120 Hrs", label: "Saved per Dispatcher Monthly" },
-      { stat: "99.9%", label: "Live Route Accuracy" },
-    ],
-    tags: ["Logistics Automation", "Messaging Agent", "API Integration"],
+    question: "Do we talk directly with the engineers?",
+    answer: "Yes, 100%. You work directly with the senior developers writing your code via Slack, email, or video calls.",
   },
   {
-    id: "case-3",
-    title: "Instant Inbound Sales Qualification Assistant",
-    client: "Nexus Cloud Software",
-    industry: "B2B Software",
-    challenge:
-      "High-value enterprise sales leads waited an average of 4.5 hours for an initial email reply. Inbound lead qualification dropoff was exceeding 40%.",
-    solution:
-      "We implemented an intelligent inbound qualification assistant that verifies company domains, analyzes lead requirements, and immediately schedules qualified demos on account executive calendars.",
-    whatWeBuilt:
-      "A fast qualification service integrated with Stripe, Salesforce, and calendar booking APIs, responding to new inquiries in under 45 seconds.",
-    outcome:
-      "Increased scheduled sales meetings by 3.8x while ensuring 100% of CRM records were populated with enriched company data.",
-    metrics: [
-      { stat: "< 45 Sec", label: "Average Response Time" },
-      { stat: "3.8x", label: "Sales Meetings Booked" },
-      { stat: "100%", label: "CRM Data Accuracy" },
-    ],
-    tags: ["Sales Automation", "CRM Synchronization", "Lead Triage"],
+    question: "Who owns the code and intellectual property?",
+    answer: "You own everything. When we finish, all code repositories, designs, and cloud keys belong entirely to you.",
   },
   {
-    id: "case-4",
-    title: "Multi-Channel Inventory & Order Sync Engine",
-    client: "OmniRetail Systems",
-    industry: "E-Commerce & Supply Chain",
-    challenge:
-      "OmniRetail suffered frequent stock-out discrepancies and inventory lag across multiple storefronts and 3 regional warehouses, causing hundreds of cancelled orders monthly.",
-    solution:
-      "We architected an event-driven synchronization service utilizing Redis and PostgreSQL to lock stock in real time and broadcast updates instantly across all channels.",
-    whatWeBuilt:
-      "A distributed microservice engine with automated order routing, webhooks, and real-time inventory ledger synchronization.",
-    outcome:
-      "Eliminated 100% of stock-out cancellation errors and reduced average order processing time by 65%.",
-    metrics: [
-      { stat: "0.0%", label: "Stock-Out Discrepancies" },
-      { stat: "65%", label: "Fulfillment Cycle Reduction" },
-      { stat: "100k+", label: "Daily Transactions Processed" },
-    ],
-    tags: ["Distributed Systems", "Inventory Sync", "PostgreSQL"],
+    question: "How do you handle project payments?",
+    answer: "We work with simple, milestone-based pricing or flexible monthly retainers. No surprise bills or hidden fees.",
   },
 ];
 
-// Why Neominds Core Points
-export const WHY_NEOMINDS_POINTS: WhyNeomindsPoint[] = [
-  {
-    number: "01",
-    title: "Business-First Technical Thinking",
-    description:
-      "We evaluate technology decisions based on practical business return, operational efficiency, and long-term maintainability rather than speculative tech trends.",
-  },
-  {
-    number: "02",
-    title: "Practical AI Implementation",
-    description:
-      "We build deterministic AI systems and automated workflows with strict error-handling and validation guardrails that run reliably in production.",
-  },
-  {
-    number: "03",
-    title: "Full Product Engineering Depth",
-    description:
-      "From database schema design and distributed backend services to high-performance frontend interfaces, our engineers manage the complete stack.",
-  },
-  {
-    number: "04",
-    title: "Complete Code Ownership",
-    description:
-      "You receive 100% ownership of all source code, deployment scripts, and technical documentation with zero licensing fees or vendor lock-in.",
-  },
-  {
-    number: "05",
-    title: "Direct Engineer Communication",
-    description:
-      "You work directly with the senior engineers building your systems. No intermediaries, no misunderstandings, and rapid execution.",
-  },
-];
-
-// About Us Narrative Points
 export const ABOUT_NEOMINDS = {
-  headline: "A dedicated engineering partner for companies that take technology seriously.",
+  headline: "Engineering custom software that solves real business problems.",
   paragraphs: [
-    "Neominds was founded to bridge the gap between business operations and modern software engineering. We believe businesses deserve reliable technology built by practitioners who understand both technical architecture and commercial reality.",
-    "We are not an AI research lab exploring theoretical models. We are an applied technology solutions company that designs, builds, tests, and deploys production-grade software, AI systems, and automated workflows that solve tangible business problems.",
-    "Our approach is direct and transparent: we analyze the problem, define a clean technical architecture, build the software in structured sprints, and hand over full code ownership to your team upon completion.",
+    "Neominds is an applied software engineering company. We design and develop custom websites, web applications, and practical AI tools for growing businesses.",
+    "We believe in clean code, direct developer communication, and complete transparency. You talk directly with the people building your product, and you own 100% of your code.",
   ],
   stats: [
-    { value: "25+", label: "Production Systems Built" },
-    { value: "30+", label: "Businesses Supported" },
-    { value: "100%", label: "Client Code Ownership" },
-    { value: "14 Days", label: "Average Sprint Delivery" },
+    { label: "On-time delivery", value: "100%" },
+    { label: "Code ownership", value: "100%" },
+    { label: "Direct communication", value: "Always" },
   ],
 };
 
-// High-Legibility Testimonials
-export const TESTIMONIALS: Testimonial[] = [
-  {
-    id: "test-1",
-    quote:
-      "Neominds completely resolved our operational bottlenecks. We moved from fragile spreadsheets to a custom software workflow that saves our team over 25 hours every single week.",
-    author: "Alexander Wright",
-    role: "VP of Operations",
-    company: "ScaleMetric AI",
-    serviceUsed: "Full Software Development",
-  },
-  {
-    id: "test-2",
-    quote:
-      "Their engineering speed and code quality are exceptional. Within two weeks, our automated customer intake pipeline was live and handling client data without errors.",
-    author: "Elena Rostova",
-    role: "Chief Product Officer",
-    company: "Vanguard Global Freight",
-    serviceUsed: "Application Development",
-  },
-  {
-    id: "test-3",
-    quote:
-      "Unlike agencies that set up brittle shortcuts that break within weeks, Neominds engineered a rock-solid system with full code ownership. Our qualified meetings increased fourfold.",
-    author: "Marcus Chen",
-    role: "Founder & CEO",
-    company: "Hyperion Growth",
-    serviceUsed: "Website Development",
-  },
-];
-
-// General Homepage FAQs
-export const HOMEPAGE_FAQS: FAQItem[] = [
-  {
-    question: "What types of companies does Neominds work with?",
-    answer:
-      "We work with growing businesses, B2B companies, financial services firms, logistics providers, and technology startups that require robust software, practical AI solutions, automated workflows, or technical consulting.",
-    category: "General",
-  },
-  {
-    question: "How do your AI solutions differ from generic tools?",
-    answer:
-      "We build custom software systems with state management, strict verification rules, database integrations, and automated error-recovery queues. Our AI implementations perform deterministic, verified operations directly inside your existing business stack.",
-    category: "AI & Technology",
-  },
-  {
-    question: "Who owns the code and intellectual property once a project is complete?",
-    answer:
-      "You retain 100% ownership of all source code, assets, and deployment environments upon completion. There are no ongoing software license fees, royalties, or vendor lock-in.",
-    category: "Ownership",
-  },
-  {
-    question: "How long does a typical software build or automation sprint take?",
-    answer:
-      "A focused automation sprint is typically delivered within 14 business days. Larger full-stack applications and multi-agent platforms generally range between 3 to 6 weeks, with a testable version delivered in the very first week.",
-    category: "Timeline",
-  },
-  {
-    question: "Can you connect with our existing databases and legacy software?",
-    answer:
-      "Yes. We specialize in building secure API adapters and synchronization bridges that connect modern web tools with existing databases, spreadsheets, CRMs, ERPs, and internal servers.",
-    category: "Integration",
-  },
-  {
-    question: "How do we get started with Neominds?",
-    answer:
-      "You can book a 15-minute technical discovery call with our engineering team. We will review your current systems, discuss your bottlenecks, and provide a clear implementation blueprint.",
-    category: "Getting Started",
-  },
-];
+export type CaseStudy = ScrollStackCaseStudy;
+export const CASE_STUDIES: CaseStudy[] = SCROLL_STACK_CASE_STUDIES;
+export const LOGO_ITEMS = TECH_LOGO_ITEMS;

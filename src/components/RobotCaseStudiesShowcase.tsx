@@ -2,8 +2,12 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, ChevronLeft, ChevronRight, X, Sparkles, Terminal } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { SCROLL_STACK_CASE_STUDIES, ScrollStackCaseStudy } from "@/lib/data";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SectionTransition } from "./motion/SectionTransition";
+import { BlurText } from "./motion/BlurText";
 
 interface RobotCaseStudiesShowcaseProps {
   onOpenContact: () => void;
@@ -12,6 +16,7 @@ interface RobotCaseStudiesShowcaseProps {
 const TOTAL_FRAMES = 124;
 
 export function RobotCaseStudiesShowcase({ onOpenContact }: RobotCaseStudiesShowcaseProps) {
+  const sectionRef = useRef<HTMLElement>(null);
   const frameContainerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
@@ -19,6 +24,9 @@ export function RobotCaseStudiesShowcase({ onOpenContact }: RobotCaseStudiesShow
   const targetFrameRef = useRef<number>(73);
   const animationFrameRef = useRef<number>(0);
   const [framesLoaded, setFramesLoaded] = useState(false);
+
+  // Status Indicator state: "○" -> "◌" -> "●"
+  const [systemStatus, setSystemStatus] = useState<"○" | "◌" | "●">("○");
 
   // Active side tracking: "left" | "right" | "center"
   const [activeSide, setActiveSide] = useState<"left" | "right" | "center">("center");
@@ -49,6 +57,7 @@ export function RobotCaseStudiesShowcase({ onOpenContact }: RobotCaseStudiesShow
 
   // Preload all 124 frames in memory for smooth 60fps canvas rendering
   useEffect(() => {
+    let isMounted = true;
     const images: HTMLImageElement[] = [];
     let loadedCount = 0;
 
@@ -57,6 +66,7 @@ export function RobotCaseStudiesShowcase({ onOpenContact }: RobotCaseStudiesShow
       const img = new Image();
       img.src = `/frames/ezgif-frame-${frameNum}.jpg`;
       img.onload = () => {
+        if (!isMounted) return;
         loadedCount++;
         if (loadedCount >= 1) {
           setFramesLoaded(true);
@@ -68,128 +78,111 @@ export function RobotCaseStudiesShowcase({ onOpenContact }: RobotCaseStudiesShow
     imagesRef.current = images;
 
     return () => {
+      isMounted = false;
       imagesRef.current = [];
     };
   }, []);
 
-  // Render current frame to canvas
-  const renderFrame = useCallback((frameIndex: number) => {
+  // Technical systems activation sequence on scroll entry
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const section = sectionRef.current;
+    if (!section) return;
+
+    let isMounted = true;
+    let t1: NodeJS.Timeout | null = null;
+    let t2: NodeJS.Timeout | null = null;
+
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 70%",
+        once: true,
+        onEnter: () => {
+          if (!isMounted) return;
+          setSystemStatus("○");
+          t1 = setTimeout(() => {
+            if (isMounted) setSystemStatus("◌");
+          }, 400);
+          t2 = setTimeout(() => {
+            if (isMounted) setSystemStatus("●");
+          }, 900);
+        },
+      });
+    }, section);
+
+    return () => {
+      isMounted = false;
+      if (t1) clearTimeout(t1);
+      if (t2) clearTimeout(t2);
+      ctx.revert();
+    };
+  }, []);
+
+  // Draw current frame on canvas
+  const renderFrame = useCallback((frameIdx: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const img = imagesRef.current[frameIndex - 1];
-    if (!img || !img.complete || img.naturalWidth === 0) return;
+    const img = imagesRef.current[frameIdx];
+    if (!img || !img.complete) return;
 
-    const canvasWidth = canvas.width;
-    const canvasHeight = canvas.height;
-    const imgWidth = img.naturalWidth;
-    const imgHeight = img.naturalHeight;
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
 
-    const hRatio = canvasWidth / imgWidth;
-    const vRatio = canvasHeight / imgHeight;
-    const ratio = Math.min(hRatio, vRatio) * 1.0;
-
-    const renderWidth = imgWidth * ratio;
-    const renderHeight = imgHeight * ratio;
-
-    const shiftX = (canvasWidth - renderWidth) * 0.5;
-    const shiftY = (canvasHeight - renderHeight) * 0.5;
-
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-    ctx.drawImage(img, shiftX, shiftY, renderWidth, renderHeight);
-  }, []);
-
-  // Resize canvas for sharp high-DPI rendering
-  useEffect(() => {
-    const handleResize = () => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const rect = canvas.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
-
+    if (canvas.width !== rect.width * dpr || canvas.height !== rect.height * dpr) {
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
+    }
 
-      renderFrame(Math.round(currentFrameRef.current));
-    };
+    ctx.save();
+    ctx.scale(dpr, dpr);
+    ctx.clearRect(0, 0, rect.width, rect.height);
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [renderFrame, framesLoaded]);
+    const imgRatio = img.naturalWidth / img.naturalHeight;
+    const canvasRatio = rect.width / rect.height;
 
-  // Desktop Mouse Movement Listener with Auto-Alternating Logic
-  useEffect(() => {
-    const container = frameContainerRef.current;
-    if (!container) return;
+    let drawW: number;
+    let drawH: number;
+    let drawX: number;
+    let drawY: number;
 
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = container.getBoundingClientRect();
-      if (e.clientY < rect.top - 60 || e.clientY > rect.bottom + 60) return;
+    if (canvasRatio > imgRatio) {
+      drawH = rect.height;
+      drawW = drawH * imgRatio;
+      drawX = (rect.width - drawW) / 2;
+      drawY = 0;
+    } else {
+      drawW = rect.width;
+      drawH = drawW / imgRatio;
+      drawX = 0;
+      drawY = (rect.height - drawH) / 2;
+    }
 
-      const normalizedX = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-
-      let target = 73;
-      if (normalizedX < 0.46) {
-        // Left side: Robot turns left (frames 10 -> 69)
-        const t = (0.46 - normalizedX) / 0.46;
-        target = 69 - t * (69 - 10);
-
-        if (lastSideRef.current !== "left") {
-          setActiveSide("left");
-          // Auto-alternate between Study 01 (Apex) and Study 03 (Nexus) on entry
-          const nextLeft = leftVisitsRef.current % 2 === 0 ? 0 : 2;
-          setLeftStudyIdx(nextLeft);
-          leftVisitsRef.current += 1;
-          lastSideRef.current = "left";
-        }
-      } else if (normalizedX > 0.54) {
-        // Right side: Robot turns right (frames 77 -> 124)
-        const t = (normalizedX - 0.54) / 0.46;
-        target = 77 + t * (124 - 77);
-
-        if (lastSideRef.current !== "right") {
-          setActiveSide("right");
-          // Auto-alternate between Study 02 (Vanguard) and Study 04 (OmniRetail) on entry
-          const nextRight = rightVisitsRef.current % 2 === 0 ? 1 : 3;
-          setRightStudyIdx(nextRight);
-          rightVisitsRef.current += 1;
-          lastSideRef.current = "right";
-        }
-      } else {
-        // Center neutral: frames 70-76
-        const t = (normalizedX - 0.46) / 0.08;
-        target = 70 + t * (76 - 70);
-
-        if (lastSideRef.current !== "center") {
-          setActiveSide("center");
-          lastSideRef.current = "center";
-        }
-      }
-
-      targetFrameRef.current = Math.max(1, Math.min(TOTAL_FRAMES, target));
-    };
-
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    ctx.drawImage(img, drawX, drawY, drawW, drawH);
+    ctx.restore();
   }, []);
 
-  // 60FPS RAF loop with smooth lerp physics
+  // 60FPS animation loop interpolating current frame toward target frame
   useEffect(() => {
-    let active = true;
+    let running = true;
 
     const loop = () => {
-      if (!active) return;
+      if (!running) return;
 
-      const current = currentFrameRef.current;
-      const target = targetFrameRef.current;
-      const diff = target - current;
+      const diff = targetFrameRef.current - currentFrameRef.current;
 
       if (Math.abs(diff) > 0.05) {
-        currentFrameRef.current = current + diff * 0.14;
-        renderFrame(Math.round(currentFrameRef.current));
+        currentFrameRef.current += diff * 0.12;
+        const boundedFrame = Math.max(
+          0,
+          Math.min(TOTAL_FRAMES - 1, Math.round(currentFrameRef.current))
+        );
+        renderFrame(boundedFrame);
       }
 
       animationFrameRef.current = requestAnimationFrame(loop);
@@ -198,19 +191,56 @@ export function RobotCaseStudiesShowcase({ onOpenContact }: RobotCaseStudiesShow
     animationFrameRef.current = requestAnimationFrame(loop);
 
     return () => {
-      active = false;
+      running = false;
       cancelAnimationFrame(animationFrameRef.current);
     };
   }, [renderFrame]);
 
-  // Mobile touch navigation handler
-  const setMobileStudy = (idx: number) => {
-    setMobileActiveIdx(idx);
-    if (idx === 0 || idx === 2) {
-      targetFrameRef.current = 28;
-    } else {
-      targetFrameRef.current = 112;
+  // Initial draw once frames load
+  useEffect(() => {
+    if (framesLoaded) {
+      renderFrame(73);
     }
+  }, [framesLoaded, renderFrame]);
+
+  // Pointer movement tracking across widescreen stage
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const progress = Math.max(0, Math.min(1, x / rect.width));
+
+    const frameIdx = Math.round(progress * (TOTAL_FRAMES - 1));
+    targetFrameRef.current = frameIdx;
+
+    let newSide: "left" | "right" | "center" = "center";
+    if (progress < 0.4) {
+      newSide = "left";
+    } else if (progress > 0.6) {
+      newSide = "right";
+    }
+
+    if (newSide !== lastSideRef.current) {
+      if (newSide === "left") {
+        leftVisitsRef.current += 1;
+        if (leftVisitsRef.current > 1) {
+          setLeftStudyIdx((prev) => (prev === 0 ? 2 : 0));
+        }
+      } else if (newSide === "right") {
+        rightVisitsRef.current += 1;
+        if (rightVisitsRef.current > 1) {
+          setRightStudyIdx((prev) => (prev === 1 ? 3 : 1));
+        }
+      }
+      lastSideRef.current = newSide;
+    }
+
+    setActiveSide(newSide);
+  };
+
+  const handlePointerLeave = () => {
+    targetFrameRef.current = 73;
+    setActiveSide("center");
+    lastSideRef.current = "center";
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -222,56 +252,63 @@ export function RobotCaseStudiesShowcase({ onOpenContact }: RobotCaseStudiesShow
     const diff = touchEndX - touchStartXRef.current;
     if (Math.abs(diff) > 40) {
       if (diff < 0) {
-        // Swiped left -> next
-        setMobileStudy((mobileActiveIdx + 1) % studies.length);
+        setMobileActiveIdx((prev) => (prev + 1) % studies.length);
       } else {
-        // Swiped right -> prev
-        setMobileStudy((mobileActiveIdx - 1 + studies.length) % studies.length);
+        setMobileActiveIdx((prev) => (prev - 1 + studies.length) % studies.length);
       }
     }
   };
 
   return (
     <section
+      ref={sectionRef}
       id="case-studies"
-      className="w-full bg-[#FAF9F6] text-[#121316] border-b border-[#E6E6E8] relative overflow-hidden pt-16 pb-20 sm:pt-24 sm:pb-28"
+      className="w-full bg-[#FAF9F6] text-[#121316] border-b border-[#E6E6E8] relative overflow-hidden pt-16 pb-20 sm:pt-24 sm:pb-28 select-none"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12">
+        <SectionTransition
+          number="03"
+          label="Featured Case Studies"
+        />
+
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <span className="text-xs font-mono font-bold text-[#1E5FD8] uppercase tracking-wider block mb-2">
-              Verified Production Case Studies
-            </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#121316] leading-tight">
-              Interactive Systems Stage & Verified Outcomes.
-            </h2>
+            <BlurText
+              as="h2"
+              text="Real projects built for growing businesses."
+              mode="word"
+              className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#121316] leading-tight font-bold"
+            />
           </div>
-          <p className="text-xs sm:text-sm text-[#4A4B50] font-sans max-w-md">
-            Hover left or right across the widescreen stage to auto-explore verified systems as the vision engine directs toward each study.
-          </p>
+          <div className="flex flex-col sm:items-end text-sm text-[#4A4B50] font-sans max-w-md">
+            <p>
+              Hover over the left or right to explore real systems we engineered and the verified results we achieved for our clients.
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* FULL-WIDESCREEN PURE BLACK ROBOT STAGE */}
+      {/* FULL-WIDESCREEN ROBOT STAGE */}
       <div
         ref={frameContainerRef}
+        onPointerMove={handlePointerMove}
+        onPointerLeave={handlePointerLeave}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         className="relative w-full h-[75vh] sm:h-[85vh] min-h-[580px] max-h-[960px] bg-[#000000] border-y border-[#1E293B] shadow-[0_24px_80px_rgba(0,0,0,0.3)] overflow-hidden flex items-center justify-center select-none"
       >
-        {/* Subtle Technical Corner Accents */}
-        <div className="absolute top-4 left-6 text-[10px] font-mono text-white/30 select-none pointer-events-none hidden sm:block">
-          + SECTOR 01 & 03 [LEFT]
+        {/* Corner Indicators */}
+        <div className="absolute top-4 left-6 text-xs text-white/50 select-none pointer-events-none hidden sm:flex items-center gap-1.5 font-sans">
+          <span className="text-[#60A5FA]">●</span>
+          <span>Hover to explore client projects</span>
         </div>
-        <div className="absolute top-4 right-6 text-[10px] font-mono text-white/30 select-none pointer-events-none hidden sm:block">
-          [RIGHT] SECTOR 02 & 04 +
+        <div className="absolute top-4 right-6 text-xs text-white/50 select-none pointer-events-none hidden sm:flex items-center gap-1.5 font-sans">
+          <span>Click any project for full details</span>
+          <span className="text-[#60A5FA]">●</span>
         </div>
-        <div className="absolute bottom-4 left-6 text-[10px] font-mono text-white/30 select-none pointer-events-none hidden sm:block">
-          + 60FPS KINETIC STAGE
-        </div>
-        <div className="absolute bottom-4 right-6 text-[10px] font-mono text-white/30 select-none pointer-events-none hidden sm:block">
-          TELEMETRY: ACTIVE +
-        </div>
+
+        {/* Drawn Connector Line (Left -> Center -> Right) */}
+        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[1px] bg-gradient-to-r from-transparent via-[#1E5FD8]/40 to-transparent pointer-events-none" />
 
         {/* Centered High-DPI Robot Canvas with Pure Black Seamless Fit */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -281,279 +318,308 @@ export function RobotCaseStudiesShowcase({ onOpenContact }: RobotCaseStudiesShow
           />
         </div>
 
-        {/* DESKTOP: LEFT SIDE COMPACT CARD (Auto-alternates 01 Apex <-> 03 Nexus) */}
+        {/* 
+          ========================================================================
+          DESKTOP: LEFT SIDE OPEN TYPOGRAPHY (ZERO CARDS, ZERO BOXES)
+          ========================================================================
+        */}
         <div
-          className={`hidden md:block absolute left-6 lg:left-14 top-1/2 -translate-y-1/2 z-20 transition-all duration-300 ${
+          className={`hidden md:block absolute left-8 lg:left-16 top-1/2 -translate-y-1/2 z-20 max-w-[340px] lg:max-w-[400px] transition-all duration-300 pointer-events-auto ${
             activeSide === "left"
-              ? "opacity-100 translate-x-0 scale-100 pointer-events-auto"
+              ? "opacity-100 translate-x-0"
               : activeSide === "center"
-              ? "opacity-20 -translate-x-2 scale-95 pointer-events-none"
-              : "opacity-0 -translate-x-6 scale-90 pointer-events-none"
+              ? "opacity-40 -translate-x-2"
+              : "opacity-10 -translate-x-6 pointer-events-none"
           }`}
         >
           <AnimatePresence mode="wait">
             <motion.div
               key={leftStudy.id}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -10 }}
-              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="w-[310px] lg:w-[340px] bg-[#08080C]/90 backdrop-blur-xl border border-white/15 p-4 sm:p-5 shadow-2xl text-white rounded-none space-y-3"
+              initial={{ opacity: 0, x: -16, filter: "blur(6px)" }}
+              animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, x: -16, filter: "blur(6px)" }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="text-white space-y-3"
             >
-              {/* Card Header with Sector Pill */}
-              <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                <div className="flex items-center gap-1.5 font-mono text-[10px]">
-                  <span className="text-[#60A5FA] font-bold">LEFT //</span>
-                  <span className="bg-[#1E5FD8] text-white px-1.5 py-0.5 font-bold">
-                    0{leftStudyIdx + 1}
-                  </span>
-                </div>
-                <span className="text-[10px] font-mono text-white/50 uppercase truncate max-w-[130px]">
-                  {leftStudy.industry}
+              {/* Telemetry Header */}
+              <div className="flex items-center gap-2 border-b border-white/20 pb-2">
+                <span className="font-mono text-xs text-[#60A5FA] font-bold">
+                  0{leftStudyIdx + 1} //
                 </span>
-              </div>
-
-              {/* Title & Client */}
-              <div>
-                <span className="text-[10px] font-mono uppercase tracking-wider text-white/60 block">
+                <span className="font-mono text-xs uppercase tracking-widest text-white/60">
                   {leftStudy.client}
                 </span>
-                <h3 className="text-base sm:text-lg font-serif text-white leading-tight mt-0.5">
-                  {leftStudy.title}
-                </h3>
-                <p className="text-xs text-white/70 font-sans leading-relaxed mt-1.5 line-clamp-2">
-                  {leftStudy.shortDescription}
-                </p>
               </div>
 
-              {/* Compact Metric Tag */}
-              <div className="flex items-center gap-2 pt-1">
-                <div className="px-2 py-0.5 bg-white/5 border border-white/10 text-[10px] font-mono">
-                  <span className="text-[#60A5FA] font-bold">{leftStudy.metrics[0].stat}</span>{" "}
-                  <span className="text-white/50 uppercase">{leftStudy.metrics[0].label}</span>
-                </div>
+              {/* Title & Narrative */}
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-serif font-bold text-white leading-tight">
+                {leftStudy.title}
+              </h3>
+
+              <p className="text-xs sm:text-sm text-white/70 font-sans leading-relaxed">
+                {leftStudy.shortDescription}
+              </p>
+
+              {/* Verified Metric */}
+              <div className="pt-2 flex items-center gap-3">
+                <span className="font-serif text-2xl font-bold text-[#60A5FA]">
+                  {leftStudy.metrics[0].stat}
+                </span>
+                <span className="font-mono text-[11px] uppercase tracking-wider text-white/60">
+                  {leftStudy.metrics[0].label}
+                </span>
               </div>
 
-              {/* Read Full Button */}
-              <button
-                type="button"
-                onClick={() => setSelectedStudy(leftStudy)}
-                className="w-full btn-primary text-xs uppercase tracking-wider font-bold py-2 flex items-center justify-center gap-2 rounded-none cursor-pointer text-white"
-              >
-                <span>Read Case Study</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+              {/* Open Action Link */}
+              <div className="pt-3">
+                <button
+                  type="button"
+                  onClick={() => setSelectedStudy(leftStudy)}
+                  className="inline-flex items-center gap-2 font-mono text-xs font-bold text-[#60A5FA] hover:text-white uppercase tracking-wider cursor-pointer group"
+                  data-cursor
+                  data-cursor-text="INSPECT"
+                >
+                  <span>Read Case Study Narrative</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
             </motion.div>
           </AnimatePresence>
         </div>
 
-        {/* DESKTOP: RIGHT SIDE COMPACT CARD (Auto-alternates 02 Vanguard <-> 04 OmniRetail) */}
+        {/* 
+          ========================================================================
+          DESKTOP: RIGHT SIDE OPEN TYPOGRAPHY (ZERO CARDS, ZERO BOXES)
+          ========================================================================
+        */}
         <div
-          className={`hidden md:block absolute right-6 lg:right-14 top-1/2 -translate-y-1/2 z-20 transition-all duration-300 ${
+          className={`hidden md:block absolute right-8 lg:right-16 top-1/2 -translate-y-1/2 z-20 max-w-[340px] lg:max-w-[400px] transition-all duration-300 pointer-events-auto ${
             activeSide === "right"
-              ? "opacity-100 translate-x-0 scale-100 pointer-events-auto"
+              ? "opacity-100 translate-x-0"
               : activeSide === "center"
-              ? "opacity-20 translate-x-2 scale-95 pointer-events-none"
-              : "opacity-0 translate-x-6 scale-90 pointer-events-none"
+              ? "opacity-40 translate-x-2"
+              : "opacity-10 translate-x-6 pointer-events-none"
           }`}
         >
           <AnimatePresence mode="wait">
             <motion.div
               key={rightStudy.id}
-              initial={{ opacity: 0, x: 10 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 10 }}
-              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="w-[310px] lg:w-[340px] bg-[#08080C]/90 backdrop-blur-xl border border-white/15 p-4 sm:p-5 shadow-2xl text-white rounded-none space-y-3"
+              initial={{ opacity: 0, x: 16, filter: "blur(6px)" }}
+              animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, x: 16, filter: "blur(6px)" }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="text-white space-y-3 text-right"
             >
-              {/* Card Header with Sector Pill */}
-              <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                <div className="flex items-center gap-1.5 font-mono text-[10px]">
-                  <span className="text-[#60A5FA] font-bold">RIGHT //</span>
-                  <span className="bg-[#1E5FD8] text-white px-1.5 py-0.5 font-bold">
-                    0{rightStudyIdx + 1}
-                  </span>
-                </div>
-                <span className="text-[10px] font-mono text-white/50 uppercase truncate max-w-[130px]">
-                  {rightStudy.industry}
-                </span>
-              </div>
-
-              {/* Title & Client */}
-              <div>
-                <span className="text-[10px] font-mono uppercase tracking-wider text-white/60 block">
+              {/* Telemetry Header */}
+              <div className="flex items-center justify-end gap-2 border-b border-white/20 pb-2">
+                <span className="font-mono text-xs uppercase tracking-widest text-white/60">
                   {rightStudy.client}
                 </span>
-                <h3 className="text-base sm:text-lg font-serif text-white leading-tight mt-0.5">
-                  {rightStudy.title}
-                </h3>
-                <p className="text-xs text-white/70 font-sans leading-relaxed mt-1.5 line-clamp-2">
-                  {rightStudy.shortDescription}
-                </p>
+                <span className="font-mono text-xs text-[#60A5FA] font-bold">
+                  // 0{rightStudyIdx + 1}
+                </span>
               </div>
 
-              {/* Compact Metric Tag */}
-              <div className="flex items-center gap-2 pt-1">
-                <div className="px-2 py-0.5 bg-white/5 border border-white/10 text-[10px] font-mono">
-                  <span className="text-[#60A5FA] font-bold">{rightStudy.metrics[0].stat}</span>{" "}
-                  <span className="text-white/50 uppercase">{rightStudy.metrics[0].label}</span>
-                </div>
+              {/* Title & Narrative */}
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-serif font-bold text-white leading-tight">
+                {rightStudy.title}
+              </h3>
+
+              <p className="text-xs sm:text-sm text-white/70 font-sans leading-relaxed">
+                {rightStudy.shortDescription}
+              </p>
+
+              {/* Verified Metric */}
+              <div className="pt-2 flex items-center justify-end gap-3">
+                <span className="font-mono text-[11px] uppercase tracking-wider text-white/60">
+                  {rightStudy.metrics[0].label}
+                </span>
+                <span className="font-serif text-2xl font-bold text-[#60A5FA]">
+                  {rightStudy.metrics[0].stat}
+                </span>
               </div>
 
-              {/* Read Full Button */}
-              <button
-                type="button"
-                onClick={() => setSelectedStudy(rightStudy)}
-                className="w-full btn-primary text-xs uppercase tracking-wider font-bold py-2 flex items-center justify-center gap-2 rounded-none cursor-pointer text-white"
-              >
-                <span>Read Case Study</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+              {/* Open Action Link */}
+              <div className="pt-3 flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setSelectedStudy(rightStudy)}
+                  className="inline-flex items-center gap-2 font-mono text-xs font-bold text-[#60A5FA] hover:text-white uppercase tracking-wider cursor-pointer group"
+                  data-cursor
+                  data-cursor-text="INSPECT"
+                >
+                  <span>Read Case Study Narrative</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
             </motion.div>
           </AnimatePresence>
         </div>
 
-        {/* DESKTOP: Center Direct Direction Prompt (Visible when neutral) */}
-        <div
-          className={`hidden md:flex absolute bottom-6 inset-x-0 justify-center pointer-events-none transition-opacity duration-300 ${
-            activeSide === "center" ? "opacity-60" : "opacity-0"
-          }`}
-        >
-          <span className="text-[10px] font-mono text-white tracking-widest uppercase bg-black/60 px-3 py-1 border border-white/10">
-            ◄ HOVER LEFT (01 & 03) OR RIGHT (02 & 04) TO DIRECT VISION ►
-          </span>
-        </div>
-
-        {/* MOBILE VIEWPORT: Touch-optimized Compact Card & Selector in Thumb Zone */}
-        <div className="md:hidden absolute inset-x-3 bottom-3 z-30 space-y-2 pointer-events-auto">
-          {/* Touch-safe 44px tap target selector pills */}
-          <div className="grid grid-cols-4 gap-1.5 bg-[#08080C]/90 backdrop-blur-xl border border-white/15 p-1">
-            {studies.map((s, idx) => (
-              <button
-                key={s.id}
-                type="button"
-                onClick={() => setMobileStudy(idx)}
-                className={`min-h-[44px] flex items-center justify-center text-xs font-mono font-bold transition-all ${
-                  mobileActiveIdx === idx
-                    ? "bg-[#1E5FD8] text-white"
-                    : "text-white/60 hover:text-white"
-                }`}
-              >
-                0{idx + 1}
-              </button>
-            ))}
-          </div>
-
-          {/* Active Mobile Card */}
-          <div className="bg-[#08080C]/95 backdrop-blur-xl border border-white/15 p-4 shadow-2xl text-white space-y-2.5">
-            <div className="flex items-center justify-between border-b border-white/10 pb-1.5">
-              <span className="text-[10px] font-mono font-bold text-[#60A5FA] uppercase">
+        {/* MOBILE OPEN TYPOGRAPHY OVERLAY */}
+        <div className="md:hidden absolute bottom-4 inset-x-4 z-20">
+          <div className="p-4 text-white space-y-2.5 border-t border-white/20 bg-black/80">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-mono text-[#60A5FA] font-bold">
                 0{mobileActiveIdx + 1} // {mobileStudy.client}
               </span>
-              <span className="text-[9px] font-mono text-white/50 uppercase">
-                {mobileStudy.industry}
-              </span>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setMobileActiveIdx(
+                      (mobileActiveIdx - 1 + studies.length) % studies.length
+                    )
+                  }
+                  className="w-7 h-7 bg-white/10 flex items-center justify-center text-white"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setMobileActiveIdx((mobileActiveIdx + 1) % studies.length)
+                  }
+                  className="w-7 h-7 bg-white/10 flex items-center justify-center text-white"
+                >
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
 
-            <h3 className="text-sm font-serif text-white leading-tight">
+            <h3 className="text-base font-serif font-bold text-white">
               {mobileStudy.title}
             </h3>
 
             <div className="flex items-center justify-between pt-1">
-              <span className="text-xs font-mono text-[#60A5FA] font-bold">
-                {mobileStudy.metrics[0].stat} {mobileStudy.metrics[0].label}
+              <span className="font-serif text-lg text-[#60A5FA] font-bold">
+                {mobileStudy.metrics[0].stat}
               </span>
-
               <button
                 type="button"
                 onClick={() => setSelectedStudy(mobileStudy)}
-                className="btn-primary text-[11px] uppercase tracking-wider font-bold px-3 py-2 flex items-center gap-1.5 min-h-[44px]"
+                className="text-xs font-mono font-bold text-[#60A5FA] underline"
               >
-                <span>Details</span>
-                <ArrowRight className="w-3 h-3" />
+                Inspect Narrative →
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Case Study Deep Modal */}
+      {/* Deep Inspection Modal (Open Editorial Reading View) */}
       <AnimatePresence>
         {selectedStudy && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-xs">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-10">
             <motion.div
-              initial={{ opacity: 0, scale: 0.97, y: 12 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.97, y: 12 }}
-              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-[#FFFFFF] border border-[#E6E6E8] p-6 sm:p-10 shadow-2xl text-[#121316] rounded-none"
-            >
-              <button
-                type="button"
-                onClick={() => setSelectedStudy(null)}
-                className="absolute top-6 right-6 p-2 text-[#7C7D82] hover:text-[#121316] bg-[#FAF9F6] border border-[#E6E6E8] focus:outline-none z-10 cursor-pointer rounded-none min-h-[44px] min-w-[44px] flex items-center justify-center"
-                aria-label="Close modal"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedStudy(null)}
+              className="absolute inset-0 bg-[#000000]/80 backdrop-blur-md"
+            />
 
-              <div className="mb-6">
-                <span className="text-xs font-mono font-bold text-[#1E5FD8] uppercase tracking-wider">
-                  {selectedStudy.client} • {selectedStudy.industry}
+            <motion.div
+              initial={{ opacity: 0, y: 30, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 30, scale: 1 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-[#FAF9F6] text-[#121316] border border-[#E6E6E8] p-6 sm:p-10 lg:p-12 shadow-2xl z-10 space-y-8"
+            >
+              {/* Modal Top Bar */}
+              <div className="flex items-center justify-between border-b border-[#E6E6E8] pb-4">
+                <div className="flex items-center gap-2 font-mono text-xs">
+                  <span className="text-[#1E5FD8] font-bold">CASE STUDY DOSSIER //</span>
+                  <span className="text-[#4A4B50] uppercase font-bold">
+                    {selectedStudy.client}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSelectedStudy(null)}
+                  className="w-8 h-8 flex items-center justify-center bg-[#FFFFFF] border border-[#E6E6E8] hover:bg-[#1E5FD8] hover:text-white transition-colors cursor-pointer"
+                  data-cursor
+                  data-cursor-text="CLOSE"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Title & Metadata */}
+              <div className="space-y-3">
+                <span className="text-xs font-mono font-bold text-[#1E5FD8] uppercase tracking-wider block">
+                  {selectedStudy.industry}
                 </span>
-                <h3 className="text-2xl sm:text-3xl font-serif text-[#121316] mt-2 leading-tight">
+                <h3 className="text-2xl sm:text-4xl font-serif font-bold text-[#121316]">
                   {selectedStudy.title}
                 </h3>
               </div>
 
-              <div className="space-y-5 text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed border-t border-b border-[#E6E6E8] py-6 my-6">
+              {/* Challenge & Solution */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-[#E6E6E8] text-sm">
                 <div>
-                  <h4 className="font-bold text-[#121316] text-xs uppercase tracking-wider mb-1 font-sans">
-                    The Operational Challenge
+                  <h4 className="font-mono text-xs uppercase font-bold text-[#7C7D82] mb-2">
+                    [SYSTEM BOTTLENECK]
                   </h4>
-                  <p>{selectedStudy.challenge}</p>
+                  <p className="text-[#4A4B50] leading-relaxed">
+                    {selectedStudy.challenge}
+                  </p>
                 </div>
-
                 <div>
-                  <h4 className="font-bold text-[#121316] text-xs uppercase tracking-wider mb-1 font-sans">
-                    The Engineering Solution
+                  <h4 className="font-mono text-xs uppercase font-bold text-[#1E5FD8] mb-2">
+                    [ENGINEERED ARCHITECTURE]
                   </h4>
-                  <p>{selectedStudy.solution}</p>
-                </div>
-
-                <div>
-                  <h4 className="font-bold text-[#121316] text-xs uppercase tracking-wider mb-1 font-sans">
-                    System Architecture Delivered
-                  </h4>
-                  <p>{selectedStudy.whatWeBuilt}</p>
-                </div>
-
-                <div>
-                  <h4 className="font-bold text-[#1E5FD8] text-xs uppercase tracking-wider mb-1 font-sans">
-                    Commercial Return
-                  </h4>
-                  <p className="text-[#121316] font-semibold">{selectedStudy.outcome}</p>
+                  <p className="text-[#121316] font-medium leading-relaxed">
+                    {selectedStudy.solution}
+                  </p>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-2">
-                <button
-                  type="button"
-                  onClick={() => setSelectedStudy(null)}
-                  className="text-xs font-semibold text-[#7C7D82] hover:text-[#121316] cursor-pointer rounded-none min-h-[44px] px-3"
-                >
-                  Close
-                </button>
+              {/* Metrics Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-[#E6E6E8]">
+                {selectedStudy.metrics.map((m, i) => (
+                  <div key={i} className="border-l-2 border-[#1E5FD8] pl-3 py-1">
+                    <div className="text-2xl sm:text-3xl font-serif font-bold text-[#1E5FD8]">
+                      {m.stat}
+                    </div>
+                    <div className="text-xs font-mono uppercase text-[#7C7D82] mt-1">
+                      {m.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
 
+              {/* Architecture Tech Tags */}
+              <div className="pt-4 border-t border-[#E6E6E8] flex flex-wrap items-center gap-2">
+                <span className="text-xs font-mono font-bold text-[#7C7D82] mr-2">
+                  DEPLOYED STACK:
+                </span>
+                {selectedStudy.tags.map((t, i) => (
+                  <span
+                    key={i}
+                    className="font-mono text-[11px] bg-[#FFFFFF] border border-[#E6E6E8] px-2.5 py-1 text-[#121316]"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+
+              {/* Modal CTA */}
+              <div className="pt-6 border-t border-[#E6E6E8] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <p className="text-xs font-mono text-[#7C7D82]">
+                  100% Client Codebase Ownership • Zero Vendor Lock-in
+                </p>
                 <button
                   type="button"
                   onClick={() => {
                     setSelectedStudy(null);
                     onOpenContact();
                   }}
-                  className="btn-primary text-xs uppercase tracking-wider font-bold px-6 py-2.5 cursor-pointer rounded-none min-h-[44px]"
+                  className="btn-primary text-xs uppercase tracking-wider font-bold px-6 py-3 cursor-pointer flex items-center justify-center gap-2 text-white"
+                  data-cursor
+                  data-cursor-text="DISCUSS"
                 >
-                  <span>Build a Similar System</span>
+                  <span>Build Similar System</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>

@@ -2,72 +2,96 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence, useInView } from "framer-motion";
-import {
-  ArrowRight,
-  Sparkles,
-  Layers,
-  Terminal,
-  Activity,
-  Cpu,
-  CheckCircle2,
-  Zap,
-  Grid2X2,
-} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Grid2X2 } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 interface HeroSectionProps {
   onOpenContact: () => void;
 }
 
-// Animated Counter Component with smooth easing when in view
-function AnimatedStat({
-  value,
-  decimals = 0,
+// Deterministic Number Resolution Component
+function ResolvedStat({
+  finalValue,
   suffix = "",
   prefix = "",
 }: {
-  value: number;
-  decimals?: number;
+  finalValue: string;
   suffix?: string;
   prefix?: string;
 }) {
-  const [displayValue, setDisplayValue] = useState<string>(value.toFixed(decimals));
-  const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-40px" });
+  const [resolvedText, setResolvedText] = useState(
+    finalValue.replace(/[0-9]/g, "-")
+  );
+  const containerRef = useRef<HTMLSpanElement>(null);
+  const hasAnimatedRef = useRef(false);
 
   useEffect(() => {
-    if (!isInView) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const el = containerRef.current;
+    if (!el) return;
 
-    let startTime: number | null = null;
-    const duration = 1800; // 1.8 seconds smooth animation
+    let isMounted = true;
+    let interval: NodeJS.Timeout | null = null;
+    const chars = "0123456789";
+    const target = finalValue;
 
-    const step = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      // Ease-out cubic
-      const easeOut = 1 - Math.pow(1 - progress, 3);
-      const current = easeOut * value;
+    const trigger = ScrollTrigger.create({
+      trigger: el,
+      start: "top 92%",
+      once: true,
+      onEnter: () => {
+        if (hasAnimatedRef.current || !isMounted) return;
+        hasAnimatedRef.current = true;
 
-      setDisplayValue(current.toFixed(decimals));
+        let frame = 0;
+        const totalFrames = 24;
 
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      } else {
-        setDisplayValue(value.toFixed(decimals));
-      }
+        interval = setInterval(() => {
+          if (!isMounted) {
+            if (interval) clearInterval(interval);
+            return;
+          }
+          frame++;
+          const progress = frame / totalFrames;
+
+          const currentChars = target
+            .split("")
+            .map((char, index) => {
+              if (char === "." || char === "%" || char === "x" || char === "+") return char;
+              const charThreshold = (index + 1) / target.length;
+              if (progress >= charThreshold) return char;
+              return chars[Math.floor(Math.random() * chars.length)];
+            })
+            .join("");
+
+          setResolvedText(currentChars);
+
+          if (frame >= totalFrames) {
+            if (interval) clearInterval(interval);
+            setResolvedText(target);
+          }
+        }, 35);
+      },
+    });
+
+    return () => {
+      isMounted = false;
+      if (interval) clearInterval(interval);
+      trigger.kill();
     };
-
-    requestAnimationFrame(step);
-  }, [isInView, value, decimals]);
+  }, [finalValue]);
 
   return (
     <span
-      ref={ref}
+      ref={containerRef}
       style={{ color: "#121316" }}
-      className="font-serif font-bold text-4xl sm:text-5xl lg:text-6xl text-[#121316] tracking-tight block"
+      className="font-serif font-bold text-4xl sm:text-5xl lg:text-6xl text-[#121316] tracking-tight block tabular-nums"
     >
       {prefix}
-      {displayValue}
+      {resolvedText}
       {suffix}
     </span>
   );
@@ -75,6 +99,10 @@ function AnimatedStat({
 
 export function HeroSection({ onOpenContact }: HeroSectionProps) {
   const [activeTab, setActiveTab] = useState<"pipeline" | "metrics" | "terminal">("pipeline");
+  const heroRef = useRef<HTMLElement>(null);
+  const headlineRef = useRef<HTMLDivElement>(null);
+  const robotWrapRef = useRef<HTMLDivElement>(null);
+  const bottomStatsRef = useRef<HTMLDivElement>(null);
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
@@ -83,8 +111,76 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
     }
   };
 
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const hero = heroRef.current;
+    const headline = headlineRef.current;
+    const robot = robotWrapRef.current;
+    const stats = bottomStatsRef.current;
+    if (!hero) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) return;
+
+    const ctx = gsap.context(() => {
+      // 1. Hero Exit Transformation (continuous motion into next section)
+      if (headline) {
+        gsap.to(headline, {
+          y: -40,
+          scale: 0.96,
+          opacity: 0.35,
+          ease: "none",
+          scrollTrigger: {
+            trigger: hero,
+            start: "top top",
+            end: "bottom 40%",
+            scrub: 0.6,
+          },
+        });
+      }
+
+      if (robot) {
+        gsap.to(robot, {
+          y: -30,
+          scale: 0.98,
+          ease: "none",
+          scrollTrigger: {
+            trigger: hero,
+            start: "top top",
+            end: "bottom 30%",
+            scrub: 0.8,
+          },
+        });
+      }
+
+      if (stats) {
+        gsap.fromTo(
+          stats,
+          { y: 24, opacity: 0.8 },
+          {
+            y: 0,
+            opacity: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: stats,
+              start: "top 95%",
+              end: "top 65%",
+              scrub: 0.5,
+            },
+          }
+        );
+      }
+    }, hero);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="relative w-full overflow-hidden text-white selection:bg-[#1E5FD8] selection:text-white">
+    <section
+      ref={heroRef}
+      className="relative w-full overflow-hidden text-white selection:bg-[#1E5FD8] selection:text-white"
+    >
       {/* 
         ========================================================================
         01. ROYAL SAPPHIRE & WHITE CIRCULAR ATMOSPHERIC GRADIENT
@@ -114,6 +210,8 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
             href="/"
             className="flex items-center gap-2.5 text-white hover:text-white/90 transition-opacity group focus:outline-none"
             aria-label="Neominds"
+            data-cursor
+            data-cursor-text="NEOMINDS"
           >
             <div className="w-6 h-6 flex items-center justify-center text-white font-serif text-lg font-bold">
               ❄
@@ -129,53 +227,51 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
           03. HERO HEADLINE & VALUE PROPOSITION
           ========================================================================
         */}
-        <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
+        <div
+          ref={headlineRef}
+          className="flex flex-col items-center text-center max-w-5xl mx-auto will-change-transform"
+        >
           {/* Main Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 22 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl sm:text-6xl md:text-7xl lg:text-[76px] font-serif font-bold text-white tracking-tight leading-[1.04]"
-          >
-            Move enterprise systems without friction
-          </motion.h1>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[76px] font-serif font-bold text-white tracking-tight leading-[1.04]">
+            We build custom software and AI tools that just work.
+          </h1>
 
           {/* Subtitle / Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-6 text-sm sm:text-base md:text-lg text-white/80 font-sans font-normal leading-relaxed max-w-2xl text-balance"
-          >
-            Clear results from teams trusting Neominds to engineer custom software, automate workflows, and deploy intelligent AI systems. Infrastructure stays fast, visible, and dependable.
-          </motion.p>
+          <p className="mt-6 text-sm sm:text-base md:text-lg text-white/90 font-sans font-normal leading-relaxed max-w-2xl text-balance">
+            Simple, fast, and reliable software for growing companies. You work directly with the developers writing your code, with zero middlemen and 100% code ownership.
+          </p>
 
-          {/* Dual Action Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-8 flex flex-wrap items-center justify-center gap-3.5"
-          >
-            {/* Left Button: SEE IN ACTION */}
+          {/* Dual Action Buttons (Above The Fold) */}
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
+            {/* Primary Button: START A PROJECT */}
             <button
               type="button"
-              onClick={() => scrollToSection("case-studies")}
-              className="px-6 py-3 bg-[#0A1733]/70 hover:bg-[#10224D] border border-white/20 backdrop-blur-md text-white text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer rounded-none"
-            >
-              SEE IN ACTION
-            </button>
-
-            {/* Right Button: REQUEST A DEMO (Royal Sapphire Blue) */}
-            <button
-              type="button"
-              onClick={onOpenContact}
-              className="px-6 py-3 bg-[#1E5FD8] hover:bg-[#174CB3] text-white text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-[0_4px_24px_rgba(30,95,216,0.45)] cursor-pointer rounded-none border border-[#3B82F6]/40"
+              onClick={() => {
+                trackEvent({ action: "click_hero_start_project", category: "cta", label: "Hero Primary CTA" });
+                onOpenContact();
+              }}
+              className="px-7 py-3.5 bg-[#1E5FD8] hover:bg-[#174CB3] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-[0_4px_24px_rgba(30,95,216,0.45)] cursor-pointer rounded-none border border-[#3B82F6]/40 active:scale-98"
+              data-cursor
+              data-cursor-text="START"
             >
               <Grid2X2 className="w-3.5 h-3.5" />
-              <span>REQUEST A DEMO</span>
+              <span>Start a Project</span>
             </button>
-          </motion.div>
+
+            {/* Secondary Button: SEE WHAT WE BUILD */}
+            <button
+              type="button"
+              onClick={() => {
+                trackEvent({ action: "click_hero_view_capabilities", category: "cta", label: "Hero Secondary CTA" });
+                scrollToSection("services");
+              }}
+              className="px-6 py-3.5 bg-[#0A1733]/70 hover:bg-[#10224D] border border-white/20 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider transition-all cursor-pointer rounded-none active:scale-98"
+              data-cursor
+              data-cursor-text="SERVICES"
+            >
+              See What We Build
+            </button>
+          </div>
         </div>
 
         {/* 
@@ -183,15 +279,13 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
           04. CENTERPIECE: TRANSPARENT ROBOT HOLDING TABLET
           ========================================================================
         */}
-        <div className="relative mt-8 sm:mt-12 flex flex-col items-center justify-center">
+        <div
+          ref={robotWrapRef}
+          className="relative mt-8 sm:mt-12 flex flex-col items-center justify-center will-change-transform"
+        >
           {/* Main Visual Frame */}
           <div className="relative w-full max-w-[440px] sm:max-w-[560px] md:max-w-[640px] lg:max-w-[700px] flex items-center justify-center">
-            <motion.div
-              initial={{ opacity: 0, y: 36, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full select-none"
-            >
+            <div className="relative w-full select-none">
               {/* Backgroundless Transparent Robot Image with clean alpha */}
               <Image
                 src="/hero-image.png?v=4"
@@ -371,57 +465,55 @@ export function HeroSection({ onOpenContact }: HeroSectionProps) {
                   </AnimatePresence>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
 
         {/* 
           ========================================================================
-          06. 3-COLUMN STATS ROW (100% VISIBLE, CRISP DARK #121316 TEXT AT FRONT)
+          06. 3-COLUMN STATS ROW WITH RESOLUTION EFFECT
           ========================================================================
         */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        <div
+          ref={bottomStatsRef}
           className="mt-6 sm:mt-10 pt-6 sm:pt-8 max-w-5xl mx-auto relative z-30"
           style={{ color: "#121316" }}
         >
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10 text-center">
             {/* Stat 01: 99.9% */}
             <div className="flex flex-col items-center justify-center">
-              <AnimatedStat value={99.9} decimals={1} suffix="%" />
+              <ResolvedStat finalValue="99.9" suffix="%" />
               <p
                 style={{ color: "#4A4B50" }}
                 className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed mt-2 max-w-[260px] text-center font-medium"
               >
-                increase in system visibility & uptime across enterprise deployments
+                average uptime across all websites and applications we build
               </p>
             </div>
 
             {/* Stat 02: 10x */}
             <div className="flex flex-col items-center justify-center">
-              <AnimatedStat value={10} decimals={0} suffix="x" />
+              <ResolvedStat finalValue="10" suffix="x" />
               <p
                 style={{ color: "#4A4B50" }}
                 className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed mt-2 max-w-[260px] text-center font-medium"
               >
-                faster setup time from technical onboarding to first production run
+                faster turnaround with direct engineer access and zero middlemen
               </p>
             </div>
 
             {/* Stat 03: 64% */}
             <div className="flex flex-col items-center justify-center">
-              <AnimatedStat value={64} decimals={0} suffix="%" />
+              <ResolvedStat finalValue="64" suffix="%" />
               <p
                 style={{ color: "#4A4B50" }}
                 className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed mt-2 max-w-[260px] text-center font-medium"
               >
-                reduction in manual follow-ups across mission-critical workflows
+                reduction in manual busywork through simple custom automations
               </p>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

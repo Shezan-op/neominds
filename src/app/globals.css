@@ -26,16 +26,16 @@
   --border-strong: #D2D2D6;
   --border-dark: #121316;
 
-  /* 🔡 TYPOGRAPHY - Bricolage Grotesque & Source Sans 3 */
+  /* 🔡 TYPOGRAPHY - Bricolage Grotesque (Headings) & Manrope (Body) */
   --font-serif: var(--font-bricolage), 'Bricolage Grotesque', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-sans: var(--font-source-sans), 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: var(--font-manrope), 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 @theme inline {
   --color-background: var(--bg-main);
   --color-foreground: var(--text-primary);
   --font-serif: var(--font-bricolage), 'Bricolage Grotesque', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-sans: var(--font-source-sans), 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: var(--font-manrope), 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 * {

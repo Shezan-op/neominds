@@ -1,164 +1,283 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, ChevronDown, CheckCircle2, Terminal } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { SERVICES_DATA } from "@/lib/data";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SectionTransition } from "./motion/SectionTransition";
+import { TravelingLine } from "./motion/TravelingLine";
+import { trackEvent } from "@/lib/analytics";
+
+const SERVICE_DNA_MAP: Record<string, string[]> = {
+  "website-development": ["React", "Next.js", "TypeScript", "Tailwind CSS", "Fast Edge Hosting"],
+  "application-development": ["Web & Mobile Apps", "Cloud Backends", "PostgreSQL", "Live Sync"],
+  "software-development": ["Custom APIs", "Automated Workflows", "Scalable Databases", "Cloud Setup"],
+  "software-testing": ["Automated Tests", "Speed Checks", "Security Scans", "Bug Prevention"],
+  "business-audits": ["Code Reviews", "Speed Audits", "Hosting Cost Reduction", "Action Plans"],
+  "technical-consultation": ["Tech Architecture", "AI Tool Strategy", "1-on-1 Guidance", "Code Reviews"],
+  "training": ["Modern React", "AI Workflows", "Hands-on Workshops", "Best Practices"],
+};
 
 export function ServicesEditorial() {
-  // Active expanded item index (defaults to 0 or null)
-  const [expandedIdx, setExpandedIdx] = useState<number | null>(0);
+  const [activeIdx, setActiveIdx] = useState<number>(0);
+  const [isTakeover, setIsTakeover] = useState<boolean>(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const pinContainerRef = useRef<HTMLDivElement>(null);
+  const lastIdxRef = useRef<number>(0);
+  const lastTakeoverRef = useRef<boolean>(false);
 
-  const toggleExpand = (index: number) => {
-    setExpandedIdx(expandedIdx === index ? null : index);
-  };
+  const totalServices = SERVICES_DATA.length;
+  const activeService = SERVICES_DATA[activeIdx] || SERVICES_DATA[0];
+  const activeDnaTokens = SERVICE_DNA_MAP[activeService.slug] || ["React", "Next.js", "API", "Cloud", "PostgreSQL"];
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const section = sectionRef.current;
+    const pinContainer = pinContainerRef.current;
+    if (!section || !pinContainer) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) return;
+
+    const isMobile = window.innerWidth < 768;
+
+    const ctx = gsap.context(() => {
+      if (!isMobile) {
+        ScrollTrigger.create({
+          trigger: section,
+          start: "top top",
+          end: `+=${totalServices * 320}`, // Snappy, effortless scroll distance
+          pin: pinContainer,
+          pinSpacing: true,
+          anticipatePin: 1,
+          scrub: 0.2,
+          onUpdate: (self) => {
+            const progress = self.progress;
+            const index = Math.min(
+              Math.floor(progress * totalServices),
+              totalServices - 1
+            );
+
+            if (index !== lastIdxRef.current) {
+              lastIdxRef.current = index;
+              setActiveIdx(index);
+              trackEvent({
+                action: "service_machine_step",
+                category: "service_inspection",
+                label: SERVICES_DATA[index]?.title || `Service 0${index + 1}`,
+              });
+            }
+
+            const takeover = progress >= 0.22 && progress <= 0.35;
+            if (takeover !== lastTakeoverRef.current) {
+              lastTakeoverRef.current = takeover;
+              setIsTakeover(takeover);
+            }
+          },
+        });
+      }
+    }, section);
+
+    return () => ctx.revert();
+  }, [totalServices]);
+
+  const titleWords = activeService.title.split(" ");
+  const firstWord = titleWords[0] || "";
+  const remainingWords = titleWords.slice(1).join(" ");
 
   return (
-    <section id="services" className="relative bg-[#FAF9F6] text-[#121316] overflow-hidden pt-20 pb-24 sm:pt-28 sm:pb-32 border-b border-[#E6E6E8]">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header (Reduced Size & Clean Hierarchy) */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center max-w-2xl mx-auto mb-12 sm:mb-16"
-        >
-          <span className="text-xs font-mono font-bold text-[#1E5FD8] uppercase tracking-wider block mb-2">
-            Engineering Capabilities
-          </span>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-[#121316] leading-tight tracking-tight">
-            Comprehensive technical services for modern enterprises.
-          </h2>
-          <p className="mt-3 text-sm sm:text-base text-[#4A4B50] font-sans leading-relaxed">
-            Full-lifecycle software engineering, practical autonomous AI systems, and cloud architecture built to run with zero downtime.
-          </p>
-        </motion.div>
+    <section
+      ref={sectionRef}
+      id="services"
+      className="relative bg-[#FAF9F6] text-[#121316] select-none"
+    >
+      <div
+        ref={pinContainerRef}
+        className="min-h-screen flex flex-col justify-between py-10 sm:py-14 px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto w-full will-change-transform"
+      >
+        {/* Section Header */}
+        <div>
+          <SectionTransition
+            number="02"
+            label="What We Build"
+          />
 
-        {/* Centered Capabilities List with Inline Expandable Cards */}
-        <div className="divide-y divide-[#E6E6E8] border-t border-b border-[#E6E6E8] bg-[#FAF9F6]">
-          {SERVICES_DATA.map((service, index) => {
-            const serviceNumber = (index + 1).toString().padStart(2, "0");
-            const isExpanded = expandedIdx === index;
+          <div className="pt-2 pb-5 flex flex-col sm:flex-row sm:items-end justify-between border-b border-[#E6E6E8]">
+            <div>
+              <h2 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#121316] font-serif uppercase">
+                Services
+              </h2>
+            </div>
 
-            return (
-              <motion.div
-                key={service.slug}
-                layout
-                className="transition-colors duration-200"
-              >
-                {/* Clickable Header Row */}
-                <button
-                  type="button"
-                  onClick={() => toggleExpand(index)}
-                  className={`w-full flex items-center justify-between py-5 sm:py-6 px-4 sm:px-6 text-left transition-all cursor-pointer select-none ${
-                    isExpanded ? "bg-[#FFFFFF]" : "hover:bg-[#F3F2EE]"
-                  }`}
-                  aria-expanded={isExpanded}
+            {/* Simple Rolling Counter */}
+            <div className="flex items-baseline gap-2 mt-4 sm:mt-0 font-sans">
+              <div className="h-6 overflow-hidden relative flex items-center font-bold text-lg text-[#1E5FD8]">
+                <div
+                  className="transition-transform duration-300 ease-out flex flex-col"
+                  style={{ transform: `translateY(-${activeIdx * 100}%)` }}
                 >
-                  <div className="flex items-center gap-4 sm:gap-6">
+                  {SERVICES_DATA.map((_, i) => (
+                    <span key={i} className="h-6 flex items-center">
+                      0{i + 1}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <span className="text-xs text-[#7C7D82] font-semibold">of 0{totalServices}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* ZERO CARDS: Spatial Typography Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start my-auto py-4">
+          {/* Left Column: Service Titles */}
+          <div className="lg:col-span-6 space-y-3 sm:space-y-4">
+            {SERVICES_DATA.map((service, idx) => {
+              const isActive = activeIdx === idx;
+              return (
+                <div
+                  key={service.slug}
+                  onClick={() => setActiveIdx(idx)}
+                  className="cursor-pointer group transition-all duration-300 select-none"
+                  data-cursor
+                  data-cursor-text="SELECT"
+                >
+                  <div className="flex items-baseline gap-3 sm:gap-4">
                     <span
-                      className={`text-xs font-mono font-bold transition-colors ${
-                        isExpanded ? "text-[#1E5FD8]" : "text-[#7C7D82]"
+                      className={`text-xs sm:text-sm font-bold transition-colors duration-300 ${
+                        isActive
+                          ? "text-[#1E5FD8]"
+                          : "text-[#B0B1B6] group-hover:text-[#7C7D82]"
                       }`}
                     >
-                      {serviceNumber}
+                      0{idx + 1}
                     </span>
-                    <div>
-                      <h3
-                        className={`text-lg sm:text-xl md:text-2xl font-serif font-bold transition-colors ${
-                          isExpanded ? "text-[#1E5FD8]" : "text-[#121316]"
-                        }`}
-                      >
-                        {service.title}
-                      </h3>
-                      {!isExpanded && (
-                        <p className="text-xs text-[#4A4B50] font-sans line-clamp-1 mt-0.5 max-w-xl hidden sm:block">
-                          {service.shortDescription}
-                        </p>
-                      )}
-                    </div>
-                  </div>
 
-                  {/* Toggle Indicator */}
-                  <div
-                    className={`w-8 h-8 rounded-none border flex items-center justify-center transition-all duration-200 flex-shrink-0 ${
-                      isExpanded
-                        ? "bg-[#1E5FD8] border-[#1E5FD8] text-white rotate-180"
-                        : "bg-[#FFFFFF] border-[#E6E6E8] text-[#7C7D82] rotate-0"
-                    }`}
-                  >
-                    <ChevronDown className="w-4 h-4" />
-                  </div>
-                </button>
-
-                {/* INLINE EXPANDED CARD IN THE MIDDLE */}
-                <AnimatePresence initial={false}>
-                  {isExpanded && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                      className="overflow-hidden bg-[#FFFFFF] border-t border-[#E6E6E8]"
+                    <h3
+                      className={`font-serif font-bold tracking-tight uppercase transition-all duration-300 ${
+                        isActive
+                          ? "text-2xl sm:text-4xl lg:text-5xl text-[#121316] translate-x-2"
+                          : "text-base sm:text-xl text-[#A0A1A6] hover:text-[#505156] translate-x-0"
+                      }`}
                     >
-                      <div className="p-6 sm:p-8 space-y-6">
-                        {/* Summary Block */}
-                        <div>
-                          <div className="flex items-center gap-2 mb-2">
-                            <Terminal className="w-3.5 h-3.5 text-[#1E5FD8]" />
-                            <span className="text-[10px] font-mono font-bold text-[#1E5FD8] uppercase tracking-wider">
-                              SYSTEM SPECIFICATION // {service.title}
-                            </span>
-                          </div>
-                          <p className="text-xs sm:text-sm text-[#4A4B50] font-sans leading-relaxed">
-                            {service.heroDescription}
-                          </p>
-                        </div>
+                      {service.title}
+                    </h3>
+                  </div>
 
-                        {/* Deliverables List */}
-                        {service.deliverables.length > 0 && (
-                          <div className="p-4 bg-[#FAF9F6] border border-[#E6E6E8] space-y-2 rounded-none">
-                            <span className="text-[10px] font-mono uppercase tracking-wider text-[#121316] font-bold block mb-1">
-                              Core Deliverables & Outcomes
-                            </span>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                              {service.deliverables.map((item, dIdx) => (
-                                <div
-                                  key={dIdx}
-                                  className="flex items-start gap-2 text-xs text-[#121316] font-sans"
-                                >
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-[#1E5FD8] flex-shrink-0 mt-0.5" />
-                                  <span>{item}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Action CTA */}
-                        <div className="pt-1 flex items-center justify-between flex-wrap gap-4">
-                          <span className="text-[11px] font-mono text-[#7C7D82]">
-                            100% Deterministic Engineering • Full Code Ownership
-                          </span>
-
-                          <Link
-                            href={`/services/${service.slug}`}
-                            className="btn-primary text-xs uppercase tracking-wider font-bold px-6 py-2.5 flex items-center gap-2 text-white rounded-none cursor-pointer"
-                          >
-                            <span>View {service.title} Spec</span>
-                            <ArrowRight className="w-3.5 h-3.5" />
-                          </Link>
-                        </div>
-                      </div>
-                    </motion.div>
+                  {isActive && (
+                    <div className="w-16 h-[2px] bg-[#1E5FD8] mt-1.5 ml-7 sm:ml-8 will-change-transform" />
                   )}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Right Column: Active Service Details (ZERO CARDS) */}
+          <div className="lg:col-span-6 lg:border-l lg:border-[#E6E6E8] lg:pl-10 space-y-5">
+            <div className="space-y-3">
+              <span className="text-xs font-semibold text-[#1E5FD8] uppercase tracking-wider block">
+                0{activeIdx + 1} // {activeService.title}
+              </span>
+
+              <div className="font-serif text-2xl sm:text-4xl lg:text-5xl font-bold text-[#121316] leading-tight">
+                <span className="inline-block transition-transform duration-300 ease-out">
+                  {firstWord}
+                </span>{" "}
+                <span className="inline-block text-[#1E5FD8] transition-transform duration-300 ease-out">
+                  {remainingWords}
+                </span>
+              </div>
+
+              <p className="text-base text-[#4A4B50] font-sans leading-relaxed pt-1">
+                {activeService.shortDescription}
+              </p>
+            </div>
+
+            {/* Tools We Use */}
+            <div className="pt-3 border-t border-[#E6E6E8] space-y-2">
+              <span className="text-xs font-bold text-[#7C7D82] uppercase tracking-wider block">
+                Tools & Frameworks:
+              </span>
+              <div className="flex flex-wrap items-center gap-2 font-sans text-xs">
+                {activeDnaTokens.map((token, i) => (
+                  <span
+                    key={i}
+                    className="bg-[#EDF4FF] text-[#1E5FD8] px-3 py-1 font-medium border border-[#1E5FD8]/20"
+                  >
+                    {token}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Deliverables */}
+            <div className="pt-3 border-t border-[#E6E6E8] space-y-1.5">
+              <span className="text-xs font-bold text-[#7C7D82] uppercase tracking-wider block mb-1.5">
+                What You Get:
+              </span>
+              {activeService.deliverables.map((item, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-3 text-xs sm:text-sm font-sans text-[#121316] py-1 border-b border-[#F0EFEB] last:border-none"
+                >
+                  <span className="text-[#1E5FD8] font-bold text-xs">
+                    ✓
+                  </span>
+                  <span className="font-medium">{item}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Direct Link */}
+            <div className="pt-2">
+              <Link
+                href={`/services/${activeService.slug}`}
+                className="inline-flex items-center gap-2 text-xs font-bold text-[#1E5FD8] hover:text-[#10316B] uppercase tracking-wider group min-h-[44px]"
+                data-cursor
+                data-cursor-text="VIEW"
+              >
+                <span>Learn more about {activeService.title}</span>
+                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </Link>
+            </div>
+          </div>
         </div>
+
+        {/* Full-viewport Takeover Banner */}
+        {isTakeover && (
+          <div className="fixed inset-0 z-40 bg-[#FAF9F6]/95 backdrop-blur-md flex flex-col justify-between p-8 sm:p-14 pointer-events-none transition-opacity duration-300">
+            <div className="flex items-center justify-between border-b border-[#E6E6E8] pb-4">
+              <span className="text-xs text-[#1E5FD8] font-bold uppercase tracking-wider">
+                FEATURED SERVICE // 02
+              </span>
+              <span className="text-xs text-[#7C7D82]">
+                Custom Software & Apps
+              </span>
+            </div>
+
+            <div className="my-auto text-center space-y-4">
+              <h2 className="font-serif font-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-[#121316] tracking-tight uppercase leading-none will-change-transform">
+                Application
+              </h2>
+              <h3 className="font-serif font-bold text-3xl sm:text-5xl md:text-6xl text-[#1E5FD8] tracking-tight uppercase leading-none">
+                Development
+              </h3>
+              <p className="text-sm sm:text-base text-[#4A4B50] max-w-xl mx-auto pt-2 font-sans">
+                Fast web apps and mobile tools built to handle thousands of users smoothly without crashing.
+              </p>
+            </div>
+
+            <div className="flex items-center justify-between text-xs text-[#7C7D82] border-t border-[#E6E6E8] pt-4 font-sans">
+              <span>Neominds Services</span>
+              <span>Scroll to see more services</span>
+            </div>
+          </div>
+        )}
+
+        <TravelingLine className="mt-4" />
       </div>
     </section>
   );
