@@ -6,7 +6,6 @@ import { Plus, Minus, Shield, Zap, MessageSquare } from "lucide-react";
 import { WHY_NEOMINDS_POINTS } from "@/lib/data";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SectionTransition } from "./motion/SectionTransition";
 import { DrawLine } from "./motion/DrawLine";
 
 const DIALOGUE_FOCUS_WORDS = [
@@ -81,11 +80,6 @@ export function WhyNeomindsSection() {
       className="py-16 sm:py-28 bg-[#FAF9F6] text-[#121316] border-b border-[#E6E6E8] relative overflow-hidden select-none"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <SectionTransition
-          number="05"
-          label="Why Choose Neominds"
-        />
-
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left Column */}
           <div ref={leftHeadingRef} className="lg:col-span-5 space-y-8 lg:sticky lg:top-28">

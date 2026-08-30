@@ -4,7 +4,6 @@ import React, { useEffect, useRef } from "react";
 import { ArrowRight, ShieldCheck, Clock, FileCode } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SectionTransition } from "./motion/SectionTransition";
 import { trackEvent } from "@/lib/analytics";
 
 interface ConversionCTAProps {
@@ -91,12 +90,6 @@ export function ConversionCTA({ onOpenContact }: ConversionCTAProps) {
       className="relative py-24 sm:py-36 bg-[#000000] text-[#FFFFFF] overflow-hidden border-t border-[#1E293B] select-none"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <SectionTransition
-          number="07"
-          label="Let's Talk"
-          theme="dark"
-        />
-
         <div className="max-w-4xl py-6 sm:py-10">
           {/* Giant Typographic Headline */}
           <div className="space-y-1 font-serif text-4xl sm:text-6xl md:text-7xl lg:text-[76px] font-bold text-white tracking-tight leading-[1.05] uppercase">

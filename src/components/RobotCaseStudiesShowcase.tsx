@@ -6,7 +6,6 @@ import { ArrowRight, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { SCROLL_STACK_CASE_STUDIES, ScrollStackCaseStudy } from "@/lib/data";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SectionTransition } from "./motion/SectionTransition";
 import { BlurText } from "./motion/BlurText";
 
 interface RobotCaseStudiesShowcaseProps {
@@ -266,11 +265,6 @@ export function RobotCaseStudiesShowcase({ onOpenContact }: RobotCaseStudiesShow
       className="w-full bg-[#FAF9F6] text-[#121316] border-b border-[#E6E6E8] relative overflow-hidden pt-16 pb-20 sm:pt-24 sm:pb-28 select-none"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12">
-        <SectionTransition
-          number="03"
-          label="Featured Case Studies"
-        />
-
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
           <div className="max-w-2xl">
             <BlurText

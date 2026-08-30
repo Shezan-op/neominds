@@ -5,7 +5,6 @@ import { NUMBER_CHANGER_STATS } from "@/lib/data";
 import { TrendingUp, Users, Award, CheckCircle2 } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SectionTransition } from "./motion/SectionTransition";
 import { DrawLine } from "./motion/DrawLine";
 import { TextFillScroll } from "./motion/TextFillScroll";
 
@@ -112,12 +111,6 @@ export function NumberChangerSection() {
       className="py-16 sm:py-24 bg-[#FAF9F6] text-[#121316] relative overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Clean, Simple Section Header */}
-        <SectionTransition
-          number="01"
-          label="Proven Results"
-        />
-
         {/* Section Headline with TextFillScroll */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 sm:mb-16 gap-6">
           <div className="max-w-2xl">

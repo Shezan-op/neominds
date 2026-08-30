@@ -6,7 +6,6 @@ import { ArrowUpRight } from "lucide-react";
 import { SERVICES_DATA } from "@/lib/data";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SectionTransition } from "./motion/SectionTransition";
 import { TravelingLine } from "./motion/TravelingLine";
 import { trackEvent } from "@/lib/analytics";
 
@@ -100,11 +99,6 @@ export function ServicesEditorial() {
       >
         {/* Section Header */}
         <div>
-          <SectionTransition
-            number="02"
-            label="What We Build"
-          />
-
           <div className="pt-2 pb-5 flex flex-col sm:flex-row sm:items-end justify-between border-b border-[#E6E6E8]">
             <div>
               <h2 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#121316] font-serif uppercase">

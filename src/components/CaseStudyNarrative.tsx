@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { SCROLL_STACK_CASE_STUDIES } from "@/lib/data";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SectionTransition } from "./motion/SectionTransition";
 import { TravelingLine } from "./motion/TravelingLine";
 import { TextFillScroll } from "./motion/TextFillScroll";
 import { trackEvent } from "@/lib/analytics";
@@ -94,11 +93,6 @@ export function CaseStudyNarrative({ onOpenContact }: CaseStudyNarrativeProps = 
       >
         {/* Section Header */}
         <div>
-          <SectionTransition
-            number="03B"
-            label="In-Depth Case Study"
-          />
-
           <div className="pt-2 pb-4 flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#E6E6E8] gap-4">
             <span className="text-xs font-semibold text-[#1E5FD8] uppercase tracking-wider font-sans">
               Client Story // {activeStudy.client}

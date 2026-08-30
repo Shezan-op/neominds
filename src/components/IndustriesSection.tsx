@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { INDUSTRIES_DATA } from "@/lib/data";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SectionTransition } from "./motion/SectionTransition";
 import { CharacterAssemble } from "./motion/CharacterAssemble";
 import { TravelingLine } from "./motion/TravelingLine";
 import { trackEvent } from "@/lib/analytics";
@@ -81,11 +80,6 @@ export function IndustriesSection() {
       >
         {/* Section Header */}
         <div>
-          <SectionTransition
-            number="04"
-            label="Industries We Serve"
-          />
-
           <div className="pt-2 pb-5 flex flex-col sm:flex-row sm:items-end justify-between border-b border-[#E6E6E8]">
             <div>
               <CharacterAssemble
